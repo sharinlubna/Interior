@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruitkha | Admin Dashboard Panel</title>
+    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <style>
+        .activity {
+            padding-top: 50px;
+        }
+        .activity-data {
+            padding-top: 10px;
+        }
+        .title{
+            display: flex;
+            flex-direction: row;
+            font-size: 20px;
+            font-weight: bolder;
+            gap: 10px;
+        }
+        .dashboard .title i {
+            position: relative;
+            height: 35px;
+            width: 35px;
+            background-color: var(--primary-color);
+            border-radius: 6px;
+            color: var(--title-icon-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        form div {
+            display: flex;
+            flex-direction: column;
+            width: 45%;
+        }
+        form label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        form input, form select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            align-self: center;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        a {
+            display: inline-block;
+            margin-top: 10px;
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            padding: 10px;
+            background-color: #f1f1f1;
+            margin-bottom: 5px;
+            border-radius: 4px;
+        }
+        ul li:nth-child(odd) {
+            background-color: #e9e9e9;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo-name">
+            <div class="logo-image">
+                <!-- <img src="img/favicon.png" alt=""> -->
+            </div>
+            <span class="logo_name"><img src="{% static 'images/logo.png' %}" alt=""></span>
+        </div>
+        <div class="menu-items">
+            <ul class="nav-links">
+                <li><a href="{% url 'AdminDashboard' %}">
+                    <i class="uil uil-estate"></i>
+                    <span class="link-name">Dashboard</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="uil uil-bell"></i>
+                    <span class="link-name">Notification <mark class="big swing">{{ unread_count }}</mark></span>
+                </a></li>
+                <li><a href="{% url 'add_staff' %}">
+                    <i class="uil uil-database"></i>
+                    <span class="link-name">Add Staff</span>
+                </a></li>
+                <li><a href="{% url 'staff_list' %}">
+                    <i class="uil uil-clock-three"></i>
+                    <span class="link-name">Staff List</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="uil uil-phone"></i>
+                    <span class="link-name">Orders</span>
+                </a></li>
+            </ul>
+            <ul class="logout-mode">
+                <li><a href="{% url 'logout' %}">
+                    <i class="uil uil-signout"></i>
+                    <span class="link-name">Logout</span>
+                </a></li>
+            </ul>
+        </div>
+    </nav>
+    <section class="dashboard">
+        <div class="top">
+            <i class="uil uil-bars sidebar-toggle"></i>
+        </div>
+        <div class="activity">
+            <div class="title">
+                <i class="uil uil-user-plus"></i>
+                <span class="text">Add Staff Member</span>
+            </div>
+            <div class="activity-data">
+                <form method="post" action="{% url 'add_staff' %}">
+                    {% csrf_token %}
+                    <div>
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div>
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div>
+                        <label for="phone_number">Phone Number:</label>
+                        <input type="text" id="phone_number" name="phone_number" required>
+                    </div>
+                    <div>
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <div>
+                        <label for="password_confirm">Confirm Password:</label>
+                        <input type="password" id="password_confirm" name="password_confirm" required>
+                    </div>
+                    <div>
+                        <label for="designation">Designation:</label>
+                        <select id="designation" name="designation" required>
+                            <option value="Architect">Architect</option>
+                            <option value="Interior Designer">Interior Designer</option>
+                            <option value="Project Manager">Project Manager</option>
+                            <option value="Design Consultant">Design Consultant</option>
+                            <option value="Drafts person">Drafts person</option>
+                            <option value="Lighting Designer">Lighting Designer</option>
+                            <option value="Furniture Designer">Furniture Designer</option>
+                            <option value="Materials Specialist">Materials Specialist</option>
+                            <option value="3D Visualizer">3D Visualizer</option>
+                            <option value="Site Supervisor">Site Supervisor</option>
+                            <option value="Procurement Manager">Procurement Manager</option>
+                            <option value="Client Relations Manager">Client Relations Manager</option>
+                            <option value="Junior Interior Designer">Junior Interior Designer</option>
+                            <option value="Senior Interior Designer">Senior Interior Designer</option>
+                            <option value="Administrative Assistant">Administrative Assistant</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="experience">Experience:</label>
+                        <input type="text" id="experience" name="experience" required>
+                    </div>
+                    <div>
+                        <label for="qualification">Qualification:</label>
+                        <input type="text" id="qualification" name="qualification" required>
+                    </div>
+                    <div>
+                        <label>Image</label>
+                        <input type="file" id=image" name="image" required>
+                    </div>
+
+                    <button type="submit">Add Staff</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

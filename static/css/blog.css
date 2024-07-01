@@ -1,0 +1,72 @@
+/*
+Template Name: Furniture
+File: Layout CSS
+Author: TemplatesOnWeb
+Author URI: https://www.templateonweb.com/
+Licence: <a href="https://www.templateonweb.com/license">Website Template Licence</a>
+*/
+
+/*********************blog****************/
+.center_blog {
+background-image: url(../img/22.jpg);
+background-position: center;
+}
+ 
+.center_blog_dt{
+background-image: url(../img/26.jpg);
+background-position: center; 
+ }
+/*********************blog_end****************/
+
+
+@media screen and (max-width : 767px){
+.blog_pg1lir{
+text-align:center;
+margin-top:15px; 
+ }
+.blog_pg1lir p{
+text-align:left;
+ }
+.blog_pg1r{
+margin-top:20px; 
+ }
+.blog_pgdt1i img{
+width:100%;
+float:none!important;
+margin-right:0!important;
+margin-bottom:15px; 
+ }
+.blog_pgdt1i1l{
+text-align:center;
+ }
+.blog_pgdt1i1r{
+text-align:center!important;
+margin-top:15px;
+ }
+.blog_pgdt3il .form-control{
+margin-top:10px; 
+ }
+ }
+
+@media (min-width:576px) and (max-width:767px) {
+
+ }
+@media (min-width:768px) and (max-width:991px) {
+.blog_pg1lil img{
+min-height:200px; 
+ }
+.blog_pgdt1i img{
+width:200px;
+height:150px;
+ }
+ }
+
+@media (min-width:992px) and (max-width:1200px) {
+.blog_pgdt1i img{
+width:300px;
+height:200px;
+ }
+ }
+
+
+

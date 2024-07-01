@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Future Home</title>
+	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" >
+	<link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" >
+	<link href="{% static 'css/global.css' %}" rel="stylesheet">
+	<link href="{% static 'css/index.css' %}" rel="stylesheet">
+	<link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet">
+	<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+	<style>
+        .container{
+            padding: 100px 10px;
+        }
+		.container form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+
+        }
+        .container form div {
+            display: flex;
+            flex-direction: column;
+            width: 45%;
+        }
+        .container form label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .container form input, form select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .container button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            align-self: center;
+        }
+        .container button:hover {
+            background-color: #45a049;
+        }
+        .container .field-wrapper input {
+            float: right;
+        }
+        .container .field-wrapper label::after {
+            content: "*";
+            color: red;
+        }
+        .h3{
+            font-weight: 600;
+        }
+        p{
+            line-height: 1.3;
+            font-size: 15px;
+        }
+
+	</style>
+
+</head>
+
+<body>
+
+{% include 'header.html' %}
+<section class="container">
+    <h3 class="h3">Appointment Form</h3>
+    <p class="p">Please fill out the form below to schedule an<br>appointment with our interior design team.</p>
+    <div class="form">
+        <form method="post" action="{% url 'appointment' %}">
+            {% csrf_token %}
+            <div>
+                <label for="name">Full Name</label>
+                <input name="name" type="text" id="name" placeholder="Enter your full name" name="name">
+            </div>
+            <div class="field-wrapper">
+                <label for="email">Email</label>
+                <input name="email" type="email" id="email" placeholder="Enter your email" name="email" required>
+            </div>
+
+            <div class="field-wrapper">
+                <label for="phone_number">Phone Number</label>
+                <input name="phone" type="text" id="phone_number" placeholder="Enter your phone number" required>
+            </div>
+            <div>
+                <label for="date">Preferred Date</label>
+                <input name="date" type="date" id="date" placeholder="Select a date">
+            </div>
+            <div>
+                <label for="time">Preferred time</label>
+                <input type="time" id="time" placeholder="Select a time" name="time">
+            </div>
+            <div>
+                <label for="designation">Department</label>
+                <select id="designation" name="department" required>
+                    <option value="select">Select</option>
+                    <option value="Architect">Architect</option>
+                    <option value="Interior Designer">Interior Designer</option>
+                    <option value="Project Manager">Project Manager</option>
+                    <option value="Design Consultant">Design Consultant</option>
+                    <option value="Drafts person">Drafts person</option>
+                    <option value="Lighting Designer">Lighting Designer</option>
+                    <option value="Furniture Designer">Furniture Designer</option>
+                    <option value="Materials Specialist">Materials Specialist</option>
+                    <option value="3D Visualizer">3D Visualizer</option>
+                    <option value="Site Supervisor">Site Supervisor</option>
+                    <option value="Procurement Manager">Procurement Manager</option>
+                    <option value="Client Relations Manager">Client Relations Manager</option>
+                    <option value="Junior Interior Designer">Junior Interior Designer</option>
+                    <option value="Senior Interior Designer">Senior Interior Designer</option>
+                    <option value="Administrative Assistant">Administrative Assistant</option>
+                </select>
+            </div>
+            <div>
+                <label for="appointment_description">Brief Description of your project</label>
+                <textarea name="description" id="appointment_description"  rows="6"
+                          placeholder="Briefly describe your project and what you are looking for"></textarea>
+            </div>
+            <div></div>
+            <div>
+                <label for="agree"><input id="agree" name="agree" type="checkbox" required > I accept the terms and conditions</label>
+            </div>
+            <div></div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</section>
+
+
+{% include 'footer.html' %}
+
+
+
+
+<script>
+	window.onscroll = function() {myFunction()};
+	let navbar_sticky = document.getElementById("navbar_sticky");
+	let sticky = navbar_sticky.offsetTop;
+	let navbar_height = document.querySelector('.navbar').offsetHeight;
+	function myFunction() {
+	  if (window.pageYOffset >= sticky + navbar_height) {
+		navbar_sticky.classList.add("sticky")
+		document.body.style.paddingTop = navbar_height + 'px';
+	  } else {
+		navbar_sticky.classList.remove("sticky");
+		document.body.style.paddingTop = '0'
+	  }
+	}
+</script>
+<script>
+    // document.addEventListener("DOMContentLoaded", function() {
+    //     const agreeCheckbox = document.getElementById("agree");
+    //     const submitButton = document.querySelector("button");
+    //
+    //     agreeCheckbox.addEventListener("change", function() {
+    //         submitButton.disabled = !this.checked;
+    //     });
+    // });
+</script>
+
+
+</body>
+
+</html>
