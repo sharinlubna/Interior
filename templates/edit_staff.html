@@ -156,7 +156,7 @@
                 {% for i in stf %}
                 {% for j in stff %}
                  {% if i.id == j.staff_id %}
-                <form method="post" action="{% url 'edit_staff' i.id %}">
+                <form method="post" action="{% url 'edit_staff' i.id %}" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div>
                         <label for="username">Username:</label>

@@ -7,3 +7,5 @@ admin.site.register(User)
 admin.site.register(Staff)
 
 admin.site.register(Appointment)
+
+admin.site.register(Blog)

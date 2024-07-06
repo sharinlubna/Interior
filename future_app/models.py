@@ -11,23 +11,12 @@ userchoices = (
     (3,"Client")
 )
 
-# designationchoices = (
-#     (1, "Architect"),
-#     (2, "Interior Designer"),
-#     (3, "Project Manager"),
-#     (4, "Design Consultant"),
-#     (5, "Draftsperson"),
-#     (6, "Lighting Designer"),
-#     (7, "Furniture Designer"),
-#     (8, "Materials Specialist"),
-#     (9, "3D Visualizer"),
-#     (10, "Site Supervisor"),
-#     (11, "Procurement Manager"),
-#     (12, "Client Relations Manager"),
-#     (13, "Junior Interior Designer"),
-#     (14, "Senior Interior Designer"),
-#     (15, "Administrative Assistant")
-# )
+
+status=(
+    (1, "pending"),
+    (2, "Scheduled"),
+    (3, "Rejected"),
+)
 
 class User(AbstractUser):
     USERNAME_FIELD = 'email'
@@ -55,9 +44,22 @@ class Appointment(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
     phone = models.CharField(max_length=10, null=True, blank=True)
-    date = models.DateField(null=True, blank=True)
-    time = models.TimeField(null=True, blank=True)
+    date = models.CharField(max_length=10, null=True, blank=True)
+    time = models.CharField(max_length=10, null=True, blank=True)
     department = models.CharField(max_length=100, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+    staff_name = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_profile')
+    status = models.IntegerField(default=1, choices=status)
+
+class Blog(models.Model):
+    title = models.CharField(max_length=100, null=True, blank=True)
+    author = models.CharField(max_length=100, null=True, blank=True)
+    date = models.DateField(auto_now_add=True)
+    description = models.TextField(null=True, blank=True)
+    detail = models.TextField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True, upload_to="images/")
+    sub_title = models.CharField(max_length=100, null=True, blank=True)
+    image1 = models.ImageField(null=True, blank=True, upload_to="images/")
+    exp = models.TextField(null=True, blank=True)
 
 

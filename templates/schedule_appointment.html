@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Details</title>
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .title {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .title i {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+        .appointment-info {
+            margin-bottom: 20px;
+        }
+        .appointment-info h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #333;
+        }
+        .appointment-info p {
+            margin-bottom: 5px;
+            font-size: 16px;
+            color: #666;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .action-buttons a {
+            display: inline-block;
+            padding: 10px 20px;
+            text-align: center;
+            border-radius: 4px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .action-buttons .schedule {
+            background-color: #4CAF50;
+        }
+        .action-buttons .reject {
+            background-color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo-name">
+            <div class="logo-image"></div>
+            <span class="logo_name"><img src="{% static 'images/logo.png' %}" alt=""></span>
+        </div>
+        <div class="menu-items">
+            <ul class="nav-links">
+                <li><a href="{% url 'AdminDashboard' %}">
+                    <i class="uil uil-estate"></i>
+                    <span class="link-name">Dashboard</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="uil uil-bell"></i>
+                    <span class="link-name">Notification<mark class="big swing">{{ unread_count }}</mark></span>
+                </a></li>
+                <li><a href="{% url 'admin_blogs' %}">
+                    <i class="uil uil-user-plus"></i>
+                    <span class="link-name">Blogs</span>
+                </a></li>
+                <li><a href="{% url 'staff_list' %}">
+                    <i class="uil uil-users-alt"></i>
+                    <span class="link-name">Staff List</span>
+                </a></li>
+                <li><a href="{% url 'appointment_list' %}">
+                    <i class="uil uil-phone"></i>
+                    <span class="link-name">Appointment</span>
+                </a></li>
+            </ul>
+            <ul class="logout-mode">
+                <li><a href="{% url 'logout' %}">
+                    <i class="uil uil-signout"></i>
+                    <span class="link-name">Logout</span>
+                </a></li>
+            </ul>
+        </div>
+    </nav>
+    <section class="dashboard">
+        <div class="top">
+            <i class="uil uil-bars sidebar-toggle"></i>
+            <div class="search-box">
+                <i class="uil uil-search"></i>
+                <form method="get">
+                    <input type="search" name="q" placeholder="Search here...">
+                    <input type="submit" hidden />
+                </form>
+            </div>
+            <img src="{% static 'images/favicon.png' %}" alt="">
+        </div>
+        <div class="container">
+            {% for i in app %}
+            <div class="title">
+                <i class="uil uil-phone"></i>
+                <span>Schedule Appointment</span>
+            </div>
+            <form method="post" action="{% url 'schedule_appointment' i.id %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="date">Appoint To:</label>
+                    <select class="form-control" id="staff" name='name'>
+                        {% for i in staff %}
+                            <option value='{{ i.id }}'>{{ i.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="time">Time:</label>
+                    <input type="time" id="time" name="time" required>
+                </div>
+                <div class="action-buttons">
+                    <button type="submit" class="schedule">Schedule</button>
+                    <a href="{% url 'appointment_list' %}" class="cancel">Cancel</a>
+                </div>
+            </form>
+        </div>
+        {% endfor %}
+    </section>
+</body>
+</html>
+
+

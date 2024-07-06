@@ -3,16 +3,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fruitkha | Admin Dashboard Panel</title>
-    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
-    <!----======== CSS ======== -->
+    <title>Staff Projects</title>
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
-
-    <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <style>
+        .profile{
+            text-align: center;
+        }
+        .profile img{
+            width: 68%;
+            height: 145px;
+            border-radius: 50%;
+            object-fit: fill;
+        }
         .activity {
             padding-top: 80px;
         }
@@ -59,9 +63,6 @@
             background-color: #f1f1f1;
             margin-bottom: 5px;
             border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* Align items in a row */
         }
 
         ul li:nth-child(odd) {
@@ -94,20 +95,21 @@
         .action-buttons a{
             margin-top: 0;
         }
+
     </style>
 </head>
 <body>
     <nav>
-        <div class="logo-name">
-            <div class="logo-image">
-                <!-- <img src="img/favicon.png" alt=""> -->
-            </div>
-            <span class="logo_name"><img src="{% static 'images/logo.png' %}" alt=""></span>
+        <div class="profile">
+            {% for i in staff %}
+            <img src="{{ i.image.url }}" alt="Profile Picture">
+            <h2>{{ user.name }}</h2>
+            <p>{{ i.designation }}</p>
+            {% endfor %}
         </div>
-
         <div class="menu-items">
             <ul class="nav-links">
-                <li><a href="{% url 'AdminDashboard' %}">
+                <li><a href="{% url 'staff_dashboard' %}">
                     <i class="uil uil-estate"></i>
                     <span class="link-name">Dashboard</span>
                 </a></li>
@@ -115,15 +117,15 @@
                     <i class="uil uil-bell"></i>
                     <span class="link-name">Notification</i><mark class="big swing">{{ unread_count }}</mark></span>
                 </a></li>
-                <li><a href="{% url 'add_staff' %}">
-                    <i class="uil uil-database"></i>
-                    <span class="link-name">Add Staff</span>
+                <li><a href="{% url 'admin_blogs' %}">
+                    <i class="uil uil-user-plus"></i>
+                    <span class="link-name">Blogs</span>
                 </a></li>
                 <li><a href="{% url 'staff_list' %}">
-                    <i class="uil uil-clock-three"></i>
-                    <span class="link-name">Staff List</abbr></span>
+                    <i class="uil uil-users-alt"></i>
+                    <span class="link-name">Projects</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="{% url 'appointment_list' %}">
                     <i class="uil uil-phone"></i>
                     <span class="link-name">Appointment</span>
                 </a></li>
@@ -135,10 +137,9 @@
                     <span class="link-name">Logout</span>
                 </a></li>
 
-
+            </ul>
         </div>
     </nav>
-
     <section class="dashboard">
         <div class="top">
             <i class="uil uil-bars sidebar-toggle"></i>
@@ -153,52 +154,6 @@
 
             <img src="{% static 'images/favicon.png' %}" alt="">
         </div>
-        <div class="activity">
-            <div class="title">
-                <i class="uil uil-users-alt"></i>
-                <span class="text">Staff Members</span>
-            </div>
-            <div class="activity-data">
 
-                {% if staff_members %}
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Phone Number</th>
-                                <th>Designation</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        {% for staff in staff_members %}
-                        {% for i in stf %}
-                            {% if i.id == staff.staff_id %}
-                        <tbody>
-                                <tr>
-                                    <td>{{ forloop.counter }}</td>
-                                    <td>{{ staff.staff_id }}</td>
-                                    <td>{{ i.name }}</td>
-                                    <td>{{ i.phone_number }}</td>
-                                    <td>{{ staff.designation }}</td>
-                                    <td class="action-buttons">
-                                        <a href="{% url 'edit_staff' i.id %}">Edit</a>
-                                        <a href="/delete_staff/{{ i.id }}"><i class="uil uil-trash"></i></a>
-
-                                    </td>
-                                </tr>
-                        </tbody>
-                            {% endif %}
-                        {% endfor %}
-                        {% endfor %}
-                    </table>
-                {% else %}
-                   <h2> No Staff Members Added </h2>
-                {% endif %}
-            </div>
-            <a href="{% url 'add_staff' %}">Add Staff</a>
-        </div>
-    </section>
 </body>
 </html>

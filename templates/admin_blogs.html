@@ -13,6 +13,15 @@
     <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <style>
+        .profile{
+            text-align: center;
+        }
+        .profile img{
+            width: 68%;
+            height: 145px;
+            border-radius: 50%;
+            object-fit: fill;
+        }
         .activity {
             padding-top: 80px;
         }
@@ -59,9 +68,6 @@
             background-color: #f1f1f1;
             margin-bottom: 5px;
             border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* Align items in a row */
         }
 
         ul li:nth-child(odd) {
@@ -97,6 +103,7 @@
     </style>
 </head>
 <body>
+    {% if user.is_superuser == 1 %}
     <nav>
         <div class="logo-name">
             <div class="logo-image">
@@ -104,7 +111,6 @@
             </div>
             <span class="logo_name"><img src="{% static 'images/logo.png' %}" alt=""></span>
         </div>
-
         <div class="menu-items">
             <ul class="nav-links">
                 <li><a href="{% url 'AdminDashboard' %}">
@@ -115,17 +121,17 @@
                     <i class="uil uil-bell"></i>
                     <span class="link-name">Notification</i><mark class="big swing">{{ unread_count }}</mark></span>
                 </a></li>
-                <li><a href="{% url 'add_staff' %}">
-                    <i class="uil uil-database"></i>
-                    <span class="link-name">Add Staff</span>
+                <li><a href="{% url 'admin_blogs' %}">
+                    <i class="uil uil-user-plus"></i>
+                    <span class="link-name">Blogs</span>
                 </a></li>
                 <li><a href="{% url 'staff_list' %}">
-                    <i class="uil uil-clock-three"></i>
-                    <span class="link-name">Staff List</abbr></span>
+                    <i class="uil uil-users-alt"></i>
+                    <span class="link-name">Staff List</span>
                 </a></li>
                 <li><a href="#">
                     <i class="uil uil-phone"></i>
-                    <span class="link-name">Appointment</span>
+                    <span class="link-name">Edit Staff</span>
                 </a></li>
             </ul>
 
@@ -135,9 +141,52 @@
                     <span class="link-name">Logout</span>
                 </a></li>
 
-
+            </ul>
         </div>
     </nav>
+    {% else %}
+    <nav>
+        <div class="profile">
+            {% for i in staff %}
+            <img src="{{ i.image.url }}" alt="Profile Picture">
+            <h2>{{ user.name }}</h2>
+            <p>{{ i.designation }}</p>
+            {% endfor %}
+        </div>
+        <div class="menu-items" style="justify-content: normal; margin-top:0;">
+            <ul class="nav-links">
+                <li style="padding: 0;"><a href="{% url 'staff_dashboard' %}">
+                    <i class="uil uil-estate"></i>
+                    <span class="link-name">Dashboard</span>
+                </a></li>
+                <li style="padding: 0"><a href="#">
+                    <i class="uil uil-bell"></i>
+                    <span class="link-name">Notification</i><mark class="big swing">{{ unread_count }}</mark></span>
+                </a></li>
+                <li style="padding: 0"><a href="{% url 'admin_blogs' %}">
+                    <i class="uil uil-user-plus"></i>
+                    <span class="link-name">Blogs</span>
+                </a></li>
+                <li style="padding: 0"><a href="{% url 'staff_list' %}">
+                    <i class="uil uil-users-alt"></i>
+                    <span class="link-name">Staff List</span>
+                </a></li>
+                <li style="padding: 0"><a href="{% url 'appointment_list' %}">
+                    <i class="uil uil-phone"></i>
+                    <span class="link-name">Appointment</span>
+                </a></li>
+            </ul>
+
+            <ul class="logout-mode">
+                <li style="padding: 0"><a href="{% url 'logout' %}">
+                    <i class="uil uil-signout"></i>
+                    <span class="link-name">Logout</span>
+                </a></li>
+
+            </ul>
+        </div>
+    </nav>
+    {% endif %}
 
     <section class="dashboard">
         <div class="top">
@@ -156,48 +205,42 @@
         <div class="activity">
             <div class="title">
                 <i class="uil uil-users-alt"></i>
-                <span class="text">Staff Members</span>
+                <span class="text">Blogs</span>
             </div>
             <div class="activity-data">
 
-                {% if staff_members %}
+                {% if item %}
                     <table>
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Phone Number</th>
-                                <th>Designation</th>
+                                <th>Author</th>
+                                <th>Title</th>
+                                <th>Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        {% for staff in staff_members %}
-                        {% for i in stf %}
-                            {% if i.id == staff.staff_id %}
+                        {% for i in item %}
+
                         <tbody>
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
-                                    <td>{{ staff.staff_id }}</td>
-                                    <td>{{ i.name }}</td>
-                                    <td>{{ i.phone_number }}</td>
-                                    <td>{{ staff.designation }}</td>
+                                    <td>{{ i.author }}</td>
+                                    <td>{{ i.title }}</td>
+                                    <td>{{ i.date }}</td>
                                     <td class="action-buttons">
-                                        <a href="{% url 'edit_staff' i.id %}">Edit</a>
+                                        <a href="{% url 'edit_admin_blog' i.id %}">Edit</a>
                                         <a href="/delete_staff/{{ i.id }}"><i class="uil uil-trash"></i></a>
-
                                     </td>
                                 </tr>
                         </tbody>
-                            {% endif %}
-                        {% endfor %}
                         {% endfor %}
                     </table>
                 {% else %}
-                   <h2> No Staff Members Added </h2>
+                   <h2> No Blogs Added </h2>
                 {% endif %}
             </div>
-            <a href="{% url 'add_staff' %}">Add Staff</a>
+            <a href="{% url 'create_admin_blog' %}">Add Blog</a>
         </div>
     </section>
 </body>

@@ -13,6 +13,31 @@
     <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <style>
+        .activity {
+            padding-top: 80px;
+        }
+        .activity-data {
+            padding-top: 20px;
+        }
+        .title{
+            display: flex;
+            flex-direction: row;
+            font-size: 20px;
+            font-weight: bolder;
+            gap: 10px;
+        }
+        .dashboard .title i {
+            position: relative;
+            height: 35px;
+            width: 35px;
+            background-color: var(--primary-color);
+            border-radius: 6px;
+            color: var(--title-icon-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
         a {
             display: inline-block;
             margin-top: 10px;
@@ -34,47 +59,40 @@
             background-color: #f1f1f1;
             margin-bottom: 5px;
             border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Align items in a row */
         }
 
         ul li:nth-child(odd) {
             background-color: #e9e9e9;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
         }
-        table thead td {
-            font-weight: 600;
-        }
-        table tr {
-            color: black;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-        }
-        table tr:last-child {
-            border-bottom: none;
-        }
-        table tbody tr:hover {
-            background: rgb(3, 102, 216);
-            color: beige;
-        }
-        table tr td, table tr th {
+
+        th, td {
             padding: 10px;
-        }
-        table tr td:last-child, table tr th:last-child {
-            text-align: end;
-        }
-        table tr td:nth-child(2), table tr th:nth-child(2) {
-            text-align: end;
-        }
-        table tr td:nth-child(3), table tr th:nth-child(3) {
-            text-align: center;
-        }
-        table tr td:nth-child(4) {
-            text-align: center;
-        }
-        table tr th:first-child {
             text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+        th:last-child{
+            text-align: center;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            justify-content: space-evenly;
+        }
+        .action-buttons a{
+            margin-top: 0;
         }
     </style>
 </head>
@@ -135,79 +153,46 @@
 
             <img src="{% static 'images/favicon.png' %}" alt="">
         </div>
-
-        <div class="dash-content">
-            <div class="overview">
-                <div class="title">
-                    <i class="uil uil-tachometer-fast-alt"></i>
-                    <span class="text">Dashboard</span>
-                </div>
-
-                <div class="boxes">
-                    <div class="box box1">
-                        <i class="uil uil-shopping-cart"></i>
-                        <span class="text">Fruits Available</span>
-                        <span class="number">{{ fruit_count }}</span>
-                    </div>
-                    <div class="box box2">
-                        <i class="uil uil-truck"></i>
-                        <span class="text">Delivery</span>
-                        <span class="number">{{ delivery_count }}</span>
-                    </div>
-                    <div class="box box3">
-                        <i class="uil uil-dollar-alt"></i>
-                        <span class="text">Total Earnings</span>
-                        <span class="number">$ {{ total }}</span>
-                    </div>
-                </div>
+        <div class="activity">
+            <div class="title">
+                <i class="uil uil-users-alt"></i>
+                <span class="text">Blogs</span>
             </div>
+            <div class="activity-data">
 
-            <div class="activity">
-                <div class="title">
-                    <i class="uil uil-clock-three"></i>
-                    <span class="text">Recent Activity</span>
-                </div>
-
-                <div class="activity-data">
+                {% if app %}
                     <table>
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>User ID</th>
-                                <th>Item</th>
-                                <th>Price</th>
-                                <th>Payment</th>
-                                <th>Status</th>
+                                <th>Email</th>
+                                <th>Phone Number</th>
+                                <th>Department</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
+                        {% for i in app %}
+
                         <tbody>
-                            {% for order in recent_orders %}
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
-                                    <td>{{ order.user.id }}</td>
-                                    <td>{{ order.item_id }}</td>
-                                    <td>{{ order.total_price }}</td>
-                                    <td>Paid</td>
-                                    <td>
-                                        {% if order.status == 1 %}
-                                            Ordered
-                                        {% elif order.status == 2 %}
-                                            Pending
-                                        {% elif order.status == 3 %}
-                                            Delivered
-                                        {% elif order.status == 4 %}
-                                            Cancelled
-                                        {% endif %}
+                                    <td>{{ i.email }}</td>
+                                    <td>{{ i.phone }}</td>
+                                    <td>{{ i.department }}</td>
+                                    <td class="action-buttons">
+                                        <a href="{% url 'appointment_view' i.id %}">View</a>
+                                        <a href="/delete_staff/{{ i.id }}"><i class="uil uil-trash"></i></a>
                                     </td>
                                 </tr>
-                            {% endfor %}
                         </tbody>
+                        {% endfor %}
                     </table>
-                </div>
+                {% else %}
+                   <h2> No Appointments </h2>
+                {% endif %}
             </div>
+            <a href="{% url 'create_admin_blog' %}">Add Blog</a>
         </div>
     </section>
-
-    <script src="{% static 'js/admin.js' %}"></script>
 </body>
 </html>

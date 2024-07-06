@@ -143,7 +143,7 @@
                 <span class="text">Add Staff Member</span>
             </div>
             <div class="activity-data">
-                <form method="post" action="{% url 'add_staff' %}">
+                <form method="post" action="{% url 'add_staff' %}" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div>
                         <label for="name">Name:</label>
