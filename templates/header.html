@@ -1,81 +1,174 @@
 {% load static %}
+{% if user.is_active %}
 <section id="top" class="bg_dark  px-3">
- <div class="container-fluid">
-  <div class="row top_1">
-   <div class="col-md-2 col-lg-3">
-    <div class="top_1l pt-3">
-	 <ul class="mb-0 font_14">
-		<li class="d-inline-block me-3"><a class="col_light" href="#"><i class="fa fa-facebook"></i> </a></li>
-		<li class="d-inline-block me-3"><a class="col_light" href="#"><i class="fa fa-twitter"></i> </a></li>
-		<li class="d-inline-block me-3"><a class="col_light" href="#"><i class="fa fa-pinterest"></i> </a></li>
-		<li class="d-inline-block"><a class="col_light" href="#"><i class="fa fa-youtube-play"></i> </a></li>
-	 </ul>
-	</div>
-   </div>
-   <div class="col-md-10 col-lg-9">
-    <div class="top_1r text-end">
-	   <ul class="mb-0 font_14">
-	  <li class="d-inline-block col_light"><i class="fa fa-envelope-o me-1 col_yell"></i> Email:  info@gmail.com</li>
-	  <li class="d-inline-block mx-3 col_light"><i class="fa fa-phone me-1 col_yell"></i> Call us: +(123) 456-7890</li>
-	  <li class="d-inline-block"><a class="button rounded-0" href="{% url 'appointment' %}">BOOK APPOINTMENT <i class="fa fa-long-arrow-right ms-1"></i></a></li>
-	 </ul>
-	</div>
-   </div>
-  </div>
- </div>
-</section>
+     <div class="container-fluid">
+      <div class="row top_1">
+       <div class="col-md-2 col-lg-3">
+        <div class="top_1l pt-3">
+         <ul class="mb-0 font_14">
+            <li class="d-inline-block me-3"><a class="col_light" href="#"><i class="fa fa-facebook"></i> </a></li>
+            <li class="d-inline-block me-3"><a class="col_light" href="#"><i class="fa fa-twitter"></i> </a></li>
+            <li class="d-inline-block me-3"><a class="col_light" href="#"><i class="fa fa-pinterest"></i> </a></li>
+            <li class="d-inline-block"><a class="col_light" href="#"><i class="fa fa-youtube-play"></i> </a></li>
+         </ul>
+        </div>
+       </div>
+       <div class="col-md-10 col-lg-9">
+        <div class="top_1r text-end">
+           <ul class="mb-0 font_14">
+          <li class="d-inline-block col_light"><i class="fa fa-envelope-o me-1 col_yell"></i> Email:  info@gmail.com</li>
+          <li class="d-inline-block mx-3 col_light"><i class="fa fa-phone me-1 col_yell"></i> Call us: +(123) 456-7890</li>
+          <li class="d-inline-block"><a class="button rounded-0" href="{% url 'appointment' %}">BOOK APPOINTMENT <i class="fa fa-long-arrow-right ms-1"></i></a></li>
+         </ul>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
 
-<section id="header">
-<nav class="navbar navbar-expand-md navbar-light bg-white mx-auto shadow_box px-3" id="navbar_sticky">
-  <div class="container-fluid">
-    <a class="navbar-brand p-0  fw-bold" href="{% url 'home' %}"><i class="fa fa-home col_yell"></i> Future Home</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-	   <ul class="navbar-nav mb-0 nav_1">
+    <section id="header">
+    <nav class="navbar navbar-expand-md navbar-light bg-white mx-auto shadow_box px-3" id="navbar_sticky">
+      <div class="container-fluid">
+        <a class="navbar-brand p-0  fw-bold" href="{% url 'home' %}"><i class="fa fa-home col_yell"></i> Future Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+           <ul class="navbar-nav mb-0 nav_1">
 
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
-        </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+            </li>
 
-		<li class="nav-item">
-          <a class="nav-link" href="{% url 'about' %}">About </a>
-        </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'about' %}">About </a>
+            </li>
 
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'blog' %}">Blog </a>
-        </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'blog' %}">Blog </a>
+            </li>
 
-		<li class="nav-item">
-          <a class="nav-link" href="{% url 'team' %}">Team</a>
-        </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'team' %}">Team</a>
+            </li>
 
-		<li class="nav-item">
-          <a class="nav-link" href="{% url 'contact' %}">Contact </a>
-        </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'contact' %}">Contact </a>
+            </li>
 
-      </ul>
-       <ul class="navbar-nav mb-0 ms-auto">
-
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle dropdown_search nav_hide fs-6" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fa fa-search"></i>
-          </a>
-          <ul class="dropdown-menu drop_2 p-3" aria-labelledby="navbarDropdown">
-            <li>
-			  <div class="input-group">
-				<input type="text" class="form-control" placeholder="Search Here">
-				<span class="input-group-btn">
-					<button class="btn btn-primary bg_yell rounded-0 p-2 px-3 border-0" type="button">
-						<i class="fa fa-search"></i> </button>
-				</span>
-			  </div>
-			</li>
           </ul>
-        </li>
-       </ul>
-    </div>
-  </div>
-</nav>
-</section>
+           <ul class="navbar-nav mb-0 ms-auto">
+               <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle dropdown_search nav_hide fs-6" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user" aria-hidden="true"></i></a>
+                <ul class="dropdown-menu drop_2 p-3" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="{% url 'client_profile' %}">Profile</a></li>
+                  <li><a class="dropdown-item" href="{% url 'logout' %}">Log Out</a></li>
+                </ul>
+              </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle dropdown_search nav_hide fs-6" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-search"></i>
+              </a>
+              <ul class="dropdown-menu drop_2 p-3" aria-labelledby="navbarDropdown">
+                <li>
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search Here">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary bg_yell rounded-0 p-2 px-3 border-0" type="button">
+                            <i class="fa fa-search"></i> </button>
+                    </span>
+                  </div>
+                </li>
+              </ul>
+            </li>
+           </ul>
+        </div>
+      </div>
+    </nav>
+    </section>
+{% else %}
+    <section id="top" class="bg_dark  px-3">
+     <div class="container-fluid">
+      <div class="row top_1">
+       <div class="col-md-2 col-lg-3">
+        <div class="top_1l pt-3">
+         <ul class="mb-0 font_14">
+            <li class="d-inline-block me-3"><a class="col_light" href="#"><i class="fa fa-facebook"></i> </a></li>
+            <li class="d-inline-block me-3"><a class="col_light" href="#"><i class="fa fa-twitter"></i> </a></li>
+            <li class="d-inline-block me-3"><a class="col_light" href="#"><i class="fa fa-pinterest"></i> </a></li>
+            <li class="d-inline-block"><a class="col_light" href="#"><i class="fa fa-youtube-play"></i> </a></li>
+         </ul>
+        </div>
+       </div>
+       <div class="col-md-10 col-lg-9">
+        <div class="top_1r text-end">
+           <ul class="mb-0 font_14">
+          <li class="d-inline-block col_light"><i class="fa fa-envelope-o me-1 col_yell"></i> Email:  info@gmail.com</li>
+          <li class="d-inline-block mx-3 col_light"><i class="fa fa-phone me-1 col_yell"></i> Call us: +(123) 456-7890</li>
+          <li class="d-inline-block"><a class="button rounded-0" href="{% url 'appointment' %}">BOOK APPOINTMENT <i class="fa fa-long-arrow-right ms-1"></i></a></li>
+         </ul>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+
+    <section id="header">
+    <nav class="navbar navbar-expand-md navbar-light bg-white mx-auto shadow_box px-3" id="navbar_sticky">
+      <div class="container-fluid">
+        <a class="navbar-brand p-0  fw-bold" href="{% url 'home' %}"><i class="fa fa-home col_yell"></i> Future Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+           <ul class="navbar-nav mb-0 nav_1">
+
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'about' %}">About </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'blog' %}">Blog </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'team' %}">Team</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'contact' %}">Contact </a>
+            </li>
+
+          </ul>
+           <ul class="navbar-nav mb-0 ms-auto">
+               <li class="nav-item dropdown">
+                   <a class="nav-link" href="{% url 'user_login' %}">Login</a>
+               </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle dropdown_search nav_hide fs-6" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-search"></i>
+              </a>
+              <ul class="dropdown-menu drop_2 p-3" aria-labelledby="navbarDropdown">
+                <li>
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search Here">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary bg_yell rounded-0 p-2 px-3 border-0" type="button">
+                            <i class="fa fa-search"></i> </button>
+                    </span>
+                  </div>
+                </li>
+              </ul>
+            </li>
+           </ul>
+        </div>
+      </div>
+    </nav>
+    </section>
+{% endif %}

@@ -18,6 +18,9 @@
 			background-image: url(../static/img/45a.jpg);
 			background-position: center;
 		}
+		form button{
+			border: none;
+		}
 	</style>
 
 </head>
@@ -40,8 +43,8 @@
        <h1 class="font_60">Design Your Kitchen with the Experts</h1>
 	   <p class="text-light mt-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
 eiusmod tempor incididunt ut labore et dolore</p>
-      <h6 class="mb-0 mt-4"><a class="button" href="#">VISIT  SHOWROOM <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
-	  
+      <h6 class="mb-0 mt-4"><a class="button" href="{% url 'appointment' %}">Book Appointment <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
+
       </div>
     </div>
     <div class="carousel-item">
@@ -50,7 +53,7 @@ eiusmod tempor incididunt ut labore et dolore</p>
        <h1 class="font_60"> Tempor Incididunt ut Labore et Dolore</h1>
 	   <p class="text-light mt-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
 eiusmod tempor incididunt ut labore et dolore</p>
-      <h6 class="mb-0 mt-4"><a class="button" href="#">VISIT  SHOWROOM <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
+      <h6 class="mb-0 mt-4"><a class="button" href="{% url 'appointment' %}">Book Appointment <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
 	  
       </div>
     </div>
@@ -60,7 +63,7 @@ eiusmod tempor incididunt ut labore et dolore</p>
        <h1 class="font_60"> Enim ad Minim ven Iam quis Nostrud</h1>
 	   <p class="text-light mt-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
 eiusmod tempor incididunt ut labore et dolore</p>
-      <h6 class="mb-0 mt-4"><a class="button" href="#">VISIT  SHOWROOM <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
+      <h6 class="mb-0 mt-4"><a class="button" href="{% url 'appointment' %}">Book Appointment <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
 	  
       </div>
     </div>
@@ -94,7 +97,7 @@ eiusmod tempor incididunt ut labore et dolore</p>
 	  <h5 class="col_yell">ABOUT US</h5>
 	  <h1 class="mt-3 mb-4">Creative solutions <br> by professional <br>  designers</h1>
 	  <p>Your kitchen is an expression of who you are, and its design should match your lifestyle. Whether you have traditional tastes or desire a modern feel, we can design your dream kitchen to suit any purpose.</p>
-	  <h6 class="mb-0 mt-4"><a class="button_1" href="#">CONTINUE READING <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
+	  <h6 class="mb-0 mt-4"><a class="button_1" href="{% url 'about' %}">CONTINUE READING <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
 	 </div>
 	</div>
   </div>
@@ -264,7 +267,7 @@ eiusmod tempor incididunt ut labore et dolore</p>
 					<a href="#"><img src="static/img/26a.jpg" class="w-100" alt="abc"></a>
 				  </figure>
 			  </div>
-			<h4 class="mt-3"><a class="text-white" href="#">Kitchen project 04</a></h4>
+			<h4 class="mt-3"><a class="text-white" href="#">Project 04</a></h4>
 			<h6 class="col_light mb-0 text-uppercase font_14 mt-3">
 			<a class="col_light" href="#">Modern</a> <span class="mx-1">/</span>
 			<a class="col_light" href="#">Coastal</a> <span class="mx-1">/</span>
@@ -279,7 +282,7 @@ eiusmod tempor incididunt ut labore et dolore</p>
 					<a href="#"><img src="static/img/27a.jpg" class="w-100" alt="abc"></a>
 				  </figure>
 			  </div>
-			<h4 class="mt-3"><a class="text-white" href="#">Kitchen project 05</a></h4>
+			<h4 class="mt-3"><a class="text-white" href="#">project 05</a></h4>
 			<h6 class="col_light mb-0 text-uppercase font_14 mt-3">
 			<a class="col_light" href="#">Modern</a> <span class="mx-1">/</span>
 			<a class="col_light" href="#">Coastal</a> <span class="mx-1">/</span>
@@ -294,7 +297,7 @@ eiusmod tempor incididunt ut labore et dolore</p>
 					<a href="#"><img src="static/img/28a.jpg" class="w-100" alt="abc"></a>
 				  </figure>
 			  </div>
-			<h4 class="mt-3"><a class="text-white" href="#">Kitchen project 06</a></h4>
+			<h4 class="mt-3"><a class="text-white" href="#">project 06</a></h4>
 			<h6 class="col_light mb-0 text-uppercase font_14 mt-3">
 			<a class="col_light" href="#">Modern</a> <span class="mx-1">/</span>
 			<a class="col_light" href="#">Coastal</a> <span class="mx-1">/</span>
@@ -373,7 +376,7 @@ eiusmod tempor incididunt ut labore et dolore</p>
 			  </div>
 		</div>
 		<div class="promo_1r2 position-absolute text-center w-100 top-0">
-		  <span><a  class="col_yell d-inline-block" href="#"><i class="fa fa-play-circle"></i></a></span>
+		  <span><a  class="col_yell d-inline-block" href="https://www.youtube.com/embed/rX-BgElvD24?si=4bjdS8qa3KN7ty64"><i class="fa fa-play-circle"></i></a></span>
 		</div>
 	  </div>
 	 </div>
@@ -496,50 +499,53 @@ eiusmod tempor incididunt ut labore et dolore</p>
 </section>
 
 <section id="quote" class="p_3 px-4 bg-light">
- <div class="container-fluid">
-   <div class="quote_1 row">
-    <div class="col-md-6">
-	 <div class="quote_1l position-relative">
-	  <div class="quote_1l1">
-	    <div class="grid clearfix">
-				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="static/img/37a.jpg" class="w-100" alt="abc"></a>
-				  </figure>
-			  </div>
-	  </div>
-	  <div class="quote_1l2 position-absolute w-100 text-end pe-5">
-	     <h1 class="bg_yell text-white rounded-circle d-inline-block text-center">22 <br> <span class="font_14 d-inline-block">YEARS <br>  GURANTEE</span></h1>
-	  </div>
-	 </div>
+	<div class="container-fluid">
+		<div class="quote_1 row">
+			<div class="col-md-6">
+				<div class="quote_1l position-relative">
+					<div class="quote_1l1">
+						<div class="grid clearfix">
+							<figure class="effect-jazz mb-0">
+								<a href="#"><img src="static/img/37a.jpg" class="w-100" alt="abc"></a>
+							</figure>
+						</div>
+					</div>
+					<div class="quote_1l2 position-absolute w-100 text-end pe-5">
+						<h1 class="bg_yell text-white rounded-circle d-inline-block text-center">22 <br> <span class="font_14 d-inline-block">YEARS <br>  GURANTEE</span></h1>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<form method="post" action="{% url 'contact' %}" id="contactForm">
+					{% csrf_token %}
+					<div class="quote_1r">
+						<h6 class="col_yell fw-bold">GET FREE QUOTE</h6>
+						<h1 class="mt-3">Schedule a free designer <br> consultation</h1>
+						<div class="quote_1ri row">
+							<div class="col-md-6">
+								<div class="quote_1ril">
+									<input placeholder="Full Name *" class="form-control mt-3" id="name" name="name" type="text">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="quote_1ril">
+									<input placeholder="Email Address *" class="form-control mt-3" id="email" name="email" type="email">
+								</div>
+							</div>
+						</div>
+						<div class="quote_1ri row">
+							<div class="col-md-12">
+								<div class="quote_1ril">
+									<textarea placeholder="Your Message" id="message" name="message" class="form-control mt-3 form_text"></textarea>
+								</div>
+							</div>
+						</div>
+						<button type="button" class="mb-0 mt-4" onclick="submitForm()"><a class="button_1">SUBMIT <i class="fa fa-long-arrow-right ms-1"></i></a></button>
+					</div>
+				</form>
+			</div>
+		</div>
 	</div>
-	<div class="col-md-6">
-	 <div class="quote_1r">
-	   <h6 class="col_yell fw-bold">GET FREE QUOTE</h6>
-	  <h1 class="mt-3">Schedule a free designer <br> consultation</h1>
-	  <div class="quote_1ri row">
-	   <div class="col-md-6">
-	    <div class="quote_1ril">
-		 <input placeholder="Full Name *" class="form-control mt-3" type="text">
-		</div>
-	   </div>
-	   <div class="col-md-6">
-	    <div class="quote_1ril">
-		 <input placeholder="Email Address *" class="form-control mt-3" type="text">
-		</div>
-	   </div>
-	  </div>
-	  <div class="quote_1ri row">
-	   <div class="col-md-12">
-	    <div class="quote_1ril">
-		 <textarea placeholder="Message Details" class="form-control mt-3 form_text"></textarea>
-		 <h6 class="mb-0 mt-4"><a class="button_1" href="#">SUBMIT <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
-		</div>
-	   </div>
-	  </div>
-	 </div>
-	</div>
-   </div> 
- </div>
 </section>
 
 <section id="client" class="p_3 px-4 carousel_p">
@@ -679,58 +685,66 @@ eiusmod tempor incididunt ut labore et dolore</p>
 </section>
 
 <section id="blog" class="p_3 px-4">
- <div class="container-fluid">
-    <div class="project_1 row mb-4 text-center">
-	 <div class="col-md-12">
-	  <h6 class="col_yell fw-bold">OUR BLOG</h6>
-	  <h1 class="mt-3 mb-0">Follow the latest news</h1>
-	 </div>
-	</div>
-    <div class="row blog_1">
-     <div class="col-md-4">
-		 <div class="blog_1m">
-            <div class="grid clearfix">
-				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="static/img/25a.jpg" class="w-100" alt="abc"></a>
-				  </figure>
-			  </div>
-			   <h6 class="font_14 text-muted mt-3"><i class="fa fa-user col_yell me-1"></i> By Admin
- <i class="fa fa-comments col_yell me-1 ms-2"></i> 3 Comments  </h6>
-		    <h4 class="mt-3"><a href="#">Cras accumsan nulla nec lacus ultricies placerat.</a></h4>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-			<h6 class="mb-0 fw-bold font_14"><a class="col_yell" href="#">READ MORE <i class="fa fa-long-arrow-right ms-1"></i></a></h6>		   
-		 </div>
+	<div class="container-fluid">
+		<div class="project_1 row mb-4 text-center">
+			<div class="col-md-12">
+				<h6 class="col_yell fw-bold">OUR BLOG</h6>
+				<h1 class="mt-3 mb-0">Follow the latest news</h1>
+			</div>
 		</div>
-		<div class="col-md-4">
-		 <div class="blog_1m">
-            <div class="grid clearfix">
-				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="static/img/26a.jpg" class="w-100" alt="abc"></a>
-				  </figure>
-			  </div>
-			   <h6 class="font_14 text-muted mt-3"><i class="fa fa-user col_yell me-1"></i> By Admin
- <i class="fa fa-comments col_yell me-1 ms-2"></i> 3 Comments  </h6>
-		    <h4 class="mt-3"><a href="#">The Pros and Cons of Large Format Porcelain</a></h4>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-			<h6 class="mb-0 fw-bold font_14"><a class="col_yell" href="#">READ MORE <i class="fa fa-long-arrow-right ms-1"></i></a></h6>		   
-		 </div>
-		</div>
-		<div class="col-md-4">
-		 <div class="blog_1m">
-            <div class="grid clearfix">
-				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="static/img/27a.jpg" class="w-100" alt="abc"></a>
-				  </figure>
-			  </div>
-			   <h6 class="font_14 text-muted mt-3"><i class="fa fa-user col_yell me-1"></i> By Admin
- <i class="fa fa-comments col_yell me-1 ms-2"></i> 3 Comments  </h6>
-		    <h4 class="mt-3"><a href="#">A Stunning Classic Shaker Kitchen In Halesowen</a></h4>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-			<h6 class="mb-0 fw-bold font_14"><a class="col_yell" href="#">READ MORE <i class="fa fa-long-arrow-right ms-1"></i></a></h6>		   
-		 </div>
-		</div>
-   </div>
- </div>
+		<div class="row blog_1">
+			{% for i in blog %}
+			{% if forloop.counter <= 3 %}
+			{% for j in author %}
+			{% if i.user_id == j.id %}
+
+			<div class="col-md-4">
+				<div class="blog_1m">
+					<div class="grid clearfix">
+						<figure class="effect-jazz mb-0">
+							<a href="{% url 'Blog_Detail' i.id %}"><img src="{{ i.image.url }}" class="w-100" alt="abc"></a>
+						</figure>
+					</div>
+					<h6 class="font_14 text-muted mt-3"><i class="fa fa-user col_yell me-1"></i>{{ j.username }}</h6>
+					<h4 class="mt-3"><a href="#">{{ i.title }}</a></h4>
+					<p>{{ i.description }}</p>
+					<h6 class="mb-0 fw-bold font_14"><a class="col_yell" href="{% url 'Blog_Detail' i.id %}">READ MORE <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
+				</div>
+			</div>
+			{% endif %}
+			{% endfor %}
+			{% endif %}
+			{% endfor %}
+<!--			<div class="col-md-4">-->
+<!--				<div class="blog_1m">-->
+<!--					<div class="grid clearfix">-->
+<!--						<figure class="effect-jazz mb-0">-->
+<!--							<a href="#"><img src="static/img/26a.jpg" class="w-100" alt="abc"></a>-->
+<!--						</figure>-->
+<!--					</div>-->
+<!--					<h6 class="font_14 text-muted mt-3"><i class="fa fa-user col_yell me-1"></i> By Admin-->
+<!--						<i class="fa fa-comments col_yell me-1 ms-2"></i> 3 Comments  </h6>-->
+<!--					<h4 class="mt-3"><a href="#">The Pros and Cons of Large Format Porcelain</a></h4>-->
+<!--					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>-->
+<!--					<h6 class="mb-0 fw-bold font_14"><a class="col_yell" href="#">READ MORE <i class="fa fa-long-arrow-right ms-1"></i></a></h6>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		<div class="col-md-4">-->
+<!--		 <div class="blog_1m">-->
+<!--            <div class="grid clearfix">-->
+<!--				  <figure class="effect-jazz mb-0">-->
+<!--					<a href="#"><img src="static/img/27a.jpg" class="w-100" alt="abc"></a>-->
+<!--				  </figure>-->
+<!--			  </div>-->
+<!--			   <h6 class="font_14 text-muted mt-3"><i class="fa fa-user col_yell me-1"></i> By Admin-->
+<!-- <i class="fa fa-comments col_yell me-1 ms-2"></i> 3 Comments  </h6>-->
+<!--		    <h4 class="mt-3"><a href="#">A Stunning Classic Shaker Kitchen In Halesowen</a></h4>-->
+<!--			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>-->
+<!--			<h6 class="mb-0 fw-bold font_14"><a class="col_yell" href="#">READ MORE <i class="fa fa-long-arrow-right ms-1"></i></a></h6>		   -->
+<!--		 </div>-->
+<!--		</div>-->
+   		</div>
+ 	</div>
 </section>
 
 <section id="chat">
@@ -740,7 +754,7 @@ eiusmod tempor incididunt ut labore et dolore</p>
 	 <div class="col-md-12">
 	  <h6 class="col_yell fw-bold">YOU DREAM IT, WE DESIGN IT</h6>
 	  <h1 class="text-white mt-3">We can build you the kitchen <br> of your dreams</h1>
-	  <h6 class="mb-0 mt-4"><a class="button" href="#">SCHEDULE A CHAT <i class="fa fa-calendar ms-1"></i></a></h6>
+	  <h6 class="mb-0 mt-4"><a class="button" href="{% url 'appointment' %}">SCHEDULE A CHAT <i class="fa fa-calendar ms-1"></i></a></h6>
 	 </div>
 	</div>
  </div>
@@ -765,6 +779,19 @@ eiusmod tempor incididunt ut labore et dolore</p>
 		navbar_sticky.classList.remove("sticky");
 		document.body.style.paddingTop = '0'
 	  }
+	}
+</script>
+<script>
+    function clearForm() {
+    document.getElementById("name").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("message").value = "";
+	}
+
+	function submitForm() {
+		const form = document.getElementById("contactForm");
+		form.submit();
+		clearForm();
 	}
 </script>
 

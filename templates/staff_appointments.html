@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fruitkha | Admin Dashboard Panel</title>
+    <title>Fruitkha | Staff Dashboard Panel | Appointments</title>
     <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
     <!----======== CSS ======== -->
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
@@ -13,6 +13,11 @@
     <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <style>
+        nav .menu-items {
+            justify-content: normal;
+            margin-top: 0;
+
+        }
         .profile{
             text-align: center;
         }
@@ -64,13 +69,9 @@
         }
 
         ul li {
-            padding: 10px;
             background-color: #f1f1f1;
             margin-bottom: 5px;
             border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* Align items in a row */
         }
 
         ul li:nth-child(odd) {
@@ -102,52 +103,11 @@
         }
         .action-buttons a{
             margin-top: 0;
-        }
+        }z
     </style>
 </head>
 <body>
-    {% if user.is_superuser == 1 %}
-    <nav>
-        <div class="logo-name">
-            <div class="logo-image">
-                <!-- <img src="img/favicon.png" alt=""> -->
-            </div>
-            <span class="logo_name"><img src="{% static 'images/logo.png' %}" alt=""></span>
-        </div>
-        <div class="menu-items">
-            <ul class="nav-links">
-                <li><a href="{% url 'AdminDashboard' %}">
-                    <i class="uil uil-estate"></i>
-                    <span class="link-name">Dashboard</span>
-                </a></li>
-                <li><a href="#">
-                    <i class="uil uil-bell"></i>
-                    <span class="link-name">Notification</i><mark class="big swing">{{ unread_count }}</mark></span>
-                </a></li>
-                <li><a href="{% url 'admin_blogs' %}">
-                    <i class="uil uil-user-plus"></i>
-                    <span class="link-name">Blogs</span>
-                </a></li>
-                <li><a href="{% url 'staff_list' %}">
-                    <i class="uil uil-users-alt"></i>
-                    <span class="link-name">Staff List</span>
-                </a></li>
-                <li><a href="#">
-                    <i class="uil uil-phone"></i>
-                    <span class="link-name">Edit Staff</span>
-                </a></li>
-            </ul>
 
-            <ul class="logout-mode">
-                <li><a href="{% url 'logout' %}">
-                    <i class="uil uil-signout"></i>
-                    <span class="link-name">Logout</span>
-                </a></li>
-
-            </ul>
-        </div>
-    </nav>
-    {% else %}
     <nav>
         <div class="profile">
             {% for i in staff %}
@@ -174,7 +134,7 @@
                     <i class="uil uil-users-alt"></i>
                     <span class="link-name">Staff List</span>
                 </a></li>
-                <li style="padding: 0"><a href="{% url 'appointment_list' %}">
+                <li style="padding: 0"><a href="{% url 'staff_appointments' %}">
                     <i class="uil uil-phone"></i>
                     <span class="link-name">Appointment</span>
                 </a></li>
@@ -189,12 +149,9 @@
             </ul>
         </div>
     </nav>
-    {% endif %}
 
     <section class="dashboard">
         <div class="top">
-            <i class="uil uil-bars sidebar-toggle"></i>
-
             <div class="search-box">
                 <i class="uil uil-search"></i>
                 <form method="get">
@@ -208,7 +165,7 @@
         <div class="activity">
             <div class="title">
                 <i class="uil uil-users-alt"></i>
-                <span class="text">appointments</span>
+                <span class="text">Appointments</span>
             </div>
             <div class="activity-data">
 
@@ -217,33 +174,39 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Email</th>
                                 <th>Phone Number</th>
-                                <th>Department</th>
+                                <th>Address</th>
+                                <th>Date</th>
+                                <th>Time</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         {% for i in app %}
+                        {% with forloop.counter as counter %}
+                        {% for j in client %}
+                        {% if j.id == i.client_id %}
 
                         <tbody>
                                 <tr>
-                                    <td>{{ forloop.counter }}</td>
-                                    <td>{{ i.email }}</td>
-                                    <td>{{ i.phone }}</td>
-                                    <td>{{ i.department }}</td>
+                                    <td>{{ counter }}</td>
+                                    <td>{{ j.phone_number }}</td>
+                                    <td>{{ i.address }}</td>
+                                    <td>{{ i.date }}</td>
+                                    <td>{{ i.time }}</td>
                                     <td class="action-buttons">
-                                        <a href="{% url 'appointment_view' i.id %}">View</a>
-                                        <a href="/delete_staff/{{ i.id }}"><i class="uil uil-trash"></i></a>
+                                        <a href="{% url 'staff_app_view' j.id %}">View</a>
                                     </td>
                                 </tr>
                         </tbody>
+                        {% endif %}
+                        {% endfor %}
+                        {% endwith %}
                         {% endfor %}
                     </table>
                 {% else %}
                    <h2> No Appointments </h2>
                 {% endif %}
             </div>
-            <a href="{% url 'create_admin_blog' %}">Add Blog</a>
         </div>
     </section>
 </body>

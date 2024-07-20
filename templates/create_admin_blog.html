@@ -48,7 +48,8 @@
             font-size: 24px;
         }
         form{
-            width: 100%;
+            width: 90%;
+            margin: 0 auto;
         }
         form div {
             display: flex;
@@ -58,7 +59,7 @@
             font-weight: bold;
             margin-bottom: 5px;
         }
-        form input, form select {
+        form input, form select, textarea {
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
@@ -101,7 +102,6 @@
     </style>
 </head>
 <body>
-    {% if user.is_superuser == 1 %}
     <nav>
         <div class="logo-name">
             <div class="logo-image">
@@ -142,49 +142,6 @@
             </ul>
         </div>
     </nav>
-    {% else %}
-    <nav>
-        <div class="profile">
-            {% for i in staff %}
-            <img src="{{ i.image.url }}" alt="Profile Picture">
-            <h2>{{ user.name }}</h2>
-            <p>{{ i.designation }}</p>
-            {% endfor %}
-        </div>
-        <div class="menu-items" style="justify-content: normal; margin-top:0;">
-            <ul class="nav-links">
-                <li style="padding: 0;"><a href="{% url 'staff_dashboard' %}">
-                    <i class="uil uil-estate"></i>
-                    <span class="link-name">Dashboard</span>
-                </a></li>
-                <li style="padding: 0"><a href="#">
-                    <i class="uil uil-bell"></i>
-                    <span class="link-name">Notification</i><mark class="big swing">{{ unread_count }}</mark></span>
-                </a></li>
-                <li style="padding: 0"><a href="{% url 'admin_blogs' %}">
-                    <i class="uil uil-user-plus"></i>
-                    <span class="link-name">Blogs</span>
-                </a></li>
-                <li style="padding: 0"><a href="{% url 'staff_list' %}">
-                    <i class="uil uil-users-alt"></i>
-                    <span class="link-name">Staff List</span>
-                </a></li>
-                <li style="padding: 0"><a href="{% url 'appointment_list' %}">
-                    <i class="uil uil-phone"></i>
-                    <span class="link-name">Appointment</span>
-                </a></li>
-            </ul>
-
-            <ul class="logout-mode">
-                <li style="padding: 0"><a href="{% url 'logout' %}">
-                    <i class="uil uil-signout"></i>
-                    <span class="link-name">Logout</span>
-                </a></li>
-
-            </ul>
-        </div>
-    </nav>
-    {% endif %}
     <section class="dashboard">
         <div class="top">
             <i class="uil uil-bars sidebar-toggle"></i>

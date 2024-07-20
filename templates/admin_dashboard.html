@@ -93,7 +93,7 @@
                     <i class="uil uil-estate"></i>
                     <span class="link-name">Dashboard</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="{% url 'admin_notification' %}">
                     <i class="uil uil-bell"></i>
                     <span class="link-name">Notification</i><mark class="big swing">{{ unread_count }}</mark></span>
                 </a></li>
@@ -208,6 +208,27 @@
         </div>
     </section>
 
-    <script src="{% static 'js/admin.js' %}"></script>
+    <script>
+        const body = document.querySelector("body"),
+      modeToggle = body.querySelector(".mode-toggle");
+      sidebar = body.querySelector("nav");
+      sidebarToggle = body.querySelector(".sidebar-toggle");
+
+
+let getStatus = localStorage.getItem("status");
+if(getStatus && getStatus ==="close"){
+    sidebar.classList.toggle("close");
+}
+
+
+sidebarToggle.addEventListener("click", () => {
+    sidebar.classList.toggle("close");
+    if(sidebar.classList.contains("close")){
+        localStorage.setItem("status", "close");
+    }else{
+        localStorage.setItem("status", "open");
+    }
+})
+    </script>
 </body>
 </html>

@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Furniture</title>
+	<title>Future Home | Contact</title>
 	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" >
 	<link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" >
 	<link href="{% static 'css/global.css' %}" rel="stylesheet">
@@ -16,6 +16,9 @@
 	<style>
 		.center_cont {
 			background-image: url(../static/img/contact1.jpg);
+		}
+		form button{
+			border: none;
 		}
 	</style>
 
@@ -30,7 +33,7 @@
   <div class="container-fluid">
     <div class="center_o1 row text-center">
 	 <div class="col-md-12">
-	   <h6 class="col_yell fw-bold"><a class="text-white" href="#">HOME PAGE</a> <span class="mx-2 text-muted">/</span> CONTACT</h6>
+	   <h6 class="col_yell fw-bold"><a class="text-white" href="{% url 'home' %}">HOME PAGE</a> <span class="mx-2 text-muted">/</span> CONTACT</h6>
 	   <h1 class="mb-0 font_60 text-white mt-3">Contact</h1>
 	 </div>
 	</div>
@@ -100,52 +103,57 @@ Ata, Semper 12345</h6>
 </section>
 
 <section id="quote" class="p_3 px-4 bg-light">
- <div class="container-fluid">
-   <div class="quote_1 row">
-    <div class="col-md-6">
-	 <div class="quote_1l">
-	   <div class="grid clearfix">
-				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="../static/img/37a.jpg" class="w-100" alt="abc"></a>
-				  </figure>
-			  </div>
-	 </div>
-	</div>
-	<div class="col-md-6">
-	 <div class="quote_1r p-4">
-	   <h4>We would love to hear from you.</h4>
-	  <p>Your email address will not be published. Required fields are marked *</p>
-	  <div class="quote_1ri row">
-	   <div class="col-md-6">
-	    <div class="quote_1ril">
-		 <input placeholder="Full Name *" class="form-control mt-3" type="text">
+	<div class="container-fluid">
+		<div class="quote_1 row">
+			<div class="col-md-6">
+				<div class="quote_1l">
+					<div class="grid clearfix">
+						<figure class="effect-jazz mb-0">
+							<a href="#"><img src="../static/img/37a.jpg" class="w-100" alt="abc"></a>
+				  		</figure>
+			  		</div>
+	 			</div>
+			</div>
+			<div class="col-md-6">
+				<form method="post" action="{% url 'contact' %}" id="contactForm">
+					{% csrf_token %}
+					<div class="quote_1r p-4">
+						<h4>We would love to hear from you.</h4>
+						<p>Your email address will not be published. Required fields are marked *</p>
+
+						<div class="quote_1ri row">
+							<div class="col-md-6">
+								<div class="quote_1ril">
+									<input placeholder="Full Name *" class="form-control mt-3" id="name" name="name" type="text">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="quote_1ril">
+									<input placeholder="Email Address *" class="form-control mt-3" id="email" name="email" type="email">
+								</div>
+							</div>
+						</div>
+						<div class="quote_1ri row">
+							<div class="col-md-12">
+								<div class="quote_1ril">
+									<input placeholder="Your Phone" name="phone" id="phone" class="form-control mt-3" type="text">
+								</div>
+							</div>
+						</div>
+						<div class="quote_1ri row">
+							<div class="col-md-12">
+								<div class="quote_1ril">
+									<textarea placeholder="Your Message" id="message" name="message" class="form-control mt-3 form_text"></textarea>
+
+								</div>
+							</div>
+						</div>
+						<button type="button" class="mb-0 mt-4" onclick="submitForm()"><a class="button_1">SUBMIT <i class="fa fa-long-arrow-right ms-1"></i></a></button>
+					</div>
+				</form>
+			</div>
 		</div>
-	   </div>
-	   <div class="col-md-6">
-	    <div class="quote_1ril">
-		 <input placeholder="Email Address *" class="form-control mt-3" type="text">
-		</div>
-	   </div>
-	  </div>
-	  <div class="quote_1ri row">
-	   <div class="col-md-12">
-	    <div class="quote_1ril">
-		 <input placeholder="Your Phone" class="form-control mt-3" type="text">
-		</div>
-	   </div>
-	  </div>
-	  <div class="quote_1ri row">
-	   <div class="col-md-12">
-	    <div class="quote_1ril">
-		 <textarea placeholder="Your Message" class="form-control mt-3 form_text"></textarea>
-		 <h6 class="mb-0 mt-4"><a class="button_1" href="#">SUBMIT <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
-		</div>
-	   </div>
-	  </div>
-	 </div>
-	</div>
-   </div> 
- </div>
+   	</div>
 </section>
 
 
@@ -181,6 +189,20 @@ Ata, Semper 12345</h6>
 	  }
 	}
 </script>
+<script>
+    function clearForm() {
+    document.getElementById("name").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("phone").value = "";
+    document.getElementById("message").value = "";
+	}
+
+	function submitForm() {
+		const form = document.getElementById("contactForm");
+		form.submit();
+		clearForm();
+	}
+	</script>
 
 </body>
 

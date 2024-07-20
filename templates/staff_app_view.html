@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruitkha | Staff Dashboard Panel | Appointments</title>
+    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <style>
+        nav .menu-items {
+            justify-content: normal;
+            margin-top: 0;
+
+        }
+        .profile{
+            text-align: center;
+        }
+        .profile img{
+            width: 68%;
+            height: 145px;
+            border-radius: 50%;
+            object-fit: fill;
+        }
+        .activity {
+            padding-top: 80px;
+        }
+        .activity-data {
+            padding-top: 20px;
+        }
+        .title{
+            display: flex;
+            flex-direction: row;
+            font-size: 20px;
+            font-weight: bolder;
+            gap: 10px;
+        }
+        .dashboard .title i {
+            position: relative;
+            height: 35px;
+            width: 35px;
+            background-color: var(--primary-color);
+            border-radius: 6px;
+            color: var(--title-icon-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        a {
+            display: inline-block;
+            margin-top: 10px;
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            background-color: #f1f1f1;
+            margin-bottom: 5px;
+            border-radius: 4px;
+        }
+
+        ul li:nth-child(odd) {
+            background-color: #e9e9e9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+        th:last-child{
+            text-align: center;
+        }
+
+        .action-buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 5px;
+            justify-content: space-evenly;
+        }
+        .action-buttons a{
+            text-decoration: none;
+
+        }
+        .appointment-info {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+
+        table {
+            width: 100%;
+            border: 1px solid #ddd;
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            width: 30%;
+        }
+
+        td {
+            width: 70%;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .accept{
+            padding: 10px 30px;
+            background-color: green;
+            color: white;
+            border-radius: 5px;
+        }
+        .reject{
+            padding: 10px 30px;
+            background-color: red;
+            color: white;
+            border-radius: 5px;
+        }
+        .reject:hover{
+            background-color: #e50101;
+        }
+        .accept:hover{
+            background-color: #00dc00;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="profile">
+            {% for i in staff %}
+            <img src="{{ i.image.url }}" alt="Profile Picture">
+            <h2>{{ user.name }}</h2>
+            <p>{{ i.designation }}</p>
+            {% endfor %}
+        </div>
+        <div class="menu-items" style="justify-content: normal; margin-top:0;">
+            <ul class="nav-links">
+                <li style="padding: 0;"><a href="{% url 'staff_dashboard' %}">
+                    <i class="uil uil-estate"></i>
+                    <span class="link-name">Dashboard</span>
+                </a></li>
+                <li style="padding: 0"><a href="#">
+                    <i class="uil uil-bell"></i>
+                    <span class="link-name">Notification</i><mark class="big swing">{{ unread_count }}</mark></span>
+                </a></li>
+                <li style="padding: 0"><a href="{% url 'admin_blogs' %}">
+                    <i class="uil uil-user-plus"></i>
+                    <span class="link-name">Blogs</span>
+                </a></li>
+                <li style="padding: 0"><a href="{% url 'staff_list' %}">
+                    <i class="uil uil-users-alt"></i>
+                    <span class="link-name">Staff List</span>
+                </a></li>
+                <li style="padding: 0"><a href="{% url 'staff_appointments' %}">
+                    <i class="uil uil-phone"></i>
+                    <span class="link-name">Appointment</span>
+                </a></li>
+            </ul>
+
+            <ul class="logout-mode">
+                <li style="padding: 0"><a href="{% url 'logout' %}">
+                    <i class="uil uil-signout"></i>
+                    <span class="link-name">Logout</span>
+                </a></li>
+
+            </ul>
+        </div>
+    </nav>
+    <section class="dashboard">
+
+
+        <div class="container">
+            {% for i in app %}
+            {% for j in client %}
+            {% if i.client_id == j.id %}
+            <div class="title">
+                <i class="uil uil-phone"></i>
+                <span>Appointment Details</span>
+            </div>
+
+            <div class="appointment-info" style="padding-top: 50px;">
+                <table>
+                    <tr>
+                        <th>Name:</th>
+                        <td>{{ j.name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email:</th>
+                        <td>{{ j.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>Phone Number:</th>
+                        <td>{{ j.phone_number }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date:</th>
+                        <td>{{ i.date }}</td>
+                    </tr>
+                    <tr>
+                        <th>Time:</th>
+                        <td>{{ i.time }}</td>
+                    </tr>
+                    <tr>
+                        <th>Department:</th>
+                        <td>{{ i.department }}</td>
+                    </tr>
+                    <tr>
+                        <th>Address:</th>
+                        <td>{{ i.address }}</td>
+                    </tr>
+                    <tr>
+                        <th>Description:</th>
+                        <td>{{ i.description }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="action-buttons">
+                <a href="{% url 'staff_reject_appointment' i.client_id %}" class="reject">Reject</a>
+                <a href="#" class="accept">Accept</a>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+        </div>
+
+    </section>
+</body>
+</html>

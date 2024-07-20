@@ -6,13 +6,19 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponse
+from datetime import datetime
+from django.utils import timezone
+from django.core.mail import send_mail
+from django.core.paginator import Paginator
 
 
 # Create your views here.
 
 
 def Home(request):
-    return render(request, 'index.html')
+    author = User.objects.all()
+    blog = Blog.objects.all()
+    return render(request, 'index.html', locals())
 
 
 def About(request):
@@ -20,16 +26,68 @@ def About(request):
 
 
 def Blog_view(request):
-    blog = Blog.objects.all()
+    author = User.objects.all()
+    blog_list = Blog.objects.all()
+
+    # Pagination setup
+    paginator = Paginator(blog_list, 5)  # Show 5 blogs per page.
+    page_number = request.GET.get('page')
+    blog = paginator.get_page(page_number)
     return render(request, 'blog.html', locals())
 
 
 def Blog_Detail(request, id):
     blog = Blog.objects.filter(id=id)
+    author = User.objects.all()
+    blog_list = Blog.objects.order_by('-date')[:3]
+    single_blog = get_object_or_404(Blog, id=id)
+    # Fetch related blog posts (randomly)
+    related_blog = Blog.objects.exclude(id=single_blog.id).order_by('?')[:2]
+
+    # Fetch previous and next blog posts
+    prev_blog = Blog.objects.filter(date__lt=single_blog.date).order_by('-date').first()
+    next_blog = Blog.objects.filter(date__gt=single_blog.date).order_by('date').first()
+
+    # Handle search functionality
+    query = request.GET.get('q', '')
+    if query:
+        search_results = Blog.objects.filter(title__icontains=query) | Blog.objects.filter(description__icontains=query)
+    else:
+        search_results = Blog.objects.none()
     return render(request, 'blog_detail.html', locals())
 
 
-def Contact(request):
+
+def contact(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        message = request.POST.get('message')
+
+        contact_message = Contact.objects.create(
+            name=name,
+            email=email,
+            phone=phone,
+            message=message,
+            datetime=timezone.now()
+        )
+
+        # Notify the admin
+        admin = User.objects.get(id=1)
+        admin_message = "You have a new contact message from {} ({}):\n message: {}".format(
+            contact_message.name,
+            contact_message.email,
+            contact_message.message
+        )
+        Notification.objects.create(
+            user=admin,
+            read=False,
+            message=admin_message,
+            datetime=timezone.now()
+        )
+
+        return HttpResponse("<h1>Thanks for contacting us</h1>")
     return render(request, 'contact.html')
 
 
@@ -39,16 +97,7 @@ def Team(request):
     return render(request, 'team.html', locals())
 
 
-def Team_Detail(request):
-    return render(request, 'team_detail.html')
-
-
-def user_login(request):
-    return render(request, 'login.html')
-
-
 def appointment(request):
-
     if request.method == 'POST':
         name = request.POST.get('name')
         email = request.POST.get('email')
@@ -57,14 +106,35 @@ def appointment(request):
         time = request.POST.get('time')
         department = request.POST.get('department')
         description = request.POST.get('description')
+        address = request.POST.get('address')
+        password = request.POST.get('phone')
         print(time)
         print(date)
 
-        details = Appointment.objects.create(name=name,
-                                             email=email,
-                                             phone=phone,
+        # Check if a user with this email already exists
+        user_exists = User.objects.filter(email=email).exists()
+
+        if user_exists:
+            # If the user exists, retrieve the existing user
+            client = User.objects.get(email=email)
+        else:
+            # If the user does not exist, create a new user
+            client = User.objects.create(
+                is_superuser=0,
+                is_staff=0,
+                username=email,
+                email=email,
+                name=name,
+                phone_number=phone,
+                user_type=3
+            )
+            client.set_password(password)
+            client.save()
+
+        details = Appointment.objects.create(client=client,
                                              date=date,
                                              time=time,
+                                             address=address,
                                              department=department,
                                              description=description)
         details.save()
@@ -72,6 +142,10 @@ def appointment(request):
         return HttpResponse("<h1>Appointment booked successfully. Our team will reach you shortly </h1>")
 
     return render(request, 'appointment.html')
+
+
+def user_login(request):
+    return render(request, 'login.html')
 
 
 def UserLoginPage(request):
@@ -91,7 +165,7 @@ def UserLoginPage(request):
                     login(request, user)
                     return redirect(staff_dashboard)
             else:
-                print('not admin/staff')
+                print('client')
                 return redirect(Home)
         else:
             print('authentication failed')
@@ -101,10 +175,23 @@ def UserLoginPage(request):
         return redirect(Home)
 
 
+
 def Logout(request):
     logout(request)
     return redirect(Home)
 
+
+def subscribe(request):
+    subscription = Subscription.objects.all()
+    if request.method == "POST":
+        email = request.POST.get('email')
+        if email:
+            subscription, created = Subscription.objects.get_or_create(email=email)
+            if created:
+                return HttpResponse("<h1>Thanks for subscribing!</h1>")
+            else:
+                return HttpResponse("<h1>You are already subscribed.</h1>")
+    return redirect(Home)
 
 
 
@@ -112,6 +199,41 @@ def Logout(request):
 
 def AdminDashboard(request):
     return render(request, 'admin_dashboard.html')
+
+def admin_notification(request):
+    notifications = Notification.objects.filter(user=request.user.id).order_by('-datetime')
+
+    # Get the current time
+    current_time = datetime.now()
+
+    # Calculate time ago for each notification
+    for i in notifications:
+        current_time = datetime.now()
+        time_difference = current_time - i.datetime
+        total_seconds = int(time_difference.total_seconds())
+
+        if total_seconds < 60:
+            i.time_ago = f"{total_seconds} seconds ago"
+        elif total_seconds < 3600:
+            i.time_ago = f"{total_seconds // 60} minutes ago"
+        elif total_seconds < 86400:  # Less than 24 hours
+            i.time_ago = f"{total_seconds // 3600} hours ago"
+        elif total_seconds < 172800:  # Less than 48 hours (1 day)
+            i.time_ago = "1 day ago"
+        elif total_seconds < 604800:  # Less than a week
+            i.time_ago = f"{total_seconds // 86400} days ago"
+        elif total_seconds < 1209600:  # Less than 2 weeks (1 week)
+            i.time_ago = "1 week ago"
+        else:
+            weeks = total_seconds // 604800
+            i.time_ago = f"{weeks} weeks ago"
+
+    # read true
+
+    for i in notifications:
+        i.read = True
+        i.save()
+    return render(request, 'admin_notification.html', locals())
 
 def add_staff(request):
     if request.method == 'POST':
@@ -216,10 +338,8 @@ def delete_staff(request, staff_id):
 
 def create_admin_blog(request):
     user = User.objects.get(id=request.user.id)
-    staff = Staff.objects.filter(staff_id=user)
     if request.method == 'POST':
         title = request.POST.get('title')
-        author = request.POST.get('author')
         description = request.POST.get('description')
         detail = request.POST.get('detail')
         image = request.FILES.get('image')
@@ -229,13 +349,13 @@ def create_admin_blog(request):
 
         blog = Blog.objects.create(
             title=title,
-            author=author,
             description=description,
             detail=detail,
             image=image,
             sub_title=sub_title,
             image1=image1,
-            exp=exp
+            exp=exp,
+            user=user
         )
         blog.save()
         return redirect(admin_blogs)
@@ -252,11 +372,9 @@ def admin_blogs(request):
 
 def edit_admin_blog(request, id):
     user = User.objects.get(id=request.user.id)
-    staff = Staff.objects.filter(staff_id=user)
     item = Blog.objects.filter(id=id)
     if request.method == 'POST':
         title = request.POST.get('title')
-        author = request.POST.get('author')
         description = request.POST.get('description')
         detail = request.POST.get('detail')
         image = request.FILES.get('image')
@@ -266,10 +384,10 @@ def edit_admin_blog(request, id):
         try:
             Blog.objects.get(id=id)
             Blog.objects.filter(id=id).update(title=title,
-                                              author=author,
                                               description=description,
                                               detail=detail,
                                               sub_title=sub_title,
+                                              user=user,
                                               exp=exp)
             instance = get_object_or_404(Blog, id=id)
             if image:
@@ -291,15 +409,24 @@ def edit_admin_blog(request, id):
 
 def delete_item(request,id):
     Blog.objects.filter(id=id).delete()
-    return redirect(admin_blogs)
+    user = User.objects.get(id=request.user.id)
+    if user.is_superuser == 1:
+        return redirect(admin_blogs)
+    else:
+        return redirect(staff_blog)
 
 def appointment_list(request):
     app = Appointment.objects.all()
+    app1 = Appointment.objects.filter(status=1)
+    app2 = Appointment.objects.filter(status=2)
+    client = User.objects.all()
     return render(request, 'appointment_list.html', locals())
 
 
 def appointment_view(request, id):
-    app = Appointment.objects.filter(id=id)
+    client = User.objects.filter(id=id)
+    app = Appointment.objects.filter(client_id=id)
+
     return render(request, 'appointment_view.html', locals())
 
 def schedule(request, id):
@@ -313,9 +440,9 @@ def schedule_appointment(request, id):
         user = User.objects.get(id=name)
         date = request.POST.get('date')
         time = request.POST.get('time')
-        Appointment.objects.filter(id=id).update(staff_name=user, date=date, time=time)
-        print(name)
-        app.status = '2'
+        Appointment.objects.filter(id=id).update(staff_name=user, date=date, time=time, status=2)
+
+
 
 
         # send_mail(
@@ -327,6 +454,11 @@ def schedule_appointment(request, id):
         # )
 
         return redirect(appointment_list)
+
+def schedule_app_view(request, id):
+    app = Appointment.objects.filter(client_id=id)
+    client = User.objects.all()
+    return render(request, 'schedule_app_view.html', locals())
 
 
 def reject_appointment(request, id):
@@ -348,5 +480,133 @@ def staff_dashboard(request):
 def staff_appointments(request):
     user = User.objects.get(id=request.user.id)
     staff = Staff.objects.filter(staff_id=user)
-    app = Appointment.objects.all()
+    client = User.objects.all()
+    app = Appointment.objects.filter(staff_name_id=user).order_by('-id')
     return render(request, 'staff_appointments.html', locals())
+
+
+def staff_app_view(request, id):
+    user = User.objects.get(id=request.user.id)
+    staff = Staff.objects.filter(staff_id=user)
+    client = User.objects.filter(id=id)
+    app = Appointment.objects.filter(client_id=id)
+
+    return render(request, 'staff_app_view.html', locals())
+
+
+def staff_reject_appointment(request, id):
+    user = User.objects.get(id=request.user.id)
+    staff = Staff.objects.filter(staff_id=user)
+    client = User.objects.filter(id=id)
+    app = Appointment.objects.filter(client_id=id)
+    return redirect(staff_appointments)
+
+
+def staff_blog(request):
+    user = User.objects.get(id=request.user.id)
+    staff = Staff.objects.filter(staff_id=user)
+    item = Blog.objects.filter(user_id=user).order_by('-id')
+    return render(request, 'staff_blog.html', locals())
+
+
+def create_staff_blog(request):
+    user = User.objects.get(id=request.user.id)
+    staff = Staff.objects.filter(staff_id=user)
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        detail = request.POST.get('detail')
+        image = request.FILES.get('image')
+        sub_title = request.POST.get('sub_title')
+        image1 = request.FILES.get('image1')
+        exp = request.POST.get('exp')
+
+        blog = Blog.objects.create(
+            title=title,
+            description=description,
+            detail=detail,
+            image=image,
+            sub_title=sub_title,
+            image1=image1,
+            exp=exp,
+            user=user
+        )
+        blog.save()
+        return redirect(staff_blog)
+    else:
+        return render(request, 'create_staff_blog.html', locals())
+
+
+def edit_staff_blog(request, id):
+    user = User.objects.get(id=request.user.id)
+    staff = Staff.objects.filter(staff_id=user)
+    item = Blog.objects.filter(id=id)
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        detail = request.POST.get('detail')
+        image = request.FILES.get('image')
+        sub_title = request.POST.get('sub_title')
+        image1 = request.FILES.get('image1')
+        exp = request.POST.get('exp')
+        try:
+            Blog.objects.get(id=id)
+            Blog.objects.filter(id=id).update(title=title,
+                                              description=description,
+                                              detail=detail,
+                                              sub_title=sub_title,
+                                              user=user,
+                                              exp=exp)
+            instance = get_object_or_404(Blog, id=id)
+            if image:
+                instance.image = image
+            instance.save()
+
+            extimage = get_object_or_404(Blog, id=id)
+            if image1:
+                extimage.image1 =image1
+            extimage.save()
+
+            return redirect(staff_blog)
+        except Blog.DoesNotExist:
+            return redirect(staff_blog)
+
+    else:
+        return render(request, 'edit_staff_blog.html', locals())
+
+
+
+def client_profile(request):
+    user = User.objects.get(id=request.user.id)
+    client = User.objects.filter(id=request.user.id)
+    design_preference = DesignPreference.objects.filter(client_id=user)
+    return render(request, 'client_profile.html', locals())
+
+def design_preference(request):
+    user = User.objects.get(id=request.user.id)
+    if request.method == 'POST':
+        style = request.POST.get('style')
+        color_palette = request.POST.get('color_palette')
+        materials = request.POST.get('materials')
+        budget = request.POST.get('budget')
+        try:
+            design = DesignPreference.objects.create(
+                client_id=request.user.id,
+                style=style,
+                color_palette=color_palette,
+                materials=materials,
+                budget=budget)
+            design.save()
+            return redirect(client_profile)
+        except DesignPreference.DoesNotExist:
+            return render(request, 'design_preference.html',locals())
+    else:
+        return render(request, 'design_preference.html', locals())
+
+
+def project_updates(request):
+    try:
+        user = User.objects.filter(id=request.user.id)
+        return render(request, 'project_updates.html', locals())
+    except User.DoesNotExist:
+        return render(request, 'project_updates.html')

@@ -13,6 +13,12 @@
     <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <style>
+        .uil-eye{
+            font-size: 20px;
+        }
+        .dashboard{
+            padding: 10px 14px 30px;
+        }
         .activity {
             padding-top: 80px;
         }
@@ -155,8 +161,8 @@
         </div>
         <div class="activity">
             <div class="title">
-                <i class="uil uil-users-alt"></i>
-                <span class="text">Blogs</span>
+                <i class="uil uil-phone"></i>
+                <span class="text">Pending Appointments</span>
             </div>
             <div class="activity-data">
 
@@ -171,27 +177,82 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        {% for i in app %}
+                        {% for i in app1 %}
+                        {% with forloop.counter as counter %}
+                        {% if i.status == 1 %}
+                        {% for j in client %}
+                        {% if j.id == i.client_id %}
 
                         <tbody>
                                 <tr>
-                                    <td>{{ forloop.counter }}</td>
-                                    <td>{{ i.email }}</td>
-                                    <td>{{ i.phone }}</td>
+                                    <td>{{ counter }}</td>
+                                    <td>{{ j.email }}</td>
+                                    <td>{{ j.phone_number }}</td>
                                     <td>{{ i.department }}</td>
                                     <td class="action-buttons">
-                                        <a href="{% url 'appointment_view' i.id %}">View</a>
-                                        <a href="/delete_staff/{{ i.id }}"><i class="uil uil-trash"></i></a>
+                                        <a href="{% url 'appointment_view' i.client_id %}"><i class="uil uil-eye"></i></a>
                                     </td>
                                 </tr>
                         </tbody>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                        {% endwith %}
                         {% endfor %}
                     </table>
                 {% else %}
                    <h2> No Appointments </h2>
                 {% endif %}
             </div>
-            <a href="{% url 'create_admin_blog' %}">Add Blog</a>
+
+        </div>
+
+        <div class="activity">
+            <div class="title">
+                <i class="uil uil-schedule"></i>
+                <span class="text">Scheduled Appointments</span>
+            </div>
+            <div class="activity-data">
+
+                {% if app %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Email</th>
+                                <th>Phone Number</th>
+                                <th>Department</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        {% for i in app2 %}
+                        {% with forloop.counter as counter %}
+                        {% if i.status == 2 %}
+                        {% for j in client %}
+                        {% if j.id == i.client_id %}
+
+                        <tbody>
+                                <tr>
+                                    <td>{{ counter }}</td>
+                                    <td>{{ j.email }}</td>
+                                    <td>{{ j.phone_number }}</td>
+                                    <td>{{ i.department }}</td>
+                                    <td class="action-buttons">
+                                        <a href="{% url 'schedule_app_view' i.client_id %}"><i class="uil uil-eye"></i></a>
+                                    </td>
+                                </tr>
+                        </tbody>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                        {% endwith %}
+                        {% endfor %}
+                    </table>
+                {% else %}
+                   <h2> No Appointments </h2>
+                {% endif %}
+            </div>
+
         </div>
     </section>
 </body>

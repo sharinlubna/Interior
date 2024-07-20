@@ -1,3 +1,4 @@
+{% load static %}
 <section id="footer" class="p_3 px-4 bg_dark">
  <div class="container-fluid">
    <div class="footer_1 row">
@@ -53,22 +54,25 @@
 	 </div>
 	</div>
 	<div class="col-md-3">
-	 <div class="footer_1i">
-	 <h5 class="text-white mb-4"> OUR NEWSLETTER</h5>
-     <p class="col_light">Subscribe to receive inspiration, ideas, and news in your inbox.</p>
-	 <div class="input-group mt-4">
-				<input type="text" class="form-control" placeholder="Your Email">
-				<span class="input-group-btn">
-					<button class="btn btn-primary bg_yell rounded-0 p-2 px-3 border-0" type="button">
-						SUBSCRIBE </button>
-				</span>
-		</div>
-	 </div>
+		<div class="footer_1i">
+			<h5 class="text-white mb-4"> OUR NEWSLETTER</h5>
+			<p class="col_light">Subscribe to receive inspiration, ideas, and news in your inbox.</p>
+			<div class="input-group mt-4">
+				<form method="post" action="{% url 'subscribe' %}" style="display: flex; flex-direction: row;">
+                  {% csrf_token %}
+					<input type="email" name="email" class="form-control" placeholder="Your Email" required>
+					<span class="input-group-btn">
+						<button class="btn btn-primary bg_yell rounded-0 p-2 px-3 border-0" type="submit">
+							SUBSCRIBE </button>
+					</span>
+				</form>
+			</div>
+	 	</div>
 	</div>
    </div><hr class="mt-4 mb-4">
    <div class="footer_2 row text-center">
     <div class="col-md-12">
-	  <p class="mb-0 col_light">© 2013 Your Website Name. All Rights Reserved | Design by <a class="col_yell fw-bold" href="http://www.templateonweb.com">TemplateOnWeb</a></p>
+	  <p class="mb-0 col_light">© 2024 FUTURE HOME. All Rights Reserved | Design by <a class="col_yell fw-bold" href="http://www.templateonweb.com">TemplateOnWeb</a></p>
 	</div>
    </div>
  </div>

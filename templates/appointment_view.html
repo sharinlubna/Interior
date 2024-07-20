@@ -114,6 +114,9 @@
             <img src="{% static 'images/favicon.png' %}" alt="">
         </div>
         {% for i in app %}
+        {% for j in client %}
+        {% if i.client_id == j.id %}
+
         <div class="container">
             <div class="title">
                 <i class="uil uil-phone"></i>
@@ -121,26 +124,22 @@
             </div>
 
             <div class="appointment-info">
-                <h3>Name:</h3>
-                <p>{{ i.name }}</p>
-                <h3>Email:</h3>
-                <p>{{ i.email }}</p>
-                <h3>Phone Number:</h3>
-                <p>{{ i.phone }}</p>
-                <h3>Date:</h3>
-                <p>{{ i.date }}</p>
-                <h3>Time:</h3>
-                <p>{{ i.time }}</p>
-                <h3>Department:</h3>
-                <p>{{ i.department }}</p>
-                <h3>Description:</h3>
-                <p>{{ i.description }}</p>
+                <p><strong>Name:</strong> {{ j.name }}</p>
+                <p><strong>Email:</strong> {{ j.email }}</p>
+                <p><strong>Phone Number:</strong> {{ j.phone_number }}</p>
+                <p><strong>Date:</strong> {{ i.date }}</p>
+                <p><strong>Time:</strong> {{ i.time }}</p>
+                <p><strong>Department:</strong> {{ i.department }}</p>
+                <p><strong>Address:</strong> {{ i.address }}</p>
+                <p><strong>Description:</strong> {{ i.description }}</p>
             </div>
             <div class="action-buttons">
                 <a href="{% url 'schedule' i.id %}" class="schedule">Schedule</a>
                 <a href="{% url 'reject_appointment' i.id %}" class="reject">Reject</a>
             </div>
         </div>
+        {% endif %}
+        {% endfor %}
         {% endfor %}
     </section>
 </body>
