@@ -178,6 +178,41 @@
                 margin-top: 120px; /* Adjust to clear fixed side nav */
             }
         }
+        .callout {
+            position: fixed;
+			bottom: 10px;
+			left: 76%;
+			transform: translateX(-50%);
+			z-index: 1000;
+			width: 70%;
+			max-width: 600px;
+			background-color: #c68a31;
+			border-left: 6px solid #4CAF50;
+			margin-bottom: 15px;
+			padding: 15px;
+			border-radius: 5px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        }
+		.callout p{
+			color: #fff;
+		}
+        .callout .closebtn {
+            margin-left: 15px;
+            color: #f9fafb;
+            font-weight: bold;
+            float: right;
+            font-size: 20px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .callout .closebtn:hover {
+            color: #f9fafb;
+        }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 
@@ -193,6 +228,8 @@
             <ul>
                 <li><a href="{% url 'client_profile' %}">Design Preferences</a></li>
                 <li><a href="{% url 'project_updates' %}">Project Updates</a></li>
+                <li><a href="{% url 'client_notification' %}"> Notifications</a></li>
+                <li><a href="{% url 'client_review' %}"> Review</a></li>
             </ul>
         </div>
         <div class="profile-container">
@@ -216,7 +253,7 @@
                             </select>
 
                             <label for="color-palette"><strong>Color Palette:</strong></label>
-                            <select id="color-palette" name="color-palette" required>
+                            <select id="color-palette" name="color_palette" required>
                                 <option value="">Select a color palette</option>
                                 <option value="Neutral">Neutral</option>
                                 <option value="Warm">Warm</option>
@@ -235,14 +272,29 @@
                                 <option value="Fabric">Fabric</option>
                             </select>
 
+                            <label for="layout"><strong>Layout:</strong></label>
+                            <select id="layout" name="layout" required>
+                                <option value="">Select layout</option>
+                                <option value="1 BHK">1 BHK</option>
+                                <option value="2 BHK">2 BHK</option>
+                                <option value="3 BHK">3 BHK</option>
+                                <option value="5 BHK">4 BHK</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div id="other-layout-div" class="hidden">
+                                <label for="other-layout"><strong>Specify Layout:</strong></label>
+                                <input type="text" id="other-layout" name="other_layout">
+                            </div>
+
+
                             <label for="budget"><strong>Budget Range:</strong></label>
                             <select id="budget" name="budget" required>
                                 <option value="">Select a budget range</option>
-                                <option value="$10,000 - $20,000">$10,000 - $20,000</option>
-                                <option value="$20,000 - $30,000">$20,000 - $30,000</option>
-                                <option value="$30,000 - $40,000">$30,000 - $40,000</option>
-                                <option value="$40,000 - $50,000">$40,000 - $50,000</option>
-                                <option value="$50,000+">$50,000+</option>
+                                <option value="₹2,00,000 - ₹10,00,000">₹2,00,000 - ₹10,00,000</option>
+                                <option value="₹10,00,000 - ₹30,00,000">₹10,00,000 - ₹30,00,000</option>
+                                <option value="₹30,00,000 - ₹40,00,000">₹30,00,000 - ₹40,00,000</option>
+                                <option value="₹40,00,000 - ₹50,00,000">₹40,00,000 - ₹50,00,000</option>
+                                <option value="₹50,00,000+">₹50,00,000+</option>
                             </select>
 
                             <button type="submit">Save Preferences</button>
@@ -269,5 +321,25 @@
 	  }
 	}
 </script>
+<script>
+	document.getElementById('see-all').addEventListener('click', function(event) {
+		event.preventDefault();
+		document.getElementById('read-notifications').style.display = 'block';
+		document.getElementById('see-all').style.display = 'none';
+	});
+</script>
+#script for other option in layout
+ <script>
+        document.getElementById('layout').addEventListener('change', function () {
+            var otherLayoutDiv = document.getElementById('other-layout-div');
+            if (this.value === 'Other') {
+                otherLayoutDiv.classList.remove('hidden');
+                document.getElementById('other-layout').required = true;
+            } else {
+                otherLayoutDiv.classList.add('hidden');
+                document.getElementById('other-layout').required = false;
+            }
+        });
+    </script>
 </body>
 </html>

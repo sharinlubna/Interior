@@ -5,23 +5,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fruitkha | Admin Dashboard Panel</title>
-    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+    <title>Future Home | Admin Dashboard Panel | Blogs</title>
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
     <!----======== CSS ======== -->
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <style>
-        .profile{
-            text-align: center;
-        }
-        .profile img{
-            width: 68%;
-            height: 145px;
-            border-radius: 50%;
-            object-fit: fill;
-        }
         .activity {
             padding-top: 80px;
         }
@@ -30,6 +22,7 @@
         }
         .title{
             display: flex;
+            justify-content: space-between;
             flex-direction: row;
             font-size: 20px;
             font-weight: bolder;
@@ -47,32 +40,17 @@
             justify-content: center;
             font-size: 24px;
         }
-        a {
+        .dashboard a {
             display: inline-block;
             margin-top: 10px;
             color: #4CAF50;
             text-decoration: none;
         }
 
-        a:hover {
+        .dashboard a:hover {
             text-decoration: underline;
         }
 
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        ul li {
-            padding: 10px;
-            background-color: #f1f1f1;
-            margin-bottom: 5px;
-            border-radius: 4px;
-        }
-
-        ul li:nth-child(odd) {
-            background-color: #e9e9e9;
-        }
 
         table {
             width: 100%;
@@ -100,25 +78,42 @@
         .action-buttons a{
             margin-top: 0;
         }
+        .action-buttons .submit{
+            color: #4CAF50;
+            background: none;
+            border: none;
+            font-size: 15px;
+        }
+        .add{
+            display: inline-block;
+            color: #4CAF50;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
     <nav>
         <div class="logo-name">
             <div class="logo-image">
-                <!-- <img src="img/favicon.png" alt=""> -->
+                <img src="{% static 'img/favicon.png' %}" alt="">
             </div>
-            <span class="logo_name"><img src="{% static 'images/logo.png' %}" alt=""></span>
+
+            <span class="logo_name">Future Home</span>
         </div>
+
         <div class="menu-items">
             <ul class="nav-links">
                 <li><a href="{% url 'AdminDashboard' %}">
                     <i class="uil uil-estate"></i>
                     <span class="link-name">Dashboard</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="{% url 'admin_notification' %}">
                     <i class="uil uil-bell"></i>
-                    <span class="link-name">Notification</i><mark class="big swing">{{ unread_count }}</mark></span>
+                    <span class="link-name">Notifications</i><mark class="big swing">{{ unread_count }}</mark></span>
+                </a></li>
+                <li><a href="{% url 'admin_project_list' %}">
+                    <i class="uil uil-clipboard-alt"></i>
+                    <span class="link-name">Project List</span>
                 </a></li>
                 <li><a href="{% url 'admin_blogs' %}">
                     <i class="uil uil-edit"></i>
@@ -128,9 +123,9 @@
                     <i class="uil uil-users-alt"></i>
                     <span class="link-name">Staff List</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="{% url 'appointment_list' %}">
                     <i class="uil uil-phone"></i>
-                    <span class="link-name">Edit Staff</span>
+                    <span class="link-name">Appointments</span>
                 </a></li>
             </ul>
 
@@ -144,14 +139,16 @@
         </div>
     </nav>
 
+
     <section class="dashboard">
         <div class="top">
             <i class="uil uil-bars sidebar-toggle"></i>
 
             <div class="search-box">
                 <i class="uil uil-search"></i>
-                <form method="get">
-                    <input type="search" name="q" placeholder="Search here...">
+                <form method="POST" action="{% url 'search_ablog' %}">
+                    {% csrf_token %}
+                    <input type="text" name="search" placeholder="Search here...">
                     <input type="submit" hidden />
                 </form>
             </div>
@@ -160,12 +157,16 @@
         </div>
         <div class="activity">
             <div class="title">
-                <i class="uil uil-users-alt"></i>
+                <div class="head" style="display:inline-flex; gap:3px;">
+                    <i class="uil uil-edit"></i>
                 <span class="text">Blogs</span>
+                </div>
+
+                <a class="add" href="{% url 'create_admin_blog' %}">Add</a>
             </div>
             <div class="activity-data">
 
-                {% if item %}
+                {% if searched %}
                     <table>
                         <thead>
                             <tr>
@@ -176,16 +177,59 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
+                        <tbody>
+                        {% for k in searched %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ k.user.username }}</td>
+                            <td>{{ k.title }}</td>
+                            <td>{{ k.date }}</td>
+                            <td class="action-buttons">
+                                {% if k.user.is_superuser %}
+                                    <a href="{% url 'edit_admin_blog' k.id %}">Edit</a>
+                                {% else %}
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="blog_id" value="{{ k.id }}">
+                                        <button class="submit" type="submit"><a>Request Edit</a></button>
+                                    </form>
+                                {% endif %}
+                                <a href="/delete_item/{{ k.id }}"><i class="uil uil-trash"></i></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% elif item %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Author</th>
+                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
                         {% for i in item %}
 
                         <tbody>
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
-                                    <td>{{ i.author }}</td>
+                                    <td>{{ i.user.username }}</td>
                                     <td>{{ i.title }}</td>
                                     <td>{{ i.date }}</td>
                                     <td class="action-buttons">
-                                        <a href="{% url 'edit_admin_blog' i.id %}">Edit</a>
+                                        {% if i.user.is_superuser %}
+                                            <a href="{% url 'edit_admin_blog' i.id %}">Edit</a>
+                                        {% else %}
+                                            <form method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="blog_id" value="{{ i.id }}">
+                                                <button class="submit" type="submit"><a>Request Edit</a></button>
+                                            </form>
+                                        {% endif %}
                                         <a href="/delete_item/{{ i.id }}"><i class="uil uil-trash"></i></a>
                                     </td>
                                 </tr>
@@ -196,8 +240,29 @@
                    <h2> No Blogs Added </h2>
                 {% endif %}
             </div>
-            <a href="{% url 'create_admin_blog' %}">Add Blog</a>
+
         </div>
     </section>
+
+    <script>
+        const body = document.querySelector("body"),
+              sidebar = body.querySelector("nav"),
+              sidebarToggle = body.querySelector(".sidebar-toggle");
+
+
+        let getStatus = localStorage.getItem("status");
+        if(getStatus && getStatus ==="close"){
+            sidebar.classList.toggle("close");
+        }
+
+        sidebarToggle.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+            if(sidebar.classList.contains("close")){
+                localStorage.setItem("status", "close");
+            }else{
+                localStorage.setItem("status", "open");
+            }
+        });
+    </script>
 </body>
 </html>

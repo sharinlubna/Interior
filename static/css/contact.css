@@ -71,5 +71,26 @@ padding:0!important;
  }
  }
 
+/* Style for notification header */
+.dropdown-header {
+    background-color: #f1f1f1; /* Light background for header */
+    color: #333; /* Text color */
+    font-weight: bold; /* Bold text */
+    padding: 10px; /* Padding around the header */
+    border-bottom: 1px solid #e0e0e0; /* Border below the header */
+    text-align: center; /* Center align text */
+}
 
+.notification-item {
+    background-color: #f8f9fa; /* Light background color */
+    border-bottom: 1px solid #e0e0e0; /* Light gray border */
+    padding: 10px; /* Padding for spacing */
+    color: #333; /* Text color */
+    text-decoration: none; /* Remove underline */
+    display: block; /* Make the entire area clickable */
+}
 
+.notification-item:hover {
+    background-color: #e9ecef; /* Slightly darker background on hover */
+    color: #000; /* Darker text color on hover */
+}

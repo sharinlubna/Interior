@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Home | My Profile</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" >
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" >
+    <link href="{% static 'css/global.css' %}" rel="stylesheet">
+    <link href="{% static 'css/index.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet">
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .main-container {
+            display: flex;
+            width: 100%;
+        }
+
+        .side-nav {
+            width: 19%;
+            background-color: #30373e;
+            color: #b0b6bc;
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /*            position: fixed;*/
+            /*            height: 100%;*/
+            overflow-y: auto;
+        }
+
+        .side-nav .user-info {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 10px 10px;
+            background-color: #3a444b;
+            border-radius: 5px;
+        }
+
+        .side-nav .user-info .fa-user-circle-o {
+            font-size: 30px;
+            color: #daa14c;
+        }
+
+        .side-nav .user-info p {
+            margin: 5px 0;
+            color: #daa14c;
+        }
+
+        .side-nav ul {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+        }
+
+        .side-nav ul li {
+            margin-bottom: 10px;
+        }
+
+        .side-nav ul li a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 12px 20px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .side-nav ul li a:hover {
+            background-color: #555;
+            color: #daa14c;
+        }
+
+        .profile-container {
+        /*            flex: 1;*/
+            padding: 30px;
+            width: 81%;
+            /*            margin-left: 250px; *//* Adjust for the fixed side nav width */
+        }
+
+        .profile-header {
+            text-align: center;
+            padding-bottom: 20px;
+        }
+
+        .profile-header h1 {
+            margin: 0;
+            font-size: 28px;
+            color: #333;
+        }
+
+        .profile-content {
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        .card-content {
+            overflow-x: auto;
+        }
+        .closebtn {
+            color: #aaa;
+            font-weight: bold;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            align-self: flex-end;
+        }
+
+        .closebtn:hover {
+            color: black;
+        }
+        .table-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .table-design-preferences {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-design-preferences th, .table-design-preferences td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .table-design-preferences th {
+            background-color: #f2f2f2;
+        }
+        .card form {
+            margin-top: 20px;
+        }
+
+        .card form label {
+            margin-top: 10px;
+            color: #333;
+            display: block;
+        }
+
+        .card form select,
+        .card form button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .card form button {
+            margin-top: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .add{
+            padding: 5px 10px;
+            background-color: #daa14c;
+            color: white;
+        }
+        .add:hover{
+            background-color:black;
+            color: white;
+        }
+        .card form button:hover {
+            background-color: #daa14c;
+        }
+        .noitem{
+            text-align: center;
+        }
+        .noitem img{
+            width: 20%;
+        }
+
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+
+            .side-nav {
+                width: 100%;
+                padding: 10px;
+            }
+
+            .profile-container {
+                margin-left: 0;
+                margin-top: 120px; /* Adjust to clear fixed side nav */
+            }
+        }
+        .callout {
+            position: fixed;
+			bottom: 10px;
+			left: 76%;
+			transform: translateX(-50%);
+			z-index: 1000;
+			width: 70%;
+			max-width: 600px;
+			background-color: #c68a31;
+			border-left: 6px solid #4CAF50;
+			margin-bottom: 15px;
+			padding: 15px;
+			border-radius: 5px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        }
+		.callout p{
+			color: #fff;
+		}
+        .callout .closebtn {
+            margin-left: 15px;
+            color: #f9fafb;
+            font-weight: bold;
+            float: right;
+            font-size: 20px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .callout .closebtn:hover {
+            color: #f9fafb;
+        }
+        .comment-form {
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment-form h2 {
+            margin-bottom: 15px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .comment-form label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .comment-form button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .comment-form button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+{% include 'header.html' %}
+    <div class="main-container">
+        <div class="side-nav">
+            <div class="user-info">
+                <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                <p><strong>{{ user.name }}</strong></p>
+                <p>{{ user.email }}</p>
+            </div>
+            <ul>
+                <li><a href="{% url 'client_profile' %}">Design Preferences</a></li>
+                <li><a href="{% url 'project_updates' %}">Project Updates</a></li>
+                <li><a href="{% url 'client_notification' %}"> Notifications</a></li>
+                <li><a href="{% url 'client_review' %}"> Review</a></li>
+            </ul>
+        </div>
+        <div class="profile-container">
+            <div class="profile-header">
+                <h1>Leave a Review</h1>
+            </div>
+            <div class="profile-content" style="margin-bottom: 30px;">
+                <!-- Comment Form -->
+                <div class="comment-form">
+                    <form action="{% url 'client_review' %}" method="post">
+                        {% csrf_token %}
+                        <label for="comment">Review:</label>
+                        <textarea id="comment" name="comment" rows="4" placeholder="Write your comment here..." required></textarea>
+
+                        <label for="rating">Rating:</label>
+                        <input type="number" id="rating" name="rating" min="1" max="5" placeholder="Rate from 1 to 5">
+
+                        <button type="submit">Submit Comment</button>
+                    </form>
+                </div>
+                <!-- End of Comment Form -->
+
+            </div>
+
+        </div>
+    </div>
+{% include 'footer.html' %}
+
+<script>
+    window.onscroll = function() {myFunction()};
+    let navbar_sticky = document.getElementById("navbar_sticky");
+    let sticky = navbar_sticky.offsetTop;
+    let navbar_height = document.querySelector('.navbar').offsetHeight;
+    function myFunction() {
+      if (window.pageYOffset >= sticky + navbar_height) {
+        navbar_sticky.classList.add("sticky")
+        document.body.style.paddingTop = navbar_height + 'px';
+      } else {
+        navbar_sticky.classList.remove("sticky");
+        document.body.style.paddingTop = '0'
+      }
+    }
+</script>
+
+</body>
+</html>

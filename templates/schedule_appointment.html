@@ -5,50 +5,89 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Appointment Details</title>
+    <title>Future Home | Admin Dashboard Panel | Add Blog</title>
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+    <!----======== CSS ======== -->
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <style>
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        .activity {
+            padding-top: 50px;
         }
-        .title {
+        .activity-data {
+            padding-top: 10px;
+        }
+        .title{
             display: flex;
             flex-direction: row;
-            align-items: center;
             font-size: 24px;
+            font-weight: bolder;
+            gap: 10px;
+        }
+        .dashboard .title i {
+            position: relative;
+            height: 35px;
+            width: 35px;
+            background-color: var(--primary-color);
+            border-radius: 6px;
+            color: var(--title-icon-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        form{
+            width: 45%;
+            margin: 0 auto;
+        }
+        form div {
+            display: flex;
+            flex-direction: column;
+        }
+        form label {
             font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .title i {
-            margin-right: 10px;
-            color: var(--primary-color);
-        }
-        .appointment-info {
-            margin-bottom: 20px;
-        }
-        .appointment-info h3 {
-            margin-bottom: 10px;
-            font-size: 18px;
-            color: #333;
-        }
-        .appointment-info p {
             margin-bottom: 5px;
+        }
+        form input, form select, textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            padding: 10px 20px;
+            text-align: center;
+            border-radius: 4px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
             font-size: 16px;
-            color: #666;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .dashboard a {
+            display: inline-block;
+            margin-top: 10px;
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        .dashboard a:hover {
+            text-decoration: underline;
         }
         .action-buttons {
             display: flex;
+            flex-direction: row;
             gap: 10px;
             margin-top: 20px;
         }
         .action-buttons a {
-            display: inline-block;
             padding: 10px 20px;
             text-align: center;
             border-radius: 4px;
@@ -59,16 +98,26 @@
         .action-buttons .schedule {
             background-color: #4CAF50;
         }
-        .action-buttons .reject {
+        .action-buttons .schedule:hover{
+            background-color: #41ea48;
+        }
+        .action-buttons .cancel {
             background-color: #f44336;
         }
+        .action-buttons .cancel:hover {
+            background-color: #e10505;
+        }
+
     </style>
 </head>
 <body>
     <nav>
         <div class="logo-name">
-            <div class="logo-image"></div>
-            <span class="logo_name"><img src="{% static 'images/logo.png' %}" alt=""></span>
+            <div class="logo-image">
+                <img src="{% static 'img/favicon.png' %}" alt="">
+            </div>
+
+            <span class="logo_name">Future Home</span>
         </div>
         <div class="menu-items">
             <ul class="nav-links">
@@ -76,12 +125,16 @@
                     <i class="uil uil-estate"></i>
                     <span class="link-name">Dashboard</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="{% url 'admin_notification' %}">
                     <i class="uil uil-bell"></i>
-                    <span class="link-name">Notification<mark class="big swing">{{ unread_count }}</mark></span>
+                    <span class="link-name">Notifications</i><mark class="big swing">{{ unread_count }}</mark></span>
+                </a></li>
+                <li><a href="{% url 'admin_project_list' %}">
+                    <i class="uil uil-clipboard-alt"></i>
+                    <span class="link-name">Project List</span>
                 </a></li>
                 <li><a href="{% url 'admin_blogs' %}">
-                    <i class="uil uil-user-plus"></i>
+                    <i class="uil uil-edit"></i>
                     <span class="link-name">Blogs</span>
                 </a></li>
                 <li><a href="{% url 'staff_list' %}">
@@ -90,7 +143,7 @@
                 </a></li>
                 <li><a href="{% url 'appointment_list' %}">
                     <i class="uil uil-phone"></i>
-                    <span class="link-name">Appointment</span>
+                    <span class="link-name">Appointments</span>
                 </a></li>
             </ul>
             <ul class="logout-mode">
@@ -102,49 +155,63 @@
         </div>
     </nav>
     <section class="dashboard">
-        <div class="top">
+        <div class="top" style="justify-content:flex-start; gap: 10px;">
             <i class="uil uil-bars sidebar-toggle"></i>
-            <div class="search-box">
-                <i class="uil uil-search"></i>
-                <form method="get">
-                    <input type="search" name="q" placeholder="Search here...">
-                    <input type="submit" hidden />
+            <div class="title">
+               <i class="uil uil-schedule"></i>
+                <span class="text">Schedule Appointment</span>
+            </div>
+        </div>
+        <div class="activity">
+            {% for i in app %}
+            <div class="activity-data">
+                <form method="post" action="{% url 'schedule_appointment' i.id %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="date">Appoint To:</label>
+                        <select class="form-control" id="staff" name='name'>
+                            {% for i in staff %}
+                                <option value='{{ i.id }}'>{{ i.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        <input type="date" id="date" name="date" value="{{ i.date }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Time:</label>
+                        <input type="time" id="time" name="time" value="{{ i.time }}" required>
+                    </div>
+                    <div class="action-buttons">
+                        <button type="submit" class="schedule">Schedule</button>
+                        <a style="text-decoration:none;" href="{% url 'appointment_list' %}" class="cancel">Cancel</a>
+                    </div>
                 </form>
             </div>
-            <img src="{% static 'images/favicon.png' %}" alt="">
-        </div>
-        <div class="container">
-            {% for i in app %}
-            <div class="title">
-                <i class="uil uil-phone"></i>
-                <span>Schedule Appointment</span>
-            </div>
-            <form method="post" action="{% url 'schedule_appointment' i.id %}">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="date">Appoint To:</label>
-                    <select class="form-control" id="staff" name='name'>
-                        {% for i in staff %}
-                            <option value='{{ i.id }}'>{{ i.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="date">Date:</label>
-                    <input type="date" id="date" name="date" value="{{ i.date }}" required>
-                </div>
-                <div class="form-group">
-                    <label for="time">Time:</label>
-                    <input type="time" id="time" name="time" value="{{ i.time }}" required>
-                </div>
-                <div class="action-buttons">
-                    <button type="submit" class="schedule">Schedule</button>
-                    <a href="{% url 'appointment_list' %}" class="cancel">Cancel</a>
-                </div>
-            </form>
         </div>
         {% endfor %}
     </section>
+    <script>
+        const body = document.querySelector("body"),
+              sidebar = body.querySelector("nav"),
+              sidebarToggle = body.querySelector(".sidebar-toggle");
+
+
+        let getStatus = localStorage.getItem("status");
+        if(getStatus && getStatus ==="close"){
+            sidebar.classList.toggle("close");
+        }
+
+        sidebarToggle.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+            if(sidebar.classList.contains("close")){
+                localStorage.setItem("status", "close");
+            }else{
+                localStorage.setItem("status", "open");
+            }
+        });
+    </script>
 </body>
 </html>
 

@@ -5,18 +5,24 @@ from django.contrib.auth.models import AbstractUser
 
 
 # Create your models here.
-userchoices = (
-    (1,"Admin"),
-    (2,"Employee"),
-    (3,"Client")
-)
+userchoices = [
+    (1, "Admin"),
+    (2, "Employee"),
+    (3, "Client")
+]
 
-
-status=(
-    (1, "pending"),
+status = [
+    (1, "Pending"),
     (2, "Scheduled"),
-    (3, "Rejected"),
-)
+    (3, "Accepted"),
+    (4, "Rejected")
+]
+
+STATUS_CHOICES = [
+        (1, 'In Progress'),
+        (2, 'On Hold'),
+        (3, 'Completed')
+    ]
 
 class User(AbstractUser):
     USERNAME_FIELD = 'email'
@@ -49,6 +55,8 @@ class Appointment(models.Model):
     staff_name = models.ForeignKey(User, on_delete=models.CASCADE, related_name='appointments_as_staff', null=True, blank=True)
     client = models.ForeignKey(User, on_delete=models.CASCADE, related_name='appointments_as_client', default=1)  # Set a valid default
     status = models.IntegerField(default=1, choices=status)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+
 
 class Blog(models.Model):
     title = models.CharField(max_length=100, null=True, blank=True)
@@ -88,9 +96,45 @@ class DesignPreference(models.Model):
     color_palette = models.CharField(max_length=50, null=True, blank=True)
     materials = models.CharField(max_length=50, null=True, blank=True)
     budget = models.CharField(max_length=50, null=True, blank=True)
+    layout =models.CharField(max_length=50, null=True, blank=True, default='3 BHK')
 
     def __str__(self):
-        return self.client
+        return self.style
+
+class Project(models.Model):
+    title = models.CharField(max_length=50, null=True, blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='1')
+    design = models.ForeignKey(DesignPreference, on_delete=models.CASCADE, related_name='design_as_client')
+    staff = models.ForeignKey(User, on_delete=models.CASCADE, related_name='project_as_staff', null=True, blank=True)
+    client = models.ForeignKey(User, on_delete=models.CASCADE, related_name='project_as_client', default=1)
+    starting_date = models.DateField(null=True, blank=True)
+    ending_date = models.DateField(null=True, blank=True)
+    comment = models.TextField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+    actual_budget = models.CharField(max_length=50, null=True, blank=True)
+    category = models.CharField(max_length=50, null=True, blank=True)
+    last_updated = models.DateTimeField(auto_now=True, null=True, blank=True)
+    description = models.CharField(max_length=500, blank=True, null=True)
+    mainimage = models.ImageField(null=True, blank=True, upload_to="images/")
+    image1 = models.ImageField(null=True, blank=True, upload_to="images/")
+    image2 = models.ImageField(null=True, blank=True, upload_to="images/")
+    image3 = models.ImageField(null=True, blank=True, upload_to="images/")
+    image4 = models.ImageField(null=True, blank=True, upload_to="images/")
+    image5 = models.ImageField(null=True, blank=True, upload_to="images/")
+    image6 = models.ImageField(null=True, blank=True, upload_to="images/")
+    image7 = models.ImageField(null=True, blank=True, upload_to="images/")
+
+
+class Comment(models.Model):
+    comment = models.TextField(null=True, blank=True)
+    client = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.PositiveIntegerField(default=1, choices=[(i, i) for i in range(1, 6)])
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class Services(models.Model):
+    image = models.ImageField(null=True, blank=True, upload_to="images/")
+    title = models.CharField(max_length=100, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
 
 
 class Subscription(models.Model):

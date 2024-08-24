@@ -17,6 +17,39 @@
 		.center_blog {
     		background-image: url(../static/img/48a.jpg);
 		}
+		.callout {
+            position: fixed;
+			bottom: 10px;
+			left: 76%;
+			transform: translateX(-50%);
+			z-index: 1000;
+			width: 70%;
+			max-width: 600px;
+			background-color: #c68a31;
+			border-left: 6px solid #4CAF50;
+			margin-bottom: 15px;
+			padding: 15px;
+			border-radius: 5px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        }
+		.callout p{
+			color: #fff;
+		}
+        .callout .closebtn {
+            margin-left: 15px;
+            color: #f9fafb;
+            font-weight: bold;
+            float: right;
+            font-size: 20px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .callout .closebtn:hover {
+            color: #f9fafb;
+        }
+
 	</style>
 
 </head>
@@ -58,7 +91,7 @@
 						</div>
 						<div class="col-md-6">
 							<div class="blog_pg1lir">
-								<h6 class="font_14 text-muted"><i class="fa fa-user col_yell me-1"></i>{{ j.username }}</h6>
+								<h6 class="font_14 text-muted"><i class="fa fa-user col_yell me-1"></i>{{ j.name }}</h6>
 								<h4 class="mt-3"><a href="{% url 'Blog_Detail' i.id %}">{{ i.title }}</a></h4>
 								<p>{{ i.description }}</p>
 								<h6 class="mb-0 mt-4"><a class="button_1" href="{% url 'Blog_Detail' i.id %}">READ MORE <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
@@ -229,7 +262,13 @@
 	  }
 	}
 </script>
-
+<script>
+	document.getElementById('see-all').addEventListener('click', function(event) {
+		event.preventDefault();
+		document.getElementById('read-notifications').style.display = 'block';
+		document.getElementById('see-all').style.display = 'none';
+	});
+</script>
 </body>
 
 </html>

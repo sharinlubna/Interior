@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Home | Admin Dashboard Panel | Services</title>
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <style>
+        .uil-eye{
+            font-size: 20px;
+        }
+        .dashboard{
+            padding: 10px 14px 30px;
+        }
+        .activity {
+            padding-top: 80px;
+        }
+        .activity-data {
+            padding-top: 20px;
+        }
+        .title{
+            display: flex;
+            justify-content: space-between;
+            flex-direction: row;
+            font-size: 20px;
+            font-weight: bolder;
+            gap: 10px;
+        }
+        .dashboard .title i {
+            position: relative;
+            height: 35px;
+            width: 35px;
+            background-color: var(--primary-color);
+            border-radius: 6px;
+            color: var(--title-icon-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .dashboard a {
+            display: inline-block;
+            margin-top: 10px;
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        .dashboard a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+        th:last-child{
+            text-align: center;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            justify-content: space-evenly;
+        }
+        .action-buttons a{
+            margin-top: 0;
+        }
+        .add{
+            display: inline-block;
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        .no-results-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .no-results-box {
+            text-align: center;
+            background-color: #f0f0f0;
+            padding: 90px;
+            margin: 0 auto;
+            border-radius: 10px;
+        }
+
+        .uil-frown {
+            font-size: 48px;
+            color: #ef4444;
+            margin-bottom: 20px;
+        }
+
+        .no-results-box h2 {
+            font-size: 24px;
+            color: #9f9f9f;
+        }
+    </style>
+
+</head>
+<body>
+    <nav>
+        <div class="logo-name">
+            <div class="logo-image">
+                <img src="{% static 'img/favicon.png' %}" alt="">
+            </div>
+
+            <span class="logo_name">Future Home</span>
+        </div>
+
+        <div class="menu-items">
+            <ul class="nav-links">
+                <li><a href="{% url 'AdminDashboard' %}">
+                    <i class="uil uil-estate"></i>
+                    <span class="link-name">Dashboard</span>
+                </a></li>
+                <li><a href="{% url 'admin_notification' %}">
+                    <i class="uil uil-bell"></i>
+                    <span class="link-name">Notifications</i><mark class="big swing">{{ unread_count }}</mark></span>
+                </a></li>
+                <li><a href="{% url 'admin_project_list' %}">
+                    <i class="uil uil-clipboard-alt"></i>
+                    <span class="link-name">Project List</span>
+                </a></li>
+                <li><a href="{% url 'admin_blogs' %}">
+                    <i class="uil uil-edit"></i>
+                    <span class="link-name">Blogs</span>
+                </a></li>
+                <li><a href="{% url 'staff_list' %}">
+                    <i class="uil uil-users-alt"></i>
+                    <span class="link-name">Staff List</span>
+                </a></li>
+                <li><a href="{% url 'appointment_list' %}">
+                    <i class="uil uil-phone"></i>
+                    <span class="link-name">Appointments</span>
+                </a></li>
+                <li><a href="{% url 'appointment_list' %}">
+                    <i class="uil uil-setting"></i>
+                    <span class="link-name">Services</span>
+                </a></li>
+            </ul>
+
+            <ul class="logout-mode">
+                <li><a href="{% url 'logout' %}">
+                    <i class="uil uil-signout"></i>
+                    <span class="link-name">Logout</span>
+                </a></li>
+
+            </ul>
+        </div>
+    </nav>
+    <section class="dashboard">
+        <div class="top">
+            <i class="uil uil-bars sidebar-toggle"></i>
+        </div>
+        <div class="activity">
+            <div class="title">
+                <div class="head" style="display:inline-flex; gap:3px;">
+                   <i class="uil uil-setting"></i>
+                <span class="text">Services</span>
+                </div>
+
+                <a class="add" href="{% url 'create_services' %}">Add</a>
+            </div>
+            <div class="activity-data">
+
+                {% if services %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>title</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        {% for i in services %}
+
+                        <tbody>
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ i.title }}</td>
+                                    <td class="action-buttons">
+                                        <a href="{% url 'edit_services' i.id %}">Edit</a>
+                                        <a href="/delete_services/{{ i.id }}"><i class="uil uil-trash"></i></a>
+                                    </td>
+                                </tr>
+                        </tbody>
+                        {% endfor %}
+                    </table>
+                {% else %}
+                   <div class="no-results-container">
+                        <div class="no-results-box">
+                            <i class="uil uil-frown"></i>
+                            <h2>No Services added yet!</h2>
+                        </div>
+                   </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </section>
+
+<script>
+        const body = document.querySelector("body"),
+              sidebar = body.querySelector("nav"),
+              sidebarToggle = body.querySelector(".sidebar-toggle");
+
+
+        let getStatus = localStorage.getItem("status");
+        if(getStatus && getStatus ==="close"){
+            sidebar.classList.toggle("close");
+        }
+
+        sidebarToggle.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+            if(sidebar.classList.contains("close")){
+                localStorage.setItem("status", "close");
+            }else{
+                localStorage.setItem("status", "open");
+            }
+        });
+    </script>
+</body>
+</html>

@@ -9,7 +9,7 @@
 
 :root{
     /* ===== Colors ===== */
-    --primary-color: #0E4BF1;
+    --primary-color: #4CAF50;
     --panel-color: #FFF;
     --text-color: #000;
     --black-light-color: #707070;
@@ -19,7 +19,7 @@
     --box2-color: #FFE6AC;
     --box3-color: #E7D1FC;
     --title-icon-color: #fff;
-    
+
     /* ====== Transition ====== */
     --tran-05: all 0.5s ease;
     --tran-03: all 0.3s ease;
@@ -56,7 +56,7 @@ body.dark{
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #0b3cc1;
+    --primary-color: #4CAF50;
 }
 
 body.dark::-webkit-scrollbar-thumb:hover,
@@ -85,7 +85,7 @@ nav .logo-name{
 nav .logo-image{
     display: flex;
     justify-content: center;
-    min-width: 0;
+    min-width: 45px;
 }
 nav .logo-image img{
     width: 40px;
@@ -94,25 +94,18 @@ nav .logo-image img{
 }
 
 nav .logo-name .logo_name{
-    /* font-size: 22px;
-    font-weight: 600; */
-    /* color: var(--text-color); */
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-color);
     margin-left: 14px;
-    width: 150px;
     transition: var(--tran-05);
-}
-abbr[title] {
-    text-decoration: none;
-}
-nav .logo-name .logo_name img{
-    width: 100%;
 }
 nav.close .logo_name{
     opacity: 0;
     pointer-events: none;
 }
 nav .menu-items{
-    margin-top: 15px;
+    margin-top: 40px;
     height: calc(100% - 90px);
     display: flex;
     flex-direction: column;
@@ -152,7 +145,7 @@ body.dark li a:hover:before{
 .menu-items li a .link-name{
     font-size: 18px;
     font-weight: 400;
-    color: var(--black-light-color);    
+    color: var(--black-light-color);
     transition: var(--tran-05);
 }
 nav.close li a .link-name{
@@ -284,7 +277,7 @@ nav.close ~ .dashboard .top{
 .dash-content .title{
     display: flex;
     align-items: center;
-    margin: 30px 0 30px 0;
+    margin: 60px 0 30px 0;
 }
 .dash-content .title i{
     position: relative;

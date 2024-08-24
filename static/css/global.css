@@ -246,7 +246,7 @@ transition: transform .3s;
 }
 
 .drop_2 {
-min-width: 300px;
+min-width: 400px;
 padding: 10px;
 border-radius: 0;
 margin-top: 9px!important;
@@ -801,3 +801,27 @@ width:100%;
 margin-top:30px;
 }
  }
+
+.dropdown-header {
+		background-color: #f1f1f1;
+		color: #333;
+		font-weight: bold;
+		font-size: 18px;
+		padding: 10px;
+		border-bottom: 1px solid #e0e0e0;
+		text-align: center;
+	}
+
+	.notification-item {
+		background-color: #f8f9fa;
+		border-bottom: 1px solid #e0e0e0;
+		padding: 10px;
+		color: #333;
+		text-decoration: none;
+		display: block;
+	}
+
+	.notification-item:hover {
+		background-color: #e9ecef;
+		color: #000;
+	}

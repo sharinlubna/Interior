@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Future Project</title>
+	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" >
+	<link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" >
+	<link href="{% static 'css/global.css' %}" rel="stylesheet">
+	<link href="{% static 'css/index.css' %}" rel="stylesheet">
+	<link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet">
+	<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+	<style>
+		.center_blog {
+    		background-image: url(../static/img/48a.jpg);
+		}
+		.design{
+			display: flex;
+			flex-direction: row;
+			gap: 15px;
+		}
+		.design p{
+			font-size: 14px;
+		}
+		.design h6{
+			font-weight: 600;
+		}
+		.w-100 {
+			width: 100% !important;
+			height: 100% !important;
+		}
+		.grid figure {
+			position: relative;
+			float: left;
+			overflow: hidden;
+			width: 100%;
+			height: 300px;
+			object-fit: contain;
+			text-align: center;
+			cursor: pointer;
+		}
+    </style>
+
+</head>
+
+<body>
+
+{% include 'header.html' %}
+
+<section id="center" class="center_blog">
+	<div class="promo_m center_om">
+		<div class="container-fluid">
+			<div class="center_o1 row text-center">
+				<div class="col-md-12">
+					<h6 class="col_yell fw-bold"><a class="text-white" href="{% url 'home' %}">HOME PAGE</a>
+						<span class="mx-2 text-muted">/</span> PROJECT</h6>
+					<h1 class="mb-0 font_60 text-white mt-3">Project</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section id="blog_pg" class="p_3  px-4">
+	<div class="container-fluid">
+		<div class="blog_pg1 row">
+			<div class="col-md-12">
+				<div class="blog_pg1l">
+					<div class="blog_pg1li row">
+						{% for i in project %}
+						{% for j in staff %}
+						{% if i.staff_id == j.id %}
+						<div class="col-md-4">
+							<div class="blog_pg1lil">
+								<div class="grid clearfix">
+									<figure class="effect-jazz mb-0">
+										<a href="{% url 'project_view' i.id %}"><img src="{{ i.mainimage.url }}" class="w-100" alt="abc"></a>
+									</figure>
+									<a href="{% url 'project_view' i.id %}"><h3>{{ i.title }}</h3></a>
+									<div class="design"><p>Designer :</p> <h6>{{ j.name }}</h6></div>
+
+								</div>
+							</div>
+						</div>
+						{% endif %}
+						{% endfor %}
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+{% include 'footer.html' %}
+
+<script>
+	window.onscroll = function() {myFunction()};
+	let navbar_sticky = document.getElementById("navbar_sticky");
+	let sticky = navbar_sticky.offsetTop;
+	let navbar_height = document.querySelector('.navbar').offsetHeight;
+	function myFunction() {
+	  if (window.pageYOffset >= sticky + navbar_height) {
+		navbar_sticky.classList.add("sticky")
+		document.body.style.paddingTop = navbar_height + 'px';
+	  } else {
+		navbar_sticky.classList.remove("sticky");
+		document.body.style.paddingTop = '0'
+	  }
+	}
+</script>
+<script>
+	document.getElementById('see-all').addEventListener('click', function(event) {
+		event.preventDefault();
+		document.getElementById('read-notifications').style.display = 'block';
+		document.getElementById('see-all').style.display = 'none';
+	});
+</script>
+</body>
+</html>

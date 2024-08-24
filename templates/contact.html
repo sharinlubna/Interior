@@ -20,6 +20,38 @@
 		form button{
 			border: none;
 		}
+		.callout {
+            position: fixed;
+			bottom: 10px;
+			left: 76%;
+			transform: translateX(-50%);
+			z-index: 1000;
+			width: 70%;
+			max-width: 600px;
+			background-color: #c68a31;
+			border-left: 6px solid #4CAF50;
+			margin-bottom: 15px;
+			padding: 15px;
+			border-radius: 5px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        }
+		.callout p{
+			color: #fff;
+		}
+        .callout .closebtn {
+            margin-left: 15px;
+            color: #f9fafb;
+            font-weight: bold;
+            float: right;
+            font-size: 20px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .callout .closebtn:hover {
+            color: #f9fafb;
+        }
 	</style>
 
 </head>
@@ -164,7 +196,7 @@ Ata, Semper 12345</h6>
 	 <div class="col-md-12">
 	  <h6 class="col_yell fw-bold">YOU DREAM IT, WE DESIGN IT</h6>
 	  <h1 class="text-white mt-3">We can build you the kitchen <br> of your dreams</h1>
-	  <h6 class="mb-0 mt-4"><a class="button" href="#">SCHEDULE A CHAT <i class="fa fa-calendar ms-1"></i></a></h6>
+	  <h6 class="mb-0 mt-4"><a class="button" href="{% url 'appointment' %}">SCHEDULE A CHAT <i class="fa fa-calendar ms-1"></i></a></h6>
 	 </div>
 	</div>
  </div>
@@ -203,7 +235,13 @@ Ata, Semper 12345</h6>
 		clearForm();
 	}
 	</script>
-
+<script>
+	document.getElementById('see-all').addEventListener('click', function(event) {
+		event.preventDefault();
+		document.getElementById('read-notifications').style.display = 'block';
+		document.getElementById('see-all').style.display = 'none';
+	});
+</script>
 </body>
 
 </html>

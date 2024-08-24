@@ -112,23 +112,50 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-
         .card {
-            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
         }
 
         .card-content {
-            padding: 20px;
+            overflow-x: auto;
+        }
+        .closebtn {
+            color: #aaa;
+            font-weight: bold;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            align-self: flex-end;
         }
 
-        .card-content h2 {
-            margin-top: 0;
-            color: #444;
-            font-size: 22px;
-            border-bottom: 2px solid #eaeaea;
-            padding-bottom: 5px;
+        .closebtn:hover {
+            color: black;
+        }
+        .table-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 10px;
         }
 
+        .table-design-preferences {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-design-preferences th, .table-design-preferences td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .table-design-preferences th {
+            background-color: #f2f2f2;
+        }
         .card form {
             margin-top: 20px;
         }
@@ -157,7 +184,15 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-
+        .add{
+            padding: 5px 10px;
+            background-color: #daa14c;
+            color: white;
+        }
+        .add:hover{
+            background-color:black;
+            color: white;
+        }
         .card form button:hover {
             background-color: #daa14c;
         }
@@ -167,6 +202,7 @@
         .noitem img{
             width: 20%;
         }
+
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
@@ -184,6 +220,38 @@
                 margin-top: 120px; /* Adjust to clear fixed side nav */
             }
         }
+        .callout {
+            position: fixed;
+			bottom: 10px;
+			left: 76%;
+			transform: translateX(-50%);
+			z-index: 1000;
+			width: 70%;
+			max-width: 600px;
+			background-color: #c68a31;
+			border-left: 6px solid #4CAF50;
+			margin-bottom: 15px;
+			padding: 15px;
+			border-radius: 5px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        }
+		.callout p{
+			color: #fff;
+		}
+        .callout .closebtn {
+            margin-left: 15px;
+            color: #f9fafb;
+            font-weight: bold;
+            float: right;
+            font-size: 20px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .callout .closebtn:hover {
+            color: #f9fafb;
+        }
     </style>
 </head>
 
@@ -199,31 +267,60 @@
             <ul>
                 <li><a href="{% url 'client_profile' %}">Design Preferences</a></li>
                 <li><a href="{% url 'project_updates' %}">Project Updates</a></li>
+                <li><a href="{% url 'client_notification' %}"> Notifications</a></li>
+                <li><a href="{% url 'client_review' %}"> Review</a></li>
             </ul>
         </div>
         <div class="profile-container">
             <div class="profile-header">
                 <h1>Design Preferences</h1>
             </div>
-            <div class="profile-content">
+            <div class="profile-content" style="margin-bottom: 30px;">
+
                 <div class="card">
+                    {% if design %}
                     <div class="card-content">
-                        {% if design_preference %}
-                        {% for i in design_preference %}
-                            <p><strong>Style:</strong> {{ i.style }}</p>
-                            <p><strong>Color Palette:</strong> {{ i.color_palette }}</p>
-                            <p><strong>Favorite Materials:</strong> {{ i.materials }}</p>
-                            <p><strong>Budget Range:</strong> {{ i.budget }}</p>
+                        {% for i in design %}
+                        <div class="table-header">
+                            <a href="{% url 'delete_design_preference' i.id %}"><span class="closebtn">×</span></a>
+                        </div>
                         {% endfor %}
-                        {% else %}
-                            <div class="noitem">
-                                <a class="image" href="{% url 'design_preference'  %}"><img src="../static/img/add_item.png"></a><br>
-                                <h5>No Preferece Set </h5>
-                            </div>
-                        {% endif %}
+                        <table id="design-table" class="table-design-preferences">
+                            <thead>
+                                <tr>
+                                    <th>Style</th>
+                                    <th>Color Palette</th>
+                                    <th>Favorite Materials</th>
+                                    <th>Layout</th>
+                                    <th>Budget Range</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for j in design %}
+                                    <tr>
+                                        <td>{{ j.style }}</td>
+                                        <td>{{ j.color_palette }}</td>
+                                        <td>{{ j.materials }}</td>
+                                        <td>{{ j.layout }}</td>
+                                        <td>{{ j.budget }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
+                    {% else %}
+                    <div class="card-content">
+                        <div class="noitem">
+                            <a class="image" href="{% url 'design_preference'  %}">
+                                <img src="../static/img/add_item.png" alt="Add Item">
+                            </a>
+                            <h5>No Preference Set</h5>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
+
         </div>
     </div>
 {% include 'footer.html' %}
@@ -243,5 +340,6 @@
 	  }
 	}
 </script>
+
 </body>
 </html>

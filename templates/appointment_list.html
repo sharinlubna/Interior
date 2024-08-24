@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fruitkha | Admin Dashboard Panel</title>
-    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+    <title>Future Home | Admin Dashboard Panel | Appointments</title>
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
     <!----======== CSS ======== -->
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
@@ -44,36 +45,16 @@
             justify-content: center;
             font-size: 24px;
         }
-        a {
+        .dashboard a {
             display: inline-block;
             margin-top: 10px;
             color: #4CAF50;
             text-decoration: none;
         }
 
-        a:hover {
+        .dashboard a:hover {
             text-decoration: underline;
         }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        ul li {
-            padding: 10px;
-            background-color: #f1f1f1;
-            margin-bottom: 5px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* Align items in a row */
-        }
-
-        ul li:nth-child(odd) {
-            background-color: #e9e9e9;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -100,15 +81,45 @@
         .action-buttons a{
             margin-top: 0;
         }
+        .no-results-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .no-results-box {
+            text-align: center;
+            background-color: #f0f0f0;
+            padding: 90px;
+            margin: 0 auto;
+            border-radius: 10px;
+        }
+
+        .uil-frown {
+            font-size: 48px;
+            color: #ef4444;
+            margin-bottom: 20px;
+        }
+
+        .no-results-box h2 {
+            font-size: 24px;
+            color: #9f9f9f;
+        }
     </style>
 </head>
 <body>
     <nav>
         <div class="logo-name">
             <div class="logo-image">
-                <!-- <img src="img/favicon.png" alt=""> -->
+                <img src="{% static 'img/favicon.png' %}" alt="">
             </div>
-            <span class="logo_name"><img src="{% static 'images/logo.png' %}" alt=""></span>
+
+            <span class="logo_name">Future Home</span>
         </div>
 
         <div class="menu-items">
@@ -117,12 +128,16 @@
                     <i class="uil uil-estate"></i>
                     <span class="link-name">Dashboard</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="{% url 'admin_notification' %}">
                     <i class="uil uil-bell"></i>
-                    <span class="link-name">Notification</i><mark class="big swing">{{ unread_count }}</mark></span>
+                    <span class="link-name">Notifications</i><mark class="big swing">{{ unread_count }}</mark></span>
+                </a></li>
+                <li><a href="{% url 'admin_project_list' %}">
+                    <i class="uil uil-clipboard-alt"></i>
+                    <span class="link-name">Project List</span>
                 </a></li>
                 <li><a href="{% url 'admin_blogs' %}">
-                    <i class="uil uil-user-plus"></i>
+                    <i class="uil uil-edit"></i>
                     <span class="link-name">Blogs</span>
                 </a></li>
                 <li><a href="{% url 'staff_list' %}">
@@ -131,7 +146,7 @@
                 </a></li>
                 <li><a href="{% url 'appointment_list' %}">
                     <i class="uil uil-phone"></i>
-                    <span class="link-name">Appointment</span>
+                    <span class="link-name">Appointments</span>
                 </a></li>
             </ul>
 
@@ -148,16 +163,6 @@
     <section class="dashboard">
         <div class="top">
             <i class="uil uil-bars sidebar-toggle"></i>
-
-            <div class="search-box">
-                <i class="uil uil-search"></i>
-                <form method="get">
-                    <input type="search" name="q" placeholder="Search here...">
-                    <input type="submit" hidden />
-                </form>
-            </div>
-
-            <img src="{% static 'images/favicon.png' %}" alt="">
         </div>
         <div class="activity">
             <div class="title">
@@ -166,7 +171,7 @@
             </div>
             <div class="activity-data">
 
-                {% if app %}
+                {% if app1 %}
                     <table>
                         <thead>
                             <tr>
@@ -214,7 +219,7 @@
             </div>
             <div class="activity-data">
 
-                {% if app %}
+                {% if app2 %}
                     <table>
                         <thead>
                             <tr>
@@ -238,7 +243,7 @@
                                     <td>{{ j.phone_number }}</td>
                                     <td>{{ i.department }}</td>
                                     <td class="action-buttons">
-                                        <a href="{% url 'schedule_app_view' i.client_id %}"><i class="uil uil-eye"></i></a>
+                                        <a href="{% url 'schedule_app_view' i.id %}"><i class="uil uil-eye"></i></a>
                                     </td>
                                 </tr>
                         </tbody>
@@ -249,11 +254,36 @@
                         {% endfor %}
                     </table>
                 {% else %}
-                   <h2> No Appointments </h2>
+                   <div class="no-results-container">
+                        <div class="no-results-box">
+                            <i class="uil uil-frown"></i>
+                            <h2>No Appointment Available yet!</h2>
+                        </div>
+                   </div>
                 {% endif %}
             </div>
 
         </div>
     </section>
+    <script>
+        const body = document.querySelector("body"),
+              sidebar = body.querySelector("nav"),
+              sidebarToggle = body.querySelector(".sidebar-toggle");
+
+
+        let getStatus = localStorage.getItem("status");
+        if(getStatus && getStatus ==="close"){
+            sidebar.classList.toggle("close");
+        }
+
+        sidebarToggle.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+            if(sidebar.classList.contains("close")){
+                localStorage.setItem("status", "close");
+            }else{
+                localStorage.setItem("status", "open");
+            }
+        });
+    </script>
 </body>
 </html>

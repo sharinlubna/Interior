@@ -9,9 +9,9 @@
   <title>Sign in</title>
 </head>
 
-<body style="background: url(../static/img/40a.jpg); background-repeat: no-repeat; object-fit: cover;">
+<body style="background-image: url('../static/img/40a.jpg'); background-repeat: no-repeat; object-fit: cover;">
   <div class="login-page">
-    <h1>Staff Login</h1>
+    <h1 style="color:forestgreen;">Staff Login</h1>
     <div class="form">
       <form class="login-form" action="{% url 'UserLoginPage' %}" method="post">
         {% csrf_token %}

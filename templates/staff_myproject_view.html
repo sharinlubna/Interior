@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Home | Staff Dashboard Panel | My Project View</title>
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/staff.css' %}">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" >
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <style>
+        :root{
+            --primary-color: #4CAF50;
+        }
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            padding: 10px 14px;
+            background-color: var(--panel-color);
+            border-right: 1px solid var(--border-color);
+            transition: var(--tran-05);
+            overflow-y: auto; /* Ensures sidebar is scrollable */
+        }
+        .mark, mark {
+            padding: .2em;
+            background-color: #f1f1f1;
+        }
+        nav .menu-items {
+            justify-content: normal;
+            margin-top: 0;
+
+        }
+        .profile{
+            text-align: center;
+        }
+        .profiledata{
+            width: 100%;
+            height: 100%;
+            margin-top: 0;
+        }
+        .profile img{
+            width: 68%;
+            height: 145px;
+            border-radius: 50%;
+            object-fit: fill;
+        }
+        .activity {
+            padding-top: 80px;
+        }
+        .activity-data {
+            padding-top: 20px;
+        }
+        .title{
+            display: flex;
+            flex-direction: row;
+            font-size: 20px;
+            font-weight: bolder;
+            gap: 10px;
+        }
+        .dashboard .title i {
+            position: relative;
+            height: 35px;
+            width: 35px;
+            background-color: var(--primary-color);
+            border-radius: 6px;
+            color: var(--title-icon-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        a {
+            display: inline-block;
+            margin-top: 10px;
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            background-color: #f1f1f1;
+            margin-bottom: 5px;
+            border-radius: 4px;
+        }
+
+        ul li:nth-child(odd) {
+            background-color: #e9e9e9;
+        }
+
+        .action-buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 5px;
+            justify-content: space-evenly;
+        }
+        .action-buttons a{
+            text-decoration: none;
+
+        }
+        .appointment-info {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+        .project-title h2{
+            font-size: 25px;
+            font-weight: 600;
+        }
+        .project-title .address{
+            font-size: 14px;
+            color: gray;
+        }
+        .project-detail{
+        margin-top: 20px;
+        }
+        .carousel {
+            height: 500px;
+        }
+        .carousel-inner, .carousel-item, .w-100{
+            height: 100%
+        }
+        .carousel img{
+            object-fit: cover;
+        }
+        .about{
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 20px;
+        }
+
+        .profile-content {
+            padding: 20px;
+        }
+
+        .profile-content h2 {
+            font-size: 20px;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            line-height: 20px;
+        }
+
+        .profile-content .info {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .profile-content .info div {
+            width: 45%;
+            margin-bottom: 20px;
+        }
+
+        .profile-content .info label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .profile-content .info p {
+            margin: 0;
+            font-size: 1em;
+            color: #666;
+        }
+        .data{
+            display: flex;
+            flex-direction:row;
+            gap: 20px;
+        }
+        .profile h2{
+            padding-top:11px;
+            margin-bottom: 0;
+            font-weight: 600;
+            font-size: 24px;
+            color: black;
+        }
+        .profile p{
+            margin-bottom: 0;
+            margin-top: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="profile">
+            {% for i in staff %}
+            <a class="profiledata" href="{% url 'staff_profile' %}"><img src="{{ i.image.url }}" alt="Profile Picture"></a>
+            <h2>{{ user.name }}</h2>
+            <p>{{ i.designation }}</p>
+            {% endfor %}
+        </div>
+        <div class="menu-items">
+            <ul class="nav-links">
+                <li><a href="{% url 'staff_dashboard' %}">
+                    <i class="uil uil-estate"></i>
+                    <span class="link-name">Dashboard</span>
+                </a></li>
+                <li><a href="{% url 'staff_notification' %}">
+                    <i class="uil uil-bell"></i>
+                    <span class="link-name">Notification</i><mark class="big swing">({{ unread_count }})</mark></span>
+                </a></li>
+                <li><a href="{% url 'staff_blog' %}">
+                    <i class="uil uil-edit"></i>
+                    <span class="link-name">Blogs</span>
+                </a></li>
+                <li><a href="{% url 'staff_myproject_list' %}">
+                    <i class="uil uil-briefcase"></i>
+                    <span class="link-name">My Projects</span>
+                </a></li>
+                <li><a href="{% url 'staff_project_list' %}">
+                    <i class="uil uil-file-alt"></i>
+                    <span class="link-name">Projects</span>
+                </a></li>
+                <li><a href="{% url 'staff_appointments' %}">
+                    <i class="uil uil-phone"></i>
+                    <span class="link-name">Appointments</span>
+                </a></li>
+                <li><a href="{% url 'staff_profile' %}">
+                    <i class="uil uil-user-circle"></i>
+                    <span class="link-name">Profile</span>
+                </a></li>
+            </ul>
+
+            <ul class="logout-mode">
+                <li><a href="{% url 'logout' %}">
+                    <i class="uil uil-signout"></i>
+                    <span class="link-name">Logout</span>
+                </a></li>
+
+            </ul>
+        </div>
+    </nav>
+    <section class="dashboard" style="justify-content:space-between;">
+        <div class="top">
+            <div class="title">
+                <i class="uil uil-briefcase"></i>
+                <span class="text">Project Details</span>
+            </div>
+            <img src="{% static 'img/favicon.png' %}" alt="">
+        </div>
+        {% for i in project %}
+        <div class="activity">
+
+            <div class="project-title">
+                <h2>{{ i.title }}</h2>
+                <p class="address"><strong>{{ i.category }} . {{ address }}</strong></p>
+            </div>
+            {% if i.mainimage %}
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img src="{{ i.mainimage.url }}" class="d-block w-100" alt="...">
+                </div>
+                {% if i.image1 %}
+                <div class="carousel-item">
+                  <img src="{{ i.image1.url }}" class="d-block w-100" alt="...">
+                </div>
+                {% endif %}
+                {% if i.image2 %}
+                <div class="carousel-item">
+                  <img src="{{ i.image2.url }}" class="d-block w-100" alt="...">
+                </div>
+                {% endif %}
+                {% if i.image3 %}
+                <div class="carousel-item">
+                  <img src="{{ i.image3.url }}" class="d-block w-100" alt="...">
+                </div>
+                {% endif %}
+                {% if i.image4 %}
+                <div class="carousel-item">
+                  <img src="{{ i.image4.url }}" class="d-block w-100" alt="...">
+                </div>
+                {% endif %}
+                {% if i.image5 %}
+                <div class="carousel-item">
+                  <img src="{{ i.image5.url }}" class="d-block w-100" alt="...">
+                </div>
+                {% endif %}
+                {% if i.image6 %}
+                <div class="carousel-item">
+                  <img src="{{ i.image6.url }}" class="d-block w-100" alt="...">
+                </div>
+                {% endif %}
+                {% if i.image7 %}
+                <div class="carousel-item">
+                  <img src="{{ i.image7.url }}" class="d-block w-100" alt="...">
+                </div>
+                {% endif %}
+              </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            {% endif %}
+            <hr>
+            <div class="profile-content">
+                <h2>Project Details</h2>
+                {% for j in person %}
+                {% if i.client_id == j.id %}
+                <div class="info">
+                    <div class="data">
+                        <label>Project Id:</label>
+                        <p>{{ i.id }}</p>
+                    </div>
+                    <div class="data">
+                        <label>Client Name:</label>
+                        <p>{{ j.name }}</p>
+                    </div>
+                    {% for k in design %}
+                    {% if i.client_id == k.client_id %}
+                    <div class="data">
+                        <label>style:</label>
+                        <p>{{ k.style }}</p>
+                    </div>
+                    <div class="data">
+                        <label>Color Palette:</label>
+                        <p>{{ k.color_palette }}</p>
+                    </div>
+                    <div class="data">
+                        <label>Material Used:</label>
+                        <p>{{ k.materials }}</p>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                    <div class="data">
+                        <label>Start Date:</label>
+                        <p>{{ i.starting_date }}</p>
+                    </div>
+                    <div class="data">
+                        <label>Expected End Date:</label>
+                        <p>{{ i.ending_date }}</p>
+                    </div>
+                    <div class="data">
+                        <label>Completion Date::</label>
+                        <p>{{ i.end_date }}</p>
+                    </div>
+                    <div class="data">
+                        <label>Overall Cost:</label>
+                        <p>₹ {{ i.actual_budget }}</p>
+                    </div>
+                    {% if i.comment %}
+                    <div class="data">
+                        <label>Comment:</label>
+                        <p>{{ i.comment }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+                {% endfor %}
+
+                <hr>
+                <h2>About This Project</h2>
+                <p class="desc" style="font-size:14px;">{{ i.description}}</p>
+
+                <hr>
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>

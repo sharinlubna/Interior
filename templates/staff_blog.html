@@ -5,19 +5,44 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fruitkha | Admin Dashboard Panel</title>
-    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+    <title>Future Home | Staff Dashboard Panel | Staff Blogs</title>
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
     <!----======== CSS ======== -->
-    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link rel="stylesheet" href="{% static 'css/staff.css' %}">
 
     <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <style>
+        :root{
+            --primary-color: #4CAF50;
+        }
         body{
             overflow-y: hidden;
         }
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            padding: 10px 14px;
+            background-color: var(--panel-color);
+            border-right: 1px solid var(--border-color);
+            transition: var(--tran-05);
+            overflow-y: auto; /* Ensures sidebar is scrollable */
+        }
+        nav .menu-items {
+            justify-content: normal;
+            margin-top: 0;
+
+        }
         .profile{
             text-align: center;
+        }
+        .profiledata{
+            width: 100%;
+            height: 100%;
+            margin-top: 0;
         }
         .profile img{
             width: 68%;
@@ -25,6 +50,11 @@
             border-radius: 50%;
             object-fit: fill;
         }
+        .mark, mark {
+            padding: .2em;
+            background-color: #f1f1f1;
+        }
+
         .activity {
             padding-top: 80px;
         }
@@ -33,6 +63,7 @@
         }
         .title{
             display: flex;
+            justify-content: space-between;
             flex-direction: row;
             font-size: 20px;
             font-weight: bolder;
@@ -67,7 +98,6 @@
         }
 
         ul li {
-            padding: 10px;
             background-color: #f1f1f1;
             margin-bottom: 5px;
             border-radius: 4px;
@@ -103,43 +133,85 @@
         .action-buttons a{
             margin-top: 0;
         }
+        .add{
+            display: inline-block;
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        .no-results-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .no-results-box {
+            text-align: center;
+            background-color: #f0f0f0;
+            padding: 90px;
+            margin: 0 auto;
+            border-radius: 10px;
+        }
+
+        .uil-frown {
+            font-size: 48px;
+            color: #ef4444;
+            margin-bottom: 20px;
+        }
+
+        .no-results-box h2 {
+            font-size: 24px;
+            color: #9f9f9f;
+        }
     </style>
 </head>
 <body>
     <nav>
         <div class="profile">
             {% for i in staff %}
-            <img src="{{ i.image.url }}" alt="Profile Picture">
+            <a class="profiledata" href="{% url 'staff_profile' %}"><img src="{{ i.image.url }}" alt="Profile Picture"></a>
             <h2>{{ user.name }}</h2>
             <p>{{ i.designation }}</p>
             {% endfor %}
         </div>
-        <div class="menu-items" style="justify-content: normal; margin-top:0;">
+        <div class="menu-items">
             <ul class="nav-links">
-                <li style="padding: 0;"><a href="{% url 'staff_dashboard' %}">
+                <li><a href="{% url 'staff_dashboard' %}">
                     <i class="uil uil-estate"></i>
                     <span class="link-name">Dashboard</span>
                 </a></li>
-                <li style="padding: 0"><a href="#">
+                <li><a href="{% url 'staff_notification' %}">
                     <i class="uil uil-bell"></i>
-                    <span class="link-name">Notification</i><mark class="big swing">{{ unread_count }}</mark></span>
+                    <span class="link-name">Notification</i><mark class="big swing">({{ unread_count }})</mark></span>
                 </a></li>
-                <li style="padding: 0"><a href="{% url 'admin_blogs' %}">
-                    <i class="uil uil-user-plus"></i>
+                <li><a href="{% url 'staff_blog' %}">
+                    <i class="uil uil-edit"></i>
                     <span class="link-name">Blogs</span>
                 </a></li>
-                <li style="padding: 0"><a href="{% url 'staff_list' %}">
-                    <i class="uil uil-users-alt"></i>
-                    <span class="link-name">Staff List</span>
+                <li><a href="{% url 'staff_myproject_list' %}">
+                    <i class="uil uil-briefcase"></i>
+                    <span class="link-name">My Projects</span>
                 </a></li>
-                <li style="padding: 0"><a href="{% url 'appointment_list' %}">
+                <li><a href="{% url 'staff_project_list' %}">
+                    <i class="uil uil-file-alt"></i>
+                    <span class="link-name">Projects</span>
+                </a></li>
+                <li><a href="{% url 'staff_appointments' %}">
                     <i class="uil uil-phone"></i>
-                    <span class="link-name">Appointment</span>
+                    <span class="link-name">Appointments</span>
+                </a></li>
+                <li><a href="{% url 'staff_profile' %}">
+                    <i class="uil uil-user-circle"></i>
+                    <span class="link-name">Profile</span>
                 </a></li>
             </ul>
 
             <ul class="logout-mode">
-                <li style="padding: 0"><a href="{% url 'logout' %}">
+                <li><a href="{% url 'logout' %}">
                     <i class="uil uil-signout"></i>
                     <span class="link-name">Logout</span>
                 </a></li>
@@ -152,22 +224,26 @@
 
             <div class="search-box">
                 <i class="uil uil-search"></i>
-                <form method="get">
-                    <input type="search" name="q" placeholder="Search here...">
+                <form method="POST" action="{% url 'search_sblog' %}">
+                    {% csrf_token %}
+                    <input type="text" name="search" placeholder="Search here...">
                     <input type="submit" hidden />
                 </form>
             </div>
 
-            <img src="{% static 'images/favicon.png' %}" alt="">
+            <img src="{% static 'img/favicon.png' %}" alt="">
         </div>
         <div class="activity">
             <div class="title">
-                <i class="uil uil-users-alt"></i>
+                <div class="head" style="display:inline-flex; gap:10px;">
+                    <i class="uil uil-edit"></i>
                 <span class="text">Blogs</span>
+                </div>
+                <a class="add" href="{% url 'create_staff_blog' %}">Add</a>
             </div>
             <div class="activity-data">
 
-                {% if item %}
+                {% if searched %}
                     <table>
                         <thead>
                             <tr>
@@ -177,9 +253,8 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        {% for i in item %}
-
                         <tbody>
+                        {% for i in searched %}
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{ i.title }}</td>
@@ -189,14 +264,43 @@
                                         <a href="/delete_item/{{ i.id }}"><i class="uil uil-trash"></i></a>
                                     </td>
                                 </tr>
-                        </tbody>
                         {% endfor %}
+                        </tbody>
+                    </table>
+                {% elif item %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in item %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ i.title }}</td>
+                                    <td>{{ i.date }}</td>
+                                    <td class="action-buttons">
+                                        <a href="{% url 'edit_staff_blog' i.id %}">Edit</a>
+                                        <a href="/delete_item/{{ i.id }}"><i class="uil uil-trash"></i></a>
+                                    </td>
+                                </tr>
+                        {% endfor %}
+                        </tbody>
                     </table>
                 {% else %}
-                   <h2> No Blogs Added </h2>
+                   <div class="no-results-container">
+                        <div class="no-results-box">
+                            <i class="uil uil-frown"></i>
+                            <h2>No Blog Added yet!</h2>
+                        </div>
+                   </div>
                 {% endif %}
             </div>
-            <a href="{% url 'create_staff_blog' %}">Add Blog</a>
+
         </div>
     </section>
 </body>

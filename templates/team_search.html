@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Future Home | Team</title>
+	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" >
+	<link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" >
+	<link href="{% static 'css/global.css' %}" rel="stylesheet">
+	<link href="{% static 'css/about.css' %}" rel="stylesheet">
+	<link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet">
+	<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+	<style>
+		.center_team {
+			background-image: url(../static/img/team.jpg);
+			background-position: center;
+		}
+		.callout {
+            position: fixed;
+			bottom: 10px;
+			left: 76%;
+			transform: translateX(-50%);
+			z-index: 1000;
+			width: 70%;
+			max-width: 600px;
+			background-color: #c68a31;
+			border-left: 6px solid #4CAF50;
+			margin-bottom: 15px;
+			padding: 15px;
+			border-radius: 5px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        }
+		.callout p{
+			color: #fff;
+		}
+        .callout .closebtn {
+            margin-left: 15px;
+            color: #f9fafb;
+            font-weight: bold;
+            float: right;
+            font-size: 20px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .callout .closebtn:hover {
+            color: #f9fafb;
+        }
+	</style>
+
+</head>
+
+<body>
+
+{% include 'header.html' %}
+
+<section id="center" class="center_team">
+ <div class="promo_m center_om">
+  <div class="container-fluid">
+    <div class="center_o1 row text-center">
+	 <div class="col-md-12">
+	   <h6 class="col_yell fw-bold"><a class="text-white" href="{% url 'home' %}">HOME PAGE</a> <span class="mx-2 text-muted">/</span> TEAM</h6>
+	   <h1 class="mb-0 font_60 text-white mt-3">Team</h1>
+	 </div>
+	</div>
+ </div>
+ </div>
+</section>
+
+
+<section id="team" class="p_3 px-4">
+    <div class="container-fluid">
+        <div class="team_1 row">
+            {% for staff_member in staff %}
+            {% for user_member in user %}
+            {% if staff_member.staff_id == user_member.id %}
+            <div class="col-md-3 col-sm-6">
+                <div class="team_1m text-center">
+                    <div class="team_1mi position-relative">
+                        <div class="team_1mi1">
+                            <div class="grid clearfix">
+                                <figure class="effect-jazz mb-0">
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#staffDetailModal"
+                                       data-image="{{ staff_member.image.url }}"
+                                       data-name="{{ user_member.name }}"
+                                       data-designation="{{ staff_member.designation }}"
+                                       data-qualification="{{ staff_member.qualification }}"
+                                       data-experience="{{ staff_member.experience }}">
+                                        <img src="{{ staff_member.image.url }}" class="w-100" alt="Staff Image">
+                                    </a>
+                                </figure>
+                            </div>
+                        </div>
+                        <div class="team_1mi2 position-absolute promo_m w-100 h-100 top-0">
+                            <ul class="social-network social-circle mb-0">
+                                <li><a href="#" class="icoFacebook" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#" class="icoGoogle" title="Google +"><i class="fa fa-pinterest"></i></a></li>
+                                <li><a href="#" class="icoLinkedin" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
+                                <li><a href="#" class="icoRss" title="Rss"><i class="fa fa-dribbble"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="team_1m1 mt-3">
+                        <h5>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#staffDetailModal"
+                               data-image="{{ staff_member.image.url }}"
+                               data-name="{{ user_member.name }}"
+                               data-designation="{{ staff_member.designation }}"
+                               data-qualification="{{ staff_member.qualification }}"
+                               data-experience="{{ staff_member.experience }}">
+                                {{ user_member.name }}
+                            </a>
+                        </h5>
+                        <h6 class="text-muted mb-0">{{ staff_member.designation }}</h6>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% empty %}
+            <div class="col-md-12 text-center">
+                <p>No staff members found.</p>
+            </div>
+            {% endfor %}
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="staffDetailModal" tabindex="-1" aria-labelledby="staffDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staffDetailModalLabel">Staff Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="" id="staffImage" class="w-100 mb-3" alt="Staff Image">
+        <h5 id="staffName"></h5>
+        <h6 id="staffDesignation" class="text-muted"></h6>
+        <p><strong>Qualification:</strong> <span id="staffQualification"></span></p>
+        <p><strong>Experience:</strong> <span id="staffExperience"></span></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% include 'footer.html' %}
+
+
+<script>
+	window.onscroll = function() {myFunction()};
+	let navbar_sticky = document.getElementById("navbar_sticky");
+	let sticky = navbar_sticky.offsetTop;
+	let navbar_height = document.querySelector('.navbar').offsetHeight;
+	function myFunction() {
+	  if (window.pageYOffset >= sticky + navbar_height) {
+		navbar_sticky.classList.add("sticky")
+		document.body.style.paddingTop = navbar_height + 'px';
+	  } else {
+		navbar_sticky.classList.remove("sticky");
+		document.body.style.paddingTop = '0'
+	  }
+	}
+</script>
+<script>
+	document.getElementById('see-all').addEventListener('click', function(event) {
+		event.preventDefault();
+		document.getElementById('read-notifications').style.display = 'block';
+		document.getElementById('see-all').style.display = 'none';
+	});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var staffDetailModal = document.getElementById('staffDetailModal');
+
+  staffDetailModal.addEventListener('show.bs.modal', function (event) {
+    var button = event.relatedTarget;
+
+    var image = button.getAttribute('data-image');
+    var name = button.getAttribute('data-name');
+    var designation = button.getAttribute('data-designation');
+    var qualification = button.getAttribute('data-qualification');
+    var experience = button.getAttribute('data-experience');
+
+    var modalImage = staffDetailModal.querySelector('#staffImage');
+    var modalName = staffDetailModal.querySelector('#staffName');
+    var modalDesignation = staffDetailModal.querySelector('#staffDesignation');
+    var modalQualification = staffDetailModal.querySelector('#staffQualification');
+    var modalExperience = staffDetailModal.querySelector('#staffExperience');
+
+    modalImage.src = image;
+    modalName.textContent = name;
+    modalDesignation.textContent = designation;
+    modalQualification.textContent = qualification;
+    modalExperience.textContent = experience;
+  });
+});
+
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

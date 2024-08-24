@@ -67,12 +67,22 @@
 					</span>
 				</form>
 			</div>
+			{% if messages %}
+				<div class="callout-container">
+					{% for message in messages %}
+						<div class="callout">
+							<span class="closebtn" onclick="this.parentElement.style.display='none';">×</span>
+							<p>{{ message }}</p>
+						</div>
+					{% endfor %}
+				</div>
+			{% endif %}
 	 	</div>
 	</div>
    </div><hr class="mt-4 mb-4">
    <div class="footer_2 row text-center">
     <div class="col-md-12">
-	  <p class="mb-0 col_light">© 2024 FUTURE HOME. All Rights Reserved | Design by <a class="col_yell fw-bold" href="http://www.templateonweb.com">TemplateOnWeb</a></p>
+	  <p class="mb-0 col_light">© 2024 FUTURE HOME. All Rights Reserved | Design by <a class="col_yell fw-bold" href="#">LubinaSharin</a></p>
 	</div>
    </div>
  </div>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Home | Admin Dashboard Panel | Profile</title>
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <style>
+        .activity {
+            padding-top: 50px;
+        }
+        .title{
+            display: flex;
+            flex-direction: row;
+            font-size: 24px;
+            font-weight: bolder;
+            gap: 10px;
+        }
+        .dashboard .title i {
+            position: relative;
+            height: 35px;
+            width: 35px;
+            background-color: var(--primary-color);
+            border-radius: 6px;
+            color: var(--title-icon-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .activity-data {
+          padding-top: 10px;
+          display: flex;
+          align-items: flex-start;
+          gap: 20px;
+      }
+
+      .profile-card {
+          padding: 20px;
+          background-color: floralwhite;
+          border-radius: 10px;
+          text-align: center;
+      }
+
+      .profile-image {
+          width: 150px;
+          height: 150px;
+          border-radius: 50%;
+          object-fit: cover;
+          margin-bottom: 10px;
+      }
+
+      .profile-name {
+          font-size: 24px;
+          margin: 10px 0;
+      }
+
+      .profile-email {
+          font-size: 18px;
+          color: #666;
+          margin-bottom: 20px;
+      }
+
+      .btn {
+          padding: 10px 20px;
+          background-color: #4CAF50;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+      }
+
+      .btn:hover {
+          background-color: #41ea48;
+      }
+
+      .edit-profile {
+          display: none;
+          flex-grow: 1;
+          padding: 20px;
+          background-color: floralwhite;
+          border-radius: 10px;
+      }
+
+      .edit-profile h3 {
+          margin-bottom: 20px;
+      }
+
+      .edit-profile label {
+          display: block;
+          margin-bottom: 5px;
+          font-weight: bold;
+      }
+
+      .edit-profile input {
+          width: 98%;
+          padding: 10px;
+          margin-bottom: 15px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+      }
+
+
+    </style>
+
+</head>
+<body>
+    <nav>
+        <div class="logo-name">
+            <div class="logo-image">
+                <img src="{% static 'img/favicon.png' %}" alt="">
+            </div>
+
+            <span class="logo_name">Future Home</span>
+        </div>
+
+        <div class="menu-items">
+            <ul class="nav-links">
+                <li><a href="{% url 'AdminDashboard' %}">
+                    <i class="uil uil-estate"></i>
+                    <span class="link-name">Dashboard</span>
+                </a></li>
+                <li><a href="{% url 'admin_notification' %}">
+                    <i class="uil uil-bell"></i>
+                    <span class="link-name">Notifications</i><mark class="big swing">{{ unread_count }}</mark></span>
+                </a></li>
+                <li><a href="{% url 'admin_project_list' %}">
+                    <i class="uil uil-clipboard-alt"></i>
+                    <span class="link-name">Project List</span>
+                </a></li>
+                <li><a href="{% url 'admin_blogs' %}">
+                    <i class="uil uil-edit"></i>
+                    <span class="link-name">Blogs</span>
+                </a></li>
+                <li><a href="{% url 'staff_list' %}">
+                    <i class="uil uil-users-alt"></i>
+                    <span class="link-name">Staff List</span>
+                </a></li>
+                <li><a href="{% url 'appointment_list' %}">
+                    <i class="uil uil-phone"></i>
+                    <span class="link-name">Appointments</span>
+                </a></li>
+            </ul>
+
+            <ul class="logout-mode">
+                <li><a href="{% url 'logout' %}">
+                    <i class="uil uil-signout"></i>
+                    <span class="link-name">Logout</span>
+                </a></li>
+
+            </ul>
+        </div>
+    </nav>
+
+    <section class="dashboard" >
+        <div class="top" style="justify-content:flex-start; gap: 10px;">
+            <i class="uil uil-bars sidebar-toggle"></i>
+            <div class="title">
+                <i class="uil uil-user-circle"></i>
+                <span class="text">Profile</span>
+            </div>
+        </div>
+        <div class="activity">
+
+            <div class="activity-data">
+                <div class="profile-card">
+                    <img class="profile-image" src="static/img/profile.jpg" alt="">
+                    <h2 class="profile-name">{{ user.name }}</h2>
+                    <p class="profile-email">{{ user.email }}</p>
+                    <button id="editProfileBtn" class="btn">Edit Profile</button>
+                </div>
+                <div id="editProfileForm" class="edit-profile">
+                    <h3>Edit Profile</h3>
+                    <form action="{% url 'admin_update' %}" method="post">
+                        {% csrf_token %}
+                        <label for="profileName">Full Name</label>
+                        <input type="text" id="profileName" name="profileName" value="{{ user.name }}"><br>
+
+                        <label for="profileEmail">Email</label>
+                        <input type="email" id="profileEmail" name="profileEmail" value="{{ user.email }}"><br>
+
+                        <label for="profilePhone">Phone</label>
+                        <input type="tel" id="profilePhone" name="profilePhone" value="{{ user.phone_number }}" pattern="[7-9]{1}[0-9]{9}"><br>
+
+                        <button type="submit" class="btn">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const body = document.querySelector("body"),
+              sidebar = body.querySelector("nav"),
+              sidebarToggle = body.querySelector(".sidebar-toggle");
+
+
+        let getStatus = localStorage.getItem("status");
+        if(getStatus && getStatus ==="close"){
+            sidebar.classList.toggle("close");
+        }
+
+        sidebarToggle.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+            if(sidebar.classList.contains("close")){
+                localStorage.setItem("status", "close");
+            }else{
+                localStorage.setItem("status", "open");
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var editProfileBtn = document.getElementById('editProfileBtn');
+            var editProfileForm = document.getElementById('editProfileForm');
+
+            editProfileBtn.addEventListener('click', function() {
+                if (editProfileForm.style.display === 'none' || editProfileForm.style.display === '') {
+                    editProfileForm.style.display = 'block';
+                    editProfileBtn.textContent = 'Close Edit';
+                } else {
+                    editProfileForm.style.display = 'none';
+                    editProfileBtn.textContent = 'Edit Profile';
+                }
+            });
+
+            const editProfileFormElement = document.getElementById('edit-profile-form');
+            editProfileFormElement.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Here you can add your code to handle form submission, like sending an AJAX request.
+                alert('Profile updated successfully!');
+            });
+        });
+    </script>
+</body>
+</html>

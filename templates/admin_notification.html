@@ -5,57 +5,47 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fruitkha | Admin Dashboard Panel</title>
-    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+    <title>Future Home | Admin Dashboard Panel | Notifications</title>
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
     <!----======== CSS ======== -->
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <style>
-        a {
-            display: inline-block;
-            margin-top: 10px;
-            color: #4CAF50;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        ul li {
-            padding: 10px;
-            background-color: #f1f1f1;
-            margin-bottom: 5px;
-            border-radius: 4px;
-        }
-
-        ul li:nth-child(odd) {
-            background-color: #e9e9e9;
-        }
-        .section-2{
-            font-family: Arial, sans-serif;
+        .activity {
+            padding: 80px 40px;
             display: flex;
             flex-direction: column;
+        }
+        .title{
+            display: flex;
+            flex-direction: row;
+            font-size: 24px;
+            font-weight: bolder;
+            gap: 10px;
+        }
+        .dashboard .title i {
+            position: relative;
+            height: 35px;
+            width: 35px;
+            background-color: var(--primary-color);
+            border-radius: 6px;
+            color: var(--title-icon-color);
+            display: flex;
             align-items: center;
             justify-content: center;
-/*            height: 100vh;*/
-            background-color: #f4f4f4;
-            padding: 30px 0 30px 0;
+            font-size: 24px;
         }
+
         .notification {
             position: relative;
-            padding: 15px 20px;
+            padding: 15px 40px;
             margin: 10px 0;
             border-radius: 4px;
-            width: 90%;
-/*            max-width: 500px;*/
+            width: 100%;
             color: #fff;
             opacity: 0.9;
             transition: opacity 0.6s;
@@ -79,18 +69,17 @@
             color: #000;
         }
 
-        .activity{
-            margin-top:100px;
-        }
+
     </style>
 </head>
 <body>
     <nav>
         <div class="logo-name">
             <div class="logo-image">
-                <!-- <img src="img/favicon.png" alt=""> -->
+                <img src="{% static 'img/favicon.png' %}" alt="">
             </div>
-            <span class="logo_name"><img src="{% static 'images/logo.png' %}" alt=""></span>
+
+            <span class="logo_name">Future Home</span>
         </div>
 
         <div class="menu-items">
@@ -99,12 +88,16 @@
                     <i class="uil uil-estate"></i>
                     <span class="link-name">Dashboard</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="{% url 'admin_notification' %}">
                     <i class="uil uil-bell"></i>
-                    <span class="link-name">Notification</i><mark class="big swing">{{ unread_count }}</mark></span>
+                    <span class="link-name">Notifications</i><mark class="big swing">{{ unread_count }}</mark></span>
+                </a></li>
+                <li><a href="{% url 'admin_project_list' %}">
+                    <i class="uil uil-clipboard-alt"></i>
+                    <span class="link-name">Project List</span>
                 </a></li>
                 <li><a href="{% url 'admin_blogs' %}">
-                    <i class="uil uil-user-plus"></i>
+                    <i class="uil uil-edit"></i>
                     <span class="link-name">Blogs</span>
                 </a></li>
                 <li><a href="{% url 'staff_list' %}">
@@ -113,7 +106,7 @@
                 </a></li>
                 <li><a href="{% url 'appointment_list' %}">
                     <i class="uil uil-phone"></i>
-                    <span class="link-name">Appointment</span>
+                    <span class="link-name">Appointments</span>
                 </a></li>
             </ul>
 
@@ -127,73 +120,87 @@
         </div>
     </nav>
 
-    <section class="dashboard">
-        <div class="top">
+    <section class="dashboard" >
+        <div class="top" style="justify-content:flex-start; gap: 10px;">
             <i class="uil uil-bars sidebar-toggle"></i>
-
-            <div class="search-box">
-                <i class="uil uil-search"></i>
-                <form method="get">
-                    <input type="search" name="q" placeholder="Search here...">
-                    <input type="submit" hidden />
-                </form>
+            <div class="title">
+                <i class="uil uil-bell"></i>
+                <span class="text">Notifications</span>
             </div>
 
-            <img src="{% static 'images/favicon.png' %}" alt="">
         </div>
+        <div class="activity">
+                {% if notifications %}
+                {% for notification in notifications %}
+                    <div class="notification {% if notification.read %}success{% else %}info{% endif %}">
+                        <span><a class="close-btn" href="{% url 'delete_notifications' notification.id %}"><i class="far fa-window-close"></i></a></span>
+                        <strong>{{ notification.message }}</strong>
+                        <br>
+                        <small>{{ notification.time_ago }}</small>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-notifications">
+                    <div class="no-results-container">
+                        <div class="no-results-box">
+                            <i class="uil uil-frown"></i>
+                            <h2>No notifications available.no-results-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+        }
 
-        <div class="dash-content">
-            <div class="overview">
-                <div class="title">
-                    <i class="uil uil-tachometer-fast-alt"></i>
-                    <span class="text">Notifications</span>
-                </div>
+        .no-results-box {
+            text-align: center;
+            background-color: #f0f0f0;
+            padding: 90px;
+            margin: 0 auto;
+            border-radius: 10px;
+        }
 
-            </div>
+        .uil-frown {
+            font-size: 48px;
+            color: #ef4444;
+            margin-bottom: 20px;
+        }
 
-            <div class="activity-data">
-                <div class="section-2">
-                    {% if notifications %}
-                        {% for notification in notifications %}
-                            <div class="notification {% if notification.read %}success{% else %}info{% endif %}">
-                                <span><a class="close-btn" href="{% url 'delete_notification' notification.id %}"><i class="far fa-window-close"></i></a></span>
-                                <strong>{{ notification.message }}</strong>
-                                <br>
-                                <small>{{ notification.time_ago }}</small>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <div class="no-notifications">
-                            <h3>No notifications available.</h3>
+        .no-results-box h2 {
+            font-size: 24px;
+            color: #9f9f9f;
+        } yet!</h2>
                         </div>
-                    {% endif %}
+                   </div>
+                    No notifications available.
                 </div>
+            {% endif %}
 
-            </div>
         </div>
     </section>
 
     <script>
         const body = document.querySelector("body"),
-      modeToggle = body.querySelector(".mode-toggle");
-      sidebar = body.querySelector("nav");
-      sidebarToggle = body.querySelector(".sidebar-toggle");
+              sidebar = body.querySelector("nav"),
+              sidebarToggle = body.querySelector(".sidebar-toggle");
 
 
-let getStatus = localStorage.getItem("status");
-if(getStatus && getStatus ==="close"){
-    sidebar.classList.toggle("close");
-}
+        let getStatus = localStorage.getItem("status");
+        if(getStatus && getStatus ==="close"){
+            sidebar.classList.toggle("close");
+        }
 
-
-sidebarToggle.addEventListener("click", () => {
-    sidebar.classList.toggle("close");
-    if(sidebar.classList.contains("close")){
-        localStorage.setItem("status", "close");
-    }else{
-        localStorage.setItem("status", "open");
-    }
-})
+        sidebarToggle.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+            if(sidebar.classList.contains("close")){
+                localStorage.setItem("status", "close");
+            }else{
+                localStorage.setItem("status", "open");
+            }
+        });
     </script>
 </body>
 </html>

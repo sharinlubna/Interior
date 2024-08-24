@@ -5,44 +5,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fruitkha | Admin Dashboard Panel</title>
-    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+    <title>Future Home | Admin Dashboard Panel</title>
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
     <!----======== CSS ======== -->
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <style>
-        a {
-            display: inline-block;
-            margin-top: 10px;
-            color: #4CAF50;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        ul li {
-            padding: 10px;
-            background-color: #f1f1f1;
-            margin-bottom: 5px;
-            border-radius: 4px;
-        }
-
-        ul li:nth-child(odd) {
-            background-color: #e9e9e9;
-        }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
+        }
+        table thead th{
+            font-size: 20px;
+        }
+        table tbody td{
+            font-size: 18px;
         }
         table thead td {
             font-weight: 600;
@@ -54,37 +35,52 @@
         table tr:last-child {
             border-bottom: none;
         }
-        table tbody tr:hover {
-            background: rgb(3, 102, 216);
+        table tbody tr:hover, .action-buttons a:hover {
+            background: #4CAF50;
             color: beige;
         }
         table tr td, table tr th {
             padding: 10px;
         }
         table tr td:last-child, table tr th:last-child {
-            text-align: end;
+            text-align: center;
         }
         table tr td:nth-child(2), table tr th:nth-child(2) {
-            text-align: end;
+            text-align: left;
         }
         table tr td:nth-child(3), table tr th:nth-child(3) {
-            text-align: center;
+            text-align: left;
         }
-        table tr td:nth-child(4) {
-            text-align: center;
+        table tr td:nth-child(4), table tr th:nth-child(4) {
+            text-align: left;
+        }
+        table tr td:nth-child(5), table tr th:nth-child(5) {
+            text-align: left;
         }
         table tr th:first-child {
             text-align: left;
         }
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            justify-content: space-evenly;
+        }
+        .action-buttons a{
+            color: black;
+            margin-top: 0;
+        }
+
     </style>
+
 </head>
 <body>
     <nav>
         <div class="logo-name">
             <div class="logo-image">
-                <!-- <img src="img/favicon.png" alt=""> -->
+                <img src="{% static 'img/favicon.png' %}" alt="">
             </div>
-            <span class="logo_name"><img src="{% static 'images/logo.png' %}" alt=""></span>
+
+            <span class="logo_name">Future Home</span>
         </div>
 
         <div class="menu-items">
@@ -95,10 +91,14 @@
                 </a></li>
                 <li><a href="{% url 'admin_notification' %}">
                     <i class="uil uil-bell"></i>
-                    <span class="link-name">Notification</i><mark class="big swing">{{ unread_count }}</mark></span>
+                    <span class="link-name">Notifications</i><mark class="big swing">{{ unread_count }}</mark></span>
+                </a></li>
+                <li><a href="{% url 'admin_project_list' %}">
+                    <i class="uil uil-clipboard-alt"></i>
+                    <span class="link-name">Project List</span>
                 </a></li>
                 <li><a href="{% url 'admin_blogs' %}">
-                    <i class="uil uil-user-plus"></i>
+                    <i class="uil uil-edit"></i>
                     <span class="link-name">Blogs</span>
                 </a></li>
                 <li><a href="{% url 'staff_list' %}">
@@ -107,7 +107,11 @@
                 </a></li>
                 <li><a href="{% url 'appointment_list' %}">
                     <i class="uil uil-phone"></i>
-                    <span class="link-name">Appointment</span>
+                    <span class="link-name">Appointments</span>
+                </a></li>
+                <li><a href="{% url 'services_list' %}">
+                    <i class="uil uil-phone"></i>
+                    <span class="link-name">Services</span>
                 </a></li>
             </ul>
 
@@ -121,19 +125,10 @@
         </div>
     </nav>
 
-    <section class="dashboard">
+    <section class="dashboard" style="justify-content:space-between;">
         <div class="top">
             <i class="uil uil-bars sidebar-toggle"></i>
-
-            <div class="search-box">
-                <i class="uil uil-search"></i>
-                <form method="get">
-                    <input type="search" name="q" placeholder="Search here...">
-                    <input type="submit" hidden />
-                </form>
-            </div>
-
-            <img src="{% static 'images/favicon.png' %}" alt="">
+            <a href="{% url 'admin_profile' %}"><img src="static/img/profile.jpg" alt=""></a>
         </div>
 
         <div class="dash-content">
@@ -145,19 +140,19 @@
 
                 <div class="boxes">
                     <div class="box box1">
-                        <i class="uil uil-shopping-cart"></i>
-                        <span class="text">Fruits Available</span>
-                        <span class="number">{{ fruit_count }}</span>
+                        <i class="uil uil-users-alt"></i>
+                        <span class="text">Staffs</span>
+                        <span class="number">{{ staff }}</span>
                     </div>
                     <div class="box box2">
-                        <i class="uil uil-truck"></i>
-                        <span class="text">Delivery</span>
-                        <span class="number">{{ delivery_count }}</span>
+                        <i class="uil uil-phone"></i>
+                        <span class="text">Enquiries</span>
+                        <span class="number">{{ enquiry }}</span>
                     </div>
                     <div class="box box3">
-                        <i class="uil uil-dollar-alt"></i>
-                        <span class="text">Total Earnings</span>
-                        <span class="number">$ {{ total }}</span>
+                        <i class="uil uil-shield-check"></i>
+                        <span class="text">Completed Projects</span>
+                        <span class="number">{{ projects }}</span>
                     </div>
                 </div>
             </div>
@@ -165,41 +160,37 @@
             <div class="activity">
                 <div class="title">
                     <i class="uil uil-clock-three"></i>
-                    <span class="text">Recent Activity</span>
+                    <span class="text">Recent Appointments</span>
                 </div>
 
                 <div class="activity-data">
                     <table>
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>User ID</th>
-                                <th>Item</th>
-                                <th>Price</th>
-                                <th>Payment</th>
-                                <th>Status</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Address</th>
+                                <th>Department</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for order in recent_orders %}
+                            {% for i in app %}
+                            {% for j in client %}
+                            {% if i.client_id == j.id %}
                                 <tr>
-                                    <td>{{ forloop.counter }}</td>
-                                    <td>{{ order.user.id }}</td>
-                                    <td>{{ order.item_id }}</td>
-                                    <td>{{ order.total_price }}</td>
-                                    <td>Paid</td>
-                                    <td>
-                                        {% if order.status == 1 %}
-                                            Ordered
-                                        {% elif order.status == 2 %}
-                                            Pending
-                                        {% elif order.status == 3 %}
-                                            Delivered
-                                        {% elif order.status == 4 %}
-                                            Cancelled
-                                        {% endif %}
+                                    <td>{{ j.name }}</td>
+                                    <td>{{ j.email }}</td>
+                                    <td>{{ j.phone_number }}</td>
+                                    <td>{{ i.address }}</td>
+                                    <td>{{ i.department }}</td>
+                                    <td class="action-buttons">
+                                        <a href="{% url 'schedule_app_view' i.id %}"><i class="uil uil-eye"></i></a>
                                     </td>
                                 </tr>
+                            {% endif %}
+                            {% endfor %}
                             {% endfor %}
                         </tbody>
                     </table>
@@ -210,25 +201,23 @@
 
     <script>
         const body = document.querySelector("body"),
-      modeToggle = body.querySelector(".mode-toggle");
-      sidebar = body.querySelector("nav");
-      sidebarToggle = body.querySelector(".sidebar-toggle");
+              sidebar = body.querySelector("nav"),
+              sidebarToggle = body.querySelector(".sidebar-toggle");
 
 
-let getStatus = localStorage.getItem("status");
-if(getStatus && getStatus ==="close"){
-    sidebar.classList.toggle("close");
-}
+        let getStatus = localStorage.getItem("status");
+        if(getStatus && getStatus ==="close"){
+            sidebar.classList.toggle("close");
+        }
 
-
-sidebarToggle.addEventListener("click", () => {
-    sidebar.classList.toggle("close");
-    if(sidebar.classList.contains("close")){
-        localStorage.setItem("status", "close");
-    }else{
-        localStorage.setItem("status", "open");
-    }
-})
+        sidebarToggle.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+            if(sidebar.classList.contains("close")){
+                localStorage.setItem("status", "close");
+            }else{
+                localStorage.setItem("status", "open");
+            }
+        });
     </script>
 </body>
 </html>

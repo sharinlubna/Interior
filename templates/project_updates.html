@@ -116,19 +116,6 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-
-        .card {
-            margin-bottom: 20px;
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 15px;
-        }
-
-        .card-content {
-            padding: 15px 0;
-        }
-
         .card-content h2 {
             margin-top: 0;
             color: #333;
@@ -136,9 +123,33 @@
             border-bottom: 1px solid #ddd;
             padding-bottom: 10px;
         }
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+        }
 
-        .card-content p {
-            margin-bottom: 10px;
+        .card-content {
+            overflow-x: auto;
+        }
+
+        .table-project-details {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-project-details th, .table-project-details td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .table-project-details th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            width: 25%;
         }
 
         /* Responsive adjustments */
@@ -157,6 +168,38 @@
                 margin-top: 120px; /* Adjust to clear fixed side nav */
             }
         }
+        .callout {
+            position: fixed;
+			bottom: 10px;
+			left: 76%;
+			transform: translateX(-50%);
+			z-index: 1000;
+			width: 70%;
+			max-width: 600px;
+			background-color: #c68a31;
+			border-left: 6px solid #4CAF50;
+			margin-bottom: 15px;
+			padding: 15px;
+			border-radius: 5px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        }
+		.callout p{
+			color: #fff;
+		}
+        .callout .closebtn {
+            margin-left: 15px;
+            color: #f9fafb;
+            font-weight: bold;
+            float: right;
+            font-size: 20px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .callout .closebtn:hover {
+            color: #f9fafb;
+        }
 
 
 
@@ -166,16 +209,18 @@
 {% include 'header.html' %}
     <div class="main-container">
         <div class="side-nav">
-            {% for i in user %}
+
             <div class="user-info">
                 <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                <p><strong>{{ i.name }}</strong></p>
-                <p>{{ i.email }}</p>
+                <p><strong>{{ user.name }}</strong></p>
+                <p>{{ user.email }}</p>
             </div>
-            {% endfor %}
+
             <ul>
                 <li><a href="{% url 'client_profile' %}">Design Preferences</a></li>
                 <li><a href="{% url 'project_updates' %}">Project Updates</a></li>
+                <li><a href="{% url 'client_notification' %}"> Notifications</a></li>
+                <li><a href="{% url 'client_review' %}"> Review</a></li>
             </ul>
         </div>
         <div class="profile-container">
@@ -185,25 +230,77 @@
             <div class="profile-content">
                 <div class="card">
                     <div class="card-content">
-                        <h2>Current Projects</h2>
-                        <p><strong>Project Name:</strong> Modern Living Room Redesign</p>
-                        <p><strong>Designer:</strong> Jane Doe</p>
-                        <p><strong>Description:</strong> Redesigning the living room with modern aesthetics and new furniture.</p>
-                        <p><strong>Status:</strong> In Progress</p>
-                        <p><strong>Last Updated:</strong> July 10, 2024</p>
-                        <p><strong>Next Steps:</strong> Finalizing furniture selection.</p>
-                    </div>
+                    <h2>Project Update</h2>
+                    {% for i in project %}
+                        {% for j in staff %}
+                            {% if i.staff_id == j.id %}
+                                <table class="table-project-details">
+                                    <tr>
+                                        <th>Project Id:</th>
+                                        <td>{{ i.id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Designer:</th>
+                                        <td>{{ j.name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Start Date:</th>
+                                        <td>{{ i.starting_date }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Status:</th>
+                                        <td>
+                                            {% if i.status == '1' %}
+                                                In Progress
+                                            {% elif i.status == '2' %}
+                                                On Hold
+                                            {% else %}
+                                                Completed
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Last Updated:</th>
+                                        <td>{{ i.last_updated|date:"m-d-Y" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Expected end Date:</th>
+                                        <td>{{ i.ending_date|date:"m-d-Y" }}</td>
+                                    </tr>
+                                    {% if i.comment %}
+                                        <tr>
+                                            <th>Comments:</th>
+                                            <td>{{ i.comment }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if i.end_date %}
+                                        <tr>
+                                            <th>Actual end date:</th>
+                                            <td>{{ i.end_date|date:"m-d-Y" }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if i.actual_budget %}
+                                        <tr>
+                                            <th>Total Budget:</th>
+                                            <td>{{ i.actual_budget }} Lakhs</td>
+                                        </tr>
+                                    {% endif %}
+                                </table><br>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
                 </div>
-                <div class="card">
-                    <div class="card-content">
-                        <h2>Completed Projects</h2>
-                        <p><strong>Project Name:</strong> Bedroom Makeover</p>
-                        <p><strong>Designer:</strong> Jane Doe</p>
-                        <p><strong>Description:</strong> Made over the bedroom with a cozy and modern design.</p>
-                        <p><strong>Completion Date:</strong> June 20, 2024</p>
-                        <p><strong>Outcome:</strong> Successfully completed, client satisfied.</p>
-                    </div>
                 </div>
+<!--                <div class="card">-->
+<!--                    <div class="card-content">-->
+<!--                        <h2>Completed Projects</h2>-->
+<!--                        <p><strong>Project Name:</strong> Bedroom Makeover</p>-->
+<!--                        <p><strong>Designer:</strong> Jane Doe</p>-->
+<!--                        <p><strong>Description:</strong> Made over the bedroom with a cozy and modern design.</p>-->
+<!--                        <p><strong>Completion Date:</strong> June 20, 2024</p>-->
+<!--                        <p><strong>Outcome:</strong> Successfully completed, client satisfied.</p>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
         </div>
     </div>
@@ -223,6 +320,13 @@
 		document.body.style.paddingTop = '0'
 	  }
 	}
+</script>
+<script>
+	document.getElementById('see-all').addEventListener('click', function(event) {
+		event.preventDefault();
+		document.getElementById('read-notifications').style.display = 'block';
+		document.getElementById('see-all').style.display = 'none';
+	});
 </script>
 </body>
 </html>

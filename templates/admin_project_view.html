@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Home | Admin Dashboard Panel | Project List | Project</title>
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+     <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <style>
+        .activity {
+            padding-top: 60px;
+        }
+        .title{
+            display: flex;
+            flex-direction: row;
+            font-size: 24px;
+            font-weight: bolder;
+            gap: 10px;
+        }
+        .dashboard .title i {
+            position: relative;
+            height: 35px;
+            width: 35px;
+            background-color: var(--primary-color);
+            border-radius: 6px;
+            color: var(--title-icon-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .appointment-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .appointment-table th {
+            text-align: center;
+            font-size: 20px;
+            background-color: #4CAF50;
+            color:#fff;
+            padding: 10px;
+        }
+
+        .appointment-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo-name">
+            <div class="logo-image">
+                <img src="{% static 'img/favicon.png' %}" alt="">
+            </div>
+
+            <span class="logo_name">Future Home</span>
+        </div>
+
+        <div class="menu-items">
+            <ul class="nav-links">
+                <li><a href="{% url 'AdminDashboard' %}">
+                    <i class="uil uil-estate"></i>
+                    <span class="link-name">Dashboard</span>
+                </a></li>
+                <li><a href="{% url 'admin_notification' %}">
+                    <i class="uil uil-bell"></i>
+                    <span class="link-name">Notifications</i><mark class="big swing">{{ unread_count }}</mark></span>
+                </a></li>
+                <li><a href="{% url 'admin_project_list' %}">
+                    <i class="uil uil-clipboard-alt"></i>
+                    <span class="link-name">Project List</span>
+                </a></li>
+                <li><a href="{% url 'admin_blogs' %}">
+                    <i class="uil uil-edit"></i>
+                    <span class="link-name">Blogs</span>
+                </a></li>
+                <li><a href="{% url 'staff_list' %}">
+                    <i class="uil uil-users-alt"></i>
+                    <span class="link-name">Staff List</span>
+                </a></li>
+                <li><a href="{% url 'appointment_list' %}">
+                    <i class="uil uil-phone"></i>
+                    <span class="link-name">Appointments</span>
+                </a></li>
+            </ul>
+
+            <ul class="logout-mode">
+                <li><a href="{% url 'logout' %}">
+                    <i class="uil uil-signout"></i>
+                    <span class="link-name">Logout</span>
+                </a></li>
+
+            </ul>
+        </div>
+    </nav>
+    <section class="dashboard">
+        <div class="top" style="justify-content:flex-start; gap: 10px;">
+            <i class="uil uil-bars sidebar-toggle"></i>
+            <div class="title">
+               <i class="uil uil-clipboard-alt"></i>
+                <span class="text">Project</span>
+            </div>
+
+        </div>
+
+        {% for i in project %}
+            <div class="activity">
+                <table class="appointment-table">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Project Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for m in design  %}
+                    {% if i.client_id == m.client_id %}
+                        <tr>
+                            <td><strong>Project Id:</strong></td>
+                            <td>{{ i.id }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Status:</strong></td>
+                            {% if i.status == '1' %}
+                                <td>In Progress</td>
+                            {% elif i.status == '2' %}
+                                <td>On Hold</td>
+                            {% else %}
+                                <td>Completed</td>
+                            {% endif %}
+                        </tr>
+
+                        <tr>
+                            <td><strong>Design Style:</strong></td>
+                            <td>{{ m.style }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Design materials:</strong></td>
+                            <td>{{ m.materials }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Design Color Pallete:</strong></td>
+                            <td>{{ m.color_palette }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Start Date:</strong></td>
+                            <td>{{ i.starting_date|date:"m-d-Y" }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Expected End Date:</strong></td>
+                            <td>{{ i.ending_date|date:"m-d-Y" }}</td>
+                        </tr>
+                        {% if i.end_date %}
+                        <tr>
+                            <td><strong>Completion Date:</strong></td>
+                            <td>{{ i.end_date|date:"m-d-Y" }}</td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <td><strong>Referred Design Budget:</strong></td>
+                            <td>{{ m.budget }}</td>
+                        </tr>
+                        {% if i.actual_budget %}
+                        <tr>
+                            <td><strong>Overall Cost:</strong></td>
+                            <td>{{ i.actual_budget }}</td>
+                        </tr>
+                        {% endif %}
+                        {% if i.comment %}
+                        <tr>
+                            <td><strong>Comment:</strong></td>
+                            <td>{{ i.comment }}</td>
+                        </tr>
+                        {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div class="activity">
+                <table class="appointment-table">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Staff Information</th>
+                        </tr>
+                    </thead>
+                    {% for j in staff %}
+                    {% for k in person %}
+                    {% if i.staff_id == j.staff_id %}
+                    {% if i.staff_id == k.id %}
+                    <tbody>
+                        <tr>
+                            <td><strong>Staff Id:</strong></td>
+                                <td>{{ k.id }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Staff Name:</strong></td>
+                            <td>{{ k.name }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Designation:</strong></td>
+                            <td>{{ j.designation }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Phone Number:</strong></td>
+                            <td>{{ k.phone_number }}</td>
+                        </tr>
+                    </tbody>
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                    {% endfor %}
+                </table>
+            </div>
+
+            <div class="activity">
+                <table class="appointment-table">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Client Information</th>
+                        </tr>
+                    </thead>
+                    {% for l in person %}
+                    {% if i.client_id == l.id %}
+                    <tbody>
+                        <tr>
+                            <td><strong>Client Name:</strong></td>
+                            <td>{{ l.name }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Client Email:</strong></td>
+                            <td>{{ l.email }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Client Phone Number:</strong></td>
+                            <td>{{ l.phone_number }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Client Address:</strong></td>
+                            <td>{{ address }}</td>
+                        </tr>
+                    </tbody>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+
+        {% endfor %}
+    </section>
+    <script>
+        const body = document.querySelector("body"),
+              sidebar = body.querySelector("nav"),
+              sidebarToggle = body.querySelector(".sidebar-toggle");
+
+
+        let getStatus = localStorage.getItem("status");
+        if(getStatus && getStatus ==="close"){
+            sidebar.classList.toggle("close");
+        }
+
+        sidebarToggle.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+            if(sidebar.classList.contains("close")){
+                localStorage.setItem("status", "close");
+            }else{
+                localStorage.setItem("status", "open");
+            }
+        });
+    </script>
+</body>
+</html>

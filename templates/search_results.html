@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Future Home</title>
+	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" >
+	<link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" >
+	<link href="{% static 'css/global.css' %}" rel="stylesheet">
+	<link href="{% static 'css/index.css' %}" rel="stylesheet">
+	<link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet">
+	<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <style>
+    /* Basic styling for search results section */
+    .search {
+        padding: 20px;
+        background-color: #f8f9fa;
+    }
+
+    .search h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    /* Styling for the results list */
+    .search ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .search ul li {
+        border-bottom: 1px solid #ddd;
+        padding: 10px 0;
+    }
+
+    .search ul li a {
+        text-decoration: none;
+        color: #daa14c;
+        font-weight: bold;
+    }
+
+    .search ul li a:hover {
+        text-decoration: underline;
+    }
+
+    .search ul li p {
+        margin: 5px 0;
+        color: #555;
+    }
+
+    /* Styling for the "Result not Found" message */
+    .search h2 {
+        font-size: 1.5rem;
+        color: #dc3545;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+</style>
+
+</head>
+<body>
+   {% include 'header.html' %}
+
+    <main>
+        <section class="search">
+            <h1>Search Results</h1>
+            {% if blogs or services or projects or staff %}
+            <div>
+                {% if blogs %}
+                    <ul>
+                        {% for i in blogs %}
+                            <li>
+                                <a href="{%  url 'Blog_Detail' i.id %}">{{ i.title }}</a>
+                                <p>{{ i.description|slice:":100" }}...</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div>
+                {% if services %}
+                    <ul>
+                        {% for service in services %}
+                            <li>
+                                <a href="{% url 'service_detail' service.id %}">{{ service.title }}</a>
+                                <p>{{ service.description|slice:":100" }}...</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div>
+                {% if projects %}
+                    <ul>
+                        {% for i in projects %}
+                            <li>
+                                <a href="{% url 'project_view' i.id %}">{{ i.title }}</a>
+                                <p>{{ i.description|slice:":100" }}...</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div>
+                {% if staff %}
+                    <ul>
+                        {% for member in staff %}
+                            <li>
+                                <a href="{% url 'staff_detail' member.id %}">{{ member.name }}</a>
+                                <p>{{ member.designation }}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            {% else %}
+            <h2> Result not Found!!!!!</h2>
+            {% endif %}
+        </section>
+    </main>
+
+    {% include 'footer.html' %}
+
+    <script>
+        window.onscroll = function() {myFunction()};
+        let navbar_sticky = document.getElementById("navbar_sticky");
+        let sticky = navbar_sticky.offsetTop;
+        let navbar_height = document.querySelector('.navbar').offsetHeight;
+        function myFunction() {
+          if (window.pageYOffset >= sticky + navbar_height) {
+            navbar_sticky.classList.add("sticky")
+            document.body.style.paddingTop = navbar_height + 'px';
+          } else {
+            navbar_sticky.classList.remove("sticky");
+            document.body.style.paddingTop = '0'
+          }
+        }
+    </script>
+</body>
+</html>

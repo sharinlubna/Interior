@@ -5,14 +5,33 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fruitkha | Staff Dashboard Panel | Appointments</title>
-    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+    <title>Future Home | Staff Dashboard Panel | Appointments | Appointment View</title>
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
     <!----======== CSS ======== -->
-    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link rel="stylesheet" href="{% static 'css/staff.css' %}">
 
     <!----===== Iconscout CSS ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <style>
+        :root{
+            --primary-color: #4CAF50;
+        }
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            padding: 10px 14px;
+            background-color: var(--panel-color);
+            border-right: 1px solid var(--border-color);
+            transition: var(--tran-05);
+            overflow-y: auto; /* Ensures sidebar is scrollable */
+        }
+        .mark, mark {
+            padding: .2em;
+            background-color: #f1f1f1;
+        }
         nav .menu-items {
             justify-content: normal;
             margin-top: 0;
@@ -28,7 +47,7 @@
             object-fit: fill;
         }
         .activity {
-            padding-top: 80px;
+            padding-top: 40px;
         }
         .activity-data {
             padding-top: 20px;
@@ -36,7 +55,7 @@
         .title{
             display: flex;
             flex-direction: row;
-            font-size: 20px;
+            font-size: 24px;
             font-weight: bolder;
             gap: 10px;
         }
@@ -163,37 +182,45 @@
     <nav>
         <div class="profile">
             {% for i in staff %}
-            <img src="{{ i.image.url }}" alt="Profile Picture">
+            <a class="profiledata" href="{% url 'staff_profile' %}"><img src="{{ i.image.url }}" alt="Profile Picture"></a>
             <h2>{{ user.name }}</h2>
             <p>{{ i.designation }}</p>
             {% endfor %}
         </div>
-        <div class="menu-items" style="justify-content: normal; margin-top:0;">
+        <div class="menu-items">
             <ul class="nav-links">
-                <li style="padding: 0;"><a href="{% url 'staff_dashboard' %}">
+                <li><a href="{% url 'staff_dashboard' %}">
                     <i class="uil uil-estate"></i>
                     <span class="link-name">Dashboard</span>
                 </a></li>
-                <li style="padding: 0"><a href="#">
+                <li><a href="{% url 'staff_notification' %}">
                     <i class="uil uil-bell"></i>
-                    <span class="link-name">Notification</i><mark class="big swing">{{ unread_count }}</mark></span>
+                    <span class="link-name">Notification</i><mark class="big swing">({{ unread_count }})</mark></span>
                 </a></li>
-                <li style="padding: 0"><a href="{% url 'admin_blogs' %}">
-                    <i class="uil uil-user-plus"></i>
+                <li><a href="{% url 'staff_blog' %}">
+                    <i class="uil uil-edit"></i>
                     <span class="link-name">Blogs</span>
                 </a></li>
-                <li style="padding: 0"><a href="{% url 'staff_list' %}">
-                    <i class="uil uil-users-alt"></i>
-                    <span class="link-name">Staff List</span>
+                <li><a href="{% url 'staff_myproject_list' %}">
+                    <i class="uil uil-briefcase"></i>
+                    <span class="link-name">My Projects</span>
                 </a></li>
-                <li style="padding: 0"><a href="{% url 'staff_appointments' %}">
+                <li><a href="{% url 'staff_project_list' %}">
+                    <i class="uil uil-file-alt"></i>
+                    <span class="link-name">Projects</span>
+                </a></li>
+                <li><a href="{% url 'staff_appointments' %}">
                     <i class="uil uil-phone"></i>
-                    <span class="link-name">Appointment</span>
+                    <span class="link-name">Appointments</span>
+                </a></li>
+                <li><a href="{% url 'staff_profile' %}">
+                    <i class="uil uil-user-circle"></i>
+                    <span class="link-name">Profile</span>
                 </a></li>
             </ul>
 
             <ul class="logout-mode">
-                <li style="padding: 0"><a href="{% url 'logout' %}">
+                <li><a href="{% url 'logout' %}">
                     <i class="uil uil-signout"></i>
                     <span class="link-name">Logout</span>
                 </a></li>
@@ -201,17 +228,21 @@
             </ul>
         </div>
     </nav>
-    <section class="dashboard">
-
-
-        <div class="container">
-            {% for i in app %}
-            {% for j in client %}
-            {% if i.client_id == j.id %}
+    <section class="dashboard" style="justify-content:space-between;">
+        <div class="top">
             <div class="title">
                 <i class="uil uil-phone"></i>
                 <span>Appointment Details</span>
             </div>
+            <img src="{% static 'img/favicon.png' %}" alt="">
+        </div>
+
+
+        <div class="activity">
+            {% for i in app %}
+            {% for j in client %}
+            {% if i.client_id == j.id %}
+
 
             <div class="appointment-info" style="padding-top: 50px;">
                 <table>
@@ -249,9 +280,10 @@
                     </tr>
                 </table>
             </div>
+
             <div class="action-buttons">
                 <a href="{% url 'staff_reject_appointment' i.client_id %}" class="reject">Reject</a>
-                <a href="#" class="accept">Accept</a>
+                <a href="{% url 'project_schedule' i.client_id i.id %}" class="accept">Accept</a>
             </div>
             {% endif %}
             {% endfor %}

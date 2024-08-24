@@ -8,6 +8,22 @@
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <style>
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            padding: 10px 14px;
+            background-color: var(--panel-color);
+            border-right: 1px solid var(--border-color);
+            transition: var(--tran-05);
+            overflow-y: auto; /* Ensures sidebar is scrollable */
+        }
+        .mark, mark {
+            padding: .2em;
+            background-color: #f1f1f1;
+        }
         .profile{
             text-align: center;
         }
@@ -102,7 +118,7 @@
     <nav>
         <div class="profile">
             {% for i in staff %}
-            <img src="{{ i.image.url }}" alt="Profile Picture">
+            <a class="profiledata" href="{% url 'staff_profile' %}"><img src="{{ i.image.url }}" alt="Profile Picture"></a>
             <h2>{{ user.name }}</h2>
             <p>{{ i.designation }}</p>
             {% endfor %}
@@ -113,21 +129,29 @@
                     <i class="uil uil-estate"></i>
                     <span class="link-name">Dashboard</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="{% url 'staff_notification' %}">
                     <i class="uil uil-bell"></i>
-                    <span class="link-name">Notification</i><mark class="big swing">{{ unread_count }}</mark></span>
+                    <span class="link-name">Notification</i><mark class="big swing">({{ unread_count }})</mark></span>
                 </a></li>
-                <li><a href="{% url 'admin_blogs' %}">
-                    <i class="uil uil-user-plus"></i>
+                <li><a href="{% url 'staff_blog' %}">
+                    <i class="uil uil-edit"></i>
                     <span class="link-name">Blogs</span>
                 </a></li>
-                <li><a href="{% url 'staff_list' %}">
-                    <i class="uil uil-users-alt"></i>
+                <li><a href="{% url 'staff_myproject_list' %}">
+                    <i class="uil uil-briefcase"></i>
+                    <span class="link-name">My Projects</span>
+                </a></li>
+                <li><a href="{% url 'staff_project_list' %}">
+                    <i class="uil uil-file-alt"></i>
                     <span class="link-name">Projects</span>
                 </a></li>
-                <li><a href="{% url 'appointment_list' %}">
+                <li><a href="{% url 'staff_appointments' %}">
                     <i class="uil uil-phone"></i>
-                    <span class="link-name">Appointment</span>
+                    <span class="link-name">Appointments</span>
+                </a></li>
+                <li><a href="{% url 'staff_profile' %}">
+                    <i class="uil uil-user-circle"></i>
+                    <span class="link-name">Profile</span>
                 </a></li>
             </ul>
 

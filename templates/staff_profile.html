@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Home | Staff Dashboard Panel</title>
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/staff.css' %}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <style>
+        :root{
+            --primary-color: #4CAF50;
+        }
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            padding: 10px 14px;
+            background-color: var(--panel-color);
+            border-right: 1px solid var(--border-color);
+            transition: var(--tran-05);
+            overflow-y: auto; /* Ensures sidebar is scrollable */
+        }
+        nav .menu-items {
+            justify-content: normal;
+            margin-top: 0;
+
+        }
+        .profile{
+            text-align: center;
+        }
+        .profiledata{
+            width: 100%;
+            height: 100%;
+            margin-top: 0;
+        }
+        .profile img{
+            width: 68%;
+            height: 145px;
+            border-radius: 50%;
+            object-fit: fill;
+        }
+        .activity {
+            padding-top: 50px;
+        }
+        .activity-data {
+            padding-top: 10px;
+        }
+        .title{
+            display: flex;
+            flex-direction: row;
+            font-size: 20px;
+            font-weight: bolder;
+            gap: 10px;
+        }
+        .dashboard .title i {
+            position: relative;
+            height: 35px;
+            width: 35px;
+            background-color: var(--primary-color);
+            border-radius: 6px;
+            color: var(--title-icon-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .mark, mark {
+            padding: .2em;
+            background-color: #f1f1f1;
+        }
+        a {
+            display: inline-block;
+            margin-top: 10px;
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            background-color: #f1f1f1;
+            margin-bottom: 5px;
+            border-radius: 4px;
+        }
+        ul li:nth-child(odd) {
+            background-color: #e9e9e9;
+        }
+
+        .action-buttons a{
+            color: black;
+            margin-top: 0;
+        }
+        .profile-container {
+            width: 80%;
+            margin: 60px auto;
+            margin-bottom: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .profile-header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .profile-header img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid white;
+/*            margin-top: -75px;*/
+        }
+
+        .profile-header h1 {
+            margin: 10px 0 5px;
+        }
+
+        .profile-header p {
+            margin: 0;
+            font-size: 1.1em;
+        }
+
+        .profile-content {
+            padding: 20px;
+        }
+
+        .profile-content h2 {
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .profile-content .info {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .profile-content .info div {
+            width: 45%;
+            margin-bottom: 20px;
+        }
+
+        .profile-content .info label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .profile-content .info p {
+            margin: 0;
+            font-size: 1em;
+            color: #666;
+        }
+        .request{
+            margin-left: 45%;
+        }
+
+        @media (max-width: 768px) {
+            .profile-content .info div {
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+<body>
+    <nav>
+        <div class="profile">
+            {% for i in staff %}
+            <a class="profiledata" href="{% url 'staff_profile' %}"><img src="{{ i.image.url }}" alt="Profile Picture"></a>
+            <h2>{{ user.name }}</h2>
+            <p>{{ i.designation }}</p>
+            {% endfor %}
+        </div>
+        <div class="menu-items">
+            <ul class="nav-links">
+                <li><a href="{% url 'staff_dashboard' %}">
+                    <i class="uil uil-estate"></i>
+                    <span class="link-name">Dashboard</span>
+                </a></li>
+                <li><a href="{% url 'staff_notification' %}">
+                    <i class="uil uil-bell"></i>
+                    <span class="link-name">Notification</i><mark class="big swing">({{ unread_count }})</mark></span>
+                </a></li>
+                <li><a href="{% url 'staff_blog' %}">
+                    <i class="uil uil-edit"></i>
+                    <span class="link-name">Blogs</span>
+                </a></li>
+                <li><a href="{% url 'staff_myproject_list' %}">
+                    <i class="uil uil-briefcase"></i>
+                    <span class="link-name">My Projects</span>
+                </a></li>
+                <li><a href="{% url 'staff_project_list' %}">
+                    <i class="uil uil-file-alt"></i>
+                    <span class="link-name">Projects</span>
+                </a></li>
+                <li><a href="{% url 'staff_appointments' %}">
+                    <i class="uil uil-phone"></i>
+                    <span class="link-name">Appointments</span>
+                </a></li>
+                <li><a href="{% url 'staff_profile' %}">
+                    <i class="uil uil-user-circle"></i>
+                    <span class="link-name">Profile</span>
+                </a></li>
+            </ul>
+
+            <ul class="logout-mode">
+                <li><a href="{% url 'logout' %}">
+                    <i class="uil uil-signout"></i>
+                    <span class="link-name">Logout</span>
+                </a></li>
+
+            </ul>
+        </div>
+    </nav>
+    <section class="dashboard" style="justify-content:space-between;">
+        <div class="top">
+            <div></div>
+            <img src="{% static 'img/favicon.png' %}" alt="">
+        </div>
+        <div class="profile-container">
+            {% for i in staff %}
+            <div class="profile-header">
+                <img src="{{ i.image.url }}" alt="Profile Picture">
+                <h1>{{ user.name }}</h1>
+                <p>{{ i.designation }}</p>
+            </div>
+            <div class="profile-content">
+                <h2>Profile Information</h2>
+                <div class="info">
+                    <div>
+                        <label>Username:</label>
+                        <p>{{ user.username }}</p>
+                    </div>
+                    <div>
+                        <label>Email:</label>
+                        <p>{{ user.email }}</p>
+                    </div>
+                    <div>
+                        <label>Phone:</label>
+                        <p>{{ user.phone_number }}</p>
+                    </div>
+                    <div>
+                        <label>Qualification:</label>
+                        <p>{{ i.qualification }}</p>
+                    </div>
+                    <div>
+                        <label>Experience:</label>
+                        {% if i.experience == 0 %}
+                            <p>Fresher</p>
+                        {% else %}
+                            <p>{{ i.experience }} Years</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label>Joined:</label>
+                        <p>{{ user.created_at }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <a class="request" href="{% url 'request_update' %}">Request Update</a>
+
+
+
+    </section>
+
+</body>
+</html>
